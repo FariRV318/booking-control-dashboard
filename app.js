@@ -7,11 +7,11 @@ const addDays=(n)=>{const d=new Date();d.setDate(d.getDate()+n);return d.toISOSt
 const dateInRange=(date,from,to)=>(!from||date>=from)&&(!to||date<=to);
 
 const defaultAccounts=[
-{id:'ACC-OWN',name:'Own Company',phone:'',email:''},
-{id:'ACC-HOTEL',name:'Hotel ABC',phone:'',email:''},
-{id:'ACC-UBER',name:'Uber Account',phone:'',email:''},
-{id:'ACC-XYZ',name:'Company XYZ',phone:'',email:''},
-{id:'ACC-PARTNER',name:'Partner Company',phone:'',email:''}
+{id:'ACC-OWN',name:'Own Company',regName:'London Executive Cars Ltd',regNumber:'11223344',phone:'+44 20 7946 0100',email:'bookings@owncompany.test',accountsEmail:'accounts@owncompany.test',contact1Name:'Operations Desk',contact1Phone:'+44 7700 900001',contact2Name:'Accounts Team',contact2Phone:'+44 7700 900002',notes:'Direct website and telephone bookings.',color:'#dbeafe'},
+{id:'ACC-HOTEL',name:'Hotel ABC',regName:'ABC Hospitality Group Ltd',regNumber:'22334455',phone:'+44 20 7946 0200',email:'concierge@hotelabc.test',accountsEmail:'finance@hotelabc.test',contact1Name:'Emma Carter',contact1Phone:'+44 7700 910101',contact2Name:'Daniel Reed',contact2Phone:'+44 7700 910102',notes:'Priority hotel account. Monthly invoicing.',color:'#fef3c7'},
+{id:'ACC-UBER',name:'Uber Account',regName:'Demo Platform Account',regNumber:'',phone:'+44 20 7946 0300',email:'ops@platform.test',accountsEmail:'',contact1Name:'Partner Desk',contact1Phone:'+44 7700 920101',contact2Name:'',contact2Phone:'',notes:'Example subcontract/platform work.',color:'#ede9fe'},
+{id:'ACC-XYZ',name:'Company XYZ',regName:'XYZ Travel Services Ltd',regNumber:'33445566',phone:'+44 20 7946 0400',email:'bookings@xyztravel.test',accountsEmail:'accounts@xyztravel.test',contact1Name:'James Wilson',contact1Phone:'+44 7700 930101',contact2Name:'Maya Singh',contact2Phone:'+44 7700 930102',notes:'Corporate airport transfer account.',color:'#dcfce7'},
+{id:'ACC-PARTNER',name:'Partner Company',regName:'Partner Chauffeurs Ltd',regNumber:'44556677',phone:'+44 20 7946 0500',email:'jobs@partner.test',accountsEmail:'billing@partner.test',contact1Name:'Sophie Brown',contact1Phone:'+44 7700 940101',contact2Name:'Adam Khan',contact2Phone:'+44 7700 940102',notes:'Overflow and long-distance work.',color:'#fee2e2'}
 ];
 const defaultVehicles=[
 {id:'VEH-1',reg:'LN68 XYZ',make:'Toyota',model:'Prius',year:'2018',color:'Black',vehicleClass:'Saloon',seats:'4',motExpiry:addDays(120),insuranceProvider:'Demo Insurance',insurancePolicy:'POL-1001',insuranceExpiry:addDays(75),phvLicence:'PHV-1001',phvExpiry:addDays(95),roadTaxExpiry:addDays(200)},
@@ -38,15 +38,48 @@ baseBooking('BK-000132',todayISO(),'16:30','Noah Wilson','+44 7710 551122','ACC-
 baseBooking('BK-000133',todayISO(),'18:10','Ava Harris','+44 7712 889922','ACC-OWN','Heathrow T5','Oxford','','Assigned',120),
 baseBooking('BK-000134',addDays(1),'07:15','Lucas Green','+44 7721 441188','ACC-HOTEL','London Victoria','Stansted Airport','DRV-2','Assigned',88,'H-4450'),
 baseBooking('BK-000135',todayISO(),'10:20','Completed Client','+44 7700 000001','ACC-OWN','Chelsea','City Airport','DRV-3','Completed',55)
+
+];
+// Make the demo visibly exercise V3.3 features.
+defaultBookings[0].dashboardComment='Payment due today';
+defaultBookings[0].driverPaid=true;
+defaultBookings[1].dashboardComment='VIP guest - call reception on arrival';
+defaultBookings[2].complaint=true;
+defaultBookings[2].dashboardComment='Complaint: office manager to follow up';
+defaultBookings[4].dispatch='Pax No Show';
+defaultBookings[6].driverPaid=true;
+defaultBookings[10].flightNumber='BA0281';
+defaultBookings[10].passengers=3;
+defaultBookings[10].suitcases=4;
+defaultBookings[10].vehicleClassRequested='Executive MPV';
+
+const defaultQuotes=[
+{id:'QT-240101',date:todayISO(),passenger:'Charlotte Evans',phone:'+44 7700 600101',pickup:'Heathrow T5',dropoff:'Mayfair',sourceId:'ACC-HOTEL',fare:78,status:'Open'},
+{id:'QT-240102',date:addDays(-1),passenger:'Liam Walker',phone:'+44 7700 600102',pickup:'Chelsea',dropoff:'Gatwick Airport',sourceId:'ACC-OWN',fare:95,status:'Open'},
+{id:'QT-240103',date:addDays(-2),passenger:'Amelia Scott',phone:'+44 7700 600103',pickup:'Stansted Airport',dropoff:'Canary Wharf',sourceId:'ACC-PARTNER',fare:105,status:'Converted'}
+];
+const defaultExpenses=[
+{id:'EXP-1001',date:todayISO(),category:'Parking',description:'Heathrow T5 short stay parking',sourceId:'ACC-HOTEL',amount:18.50},
+{id:'EXP-1002',date:addDays(-1),category:'Tolls',description:'Dart Charge',sourceId:'ACC-XYZ',amount:5.00},
+{id:'EXP-1003',date:addDays(-2),category:'Vehicle Maintenance',description:'Tyre replacement - KP19 ABC',sourceId:'',amount:145.00},
+{id:'EXP-1004',date:addDays(-3),category:'Office',description:'Dispatch phone / office supplies',sourceId:'ACC-OWN',amount:42.80}
 ];
 
 let accounts=load('tbc_accounts_v3',load('tbc_accounts_v2',defaultAccounts));
 let vehicles=load('tbc_vehicles_v3',load('tbc_vehicles_v2',defaultVehicles));
 let drivers=load('tbc_drivers_v3',load('tbc_drivers_v2',defaultDrivers));
 let bookings=load('tbc_bookings_v3',load('tbc_bookings_v2',defaultBookings));
-if(bookings.length<8) bookings=defaultBookings;
+let quotes=load('tbc_quotes_v3',defaultQuotes);
+let expenses=load('tbc_expenses_v3',defaultExpenses);
+// Older test versions may have saved empty arrays. Seed useful demo data instead of opening blank.
+if(!Array.isArray(accounts)||accounts.length<3) accounts=defaultAccounts;
+if(!Array.isArray(vehicles)||vehicles.length<3) vehicles=defaultVehicles;
+if(!Array.isArray(drivers)||drivers.length<3) drivers=defaultDrivers;
+if(!Array.isArray(bookings)||bookings.length<8) bookings=defaultBookings;
+if(!Array.isArray(quotes)||quotes.length<2) quotes=defaultQuotes;
+if(!Array.isArray(expenses)||expenses.length<2) expenses=defaultExpenses;
 
-function persist(){store('tbc_accounts_v3',accounts);store('tbc_vehicles_v3',vehicles);store('tbc_drivers_v3',drivers);store('tbc_bookings_v3',bookings)}
+function persist(){store('tbc_accounts_v3',accounts);store('tbc_vehicles_v3',vehicles);store('tbc_drivers_v3',drivers);store('tbc_bookings_v3',bookings);store('tbc_quotes_v3',quotes);store('tbc_expenses_v3',expenses)}
 
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');showPage('dashboard')});
 
@@ -67,6 +100,7 @@ function isActiveJourney(b){return !['Completed','Cancelled','Driver No Show','P
 function countBy(arr,keyFn){return arr.reduce((m,x)=>{const k=keyFn(x)||'Other';m[k]=(m[k]||0)+1;return m},{})}
 
 function renderAll(){populateSelects();renderDashboard();renderBookings();renderDrivers();renderAccounts();renderEarnings();renderCompliance();renderNotifications()}
+window.resetDemoData=()=>{if(!confirm('Reset all browser test data and reload the professional demo records?'))return;['tbc_accounts_v3','tbc_vehicles_v3','tbc_drivers_v3','tbc_bookings_v3','tbc_quotes_v3','tbc_expenses_v3'].forEach(k=>localStorage.removeItem(k));location.reload()};
 function populateSelects(){
  const src=$('bookingSource');if(src){const cur=src.value;src.innerHTML='<option value="">Select booking account</option>'+accounts.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');if(accounts.some(a=>a.id===cur))src.value=cur}
  const drv=$('bookingDriver');if(drv){const cur=drv.value;drv.innerHTML='<option value="">Not assigned</option>'+drivers.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');if(drivers.some(d=>d.id===cur))drv.value=cur}
