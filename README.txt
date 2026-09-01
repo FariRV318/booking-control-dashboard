@@ -1,18 +1,30 @@
-TAXI BOOKING CONTROL DASHBOARD V3.1
+Taxi Booking Control Dashboard V3.2
+===================================
 
-LATEST UPDATES
-- Vehicle Class Requested added inside Passengers, Luggage & Requirements.
-- Vehicle classes: Saloon, Estate, MPV, Minivan, Executive Saloon, Executive MPV, Luxury/VIP, Large MPV, Wheelchair Accessible, Other.
-- Drivers and Vehicles merged into one Drivers & Vehicles management section.
-- Add Driver & Vehicle captures driver contact/licence/PCO details plus vehicle registration, make, model, year, colour, class, seats, MOT, insurance, PHV vehicle licence and road tax dates.
-- Total Fare and Driver Fare added to booking form.
-- Company Margin is calculated automatically.
-- Dashboard and All Bookings show Total Fare and Driver Fare for every journey.
-- CSV export now includes vehicle class, total fare, driver fare and margin.
-- Existing V3 local browser data is preserved.
+V3.2 major operational update:
+- Professional dashboard with From/To date + journey search.
+- Working View All navigation from KPI cards and dashboard panels.
+- Today's Revenue = total fare of today's non-cancelled bookings.
+- Dashboard staff comment field on each journey.
+- Color-coded operational columns on Dashboard and All Bookings.
+- Company/account-specific colors and dispatch-status colors.
+- Interactive 6-month Revenue Overview chart (hover to see month revenue).
+- Full Companies / Accounts profile: registered name/number, VAT, address,
+  website, accounts email, two contacts, payment terms and notes.
+- Functional Calendar View.
+- Functional Booking Quotes with Convert to Booking.
+- Functional Dispatch Board.
+- Functional Customers page built from booking history.
+- Functional Earnings page with From/To and company filter.
+- Functional Expenses page with add/delete and From/To filtering.
+- Functional Reports page with From/To, search, company filter, weekly/monthly
+  presets, summary totals, CSV export and Print / Save PDF.
+- Existing V3 booking, driver & vehicle, fare, Google Maps-ready structure retained.
 
-GOOGLE MAPS
-Add your restricted Google Maps key in config.js when ready.
+Data storage:
+This development version still uses browser localStorage. This means each browser/device
+has its own data until Firebase is connected. Do not use it as the final shared live
+production database yet.
 
-DATA
-This development version still uses browser localStorage. Connect Firebase before multi-computer production use.
+Google Maps:
+Add your own restricted Google Maps API key to config.js when ready.

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3.1</title>
+  <title>Taxi Booking Control Dashboard V3.2</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -61,26 +61,28 @@
 
       <section id="dashboardPage" class="page active dashboard-page">
         <div class="kpi-grid five">
-          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong><small>View all</small></div></div>
-          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong><small>View all</small></div></div>
-          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>In Process</span><strong id="inProcessCount">0</strong><small>View all</small></div></div>
-          <div class="kpi-card"><div class="kpi-icon amber">⚑</div><div><span>Completed Today</span><strong id="completedToday">0</strong><small>View all</small></div></div>
-          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong><small>View all</small></div></div>
+          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong><button class="kpi-link" data-kpi-view="today">View all</button></div></div>
+          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong><button class="kpi-link" data-kpi-view="upcoming">View all</button></div></div>
+          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>In Process</span><strong id="inProcessCount">0</strong><button class="kpi-link" data-kpi-view="process">View all</button></div></div>
+          <div class="kpi-card"><div class="kpi-icon amber">⚑</div><div><span>Completed Today</span><strong id="completedToday">0</strong><button class="kpi-link" data-kpi-view="completed">View all</button></div></div>
+          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong><button class="kpi-link" data-kpi-view="revenue">View all</button></div></div>
         </div>
 
         <div class="dashboard-main-grid">
           <article class="card upcoming-card">
             <div class="card-head compact-head">
               <div><h2>Upcoming / In Process Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
-              <div class="range-filter">
+              <div class="range-filter dashboard-filter">
                 <label><span>From Date</span><input id="upcomingFrom" type="date"></label>
                 <label><span>To Date</span><input id="upcomingTo" type="date"></label>
+                <label class="dashboard-search-label"><span>Search Journey</span><input id="dashboardSearch" type="search" placeholder="Passenger, ref, phone, route, source..." autocomplete="off"></label>
                 <button id="applyUpcomingRange" class="btn btn-light">⌕ Filter</button>
+                <button id="clearUpcomingFilter" class="btn btn-light">Clear</button>
               </div>
             </div>
             <div class="table-scroll fixed-rows">
               <table class="pro-table compact-table">
-                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Staff Comment</th><th>Actions</th></tr></thead>
                 <tbody id="upcomingBody"></tbody>
               </table>
             </div>
@@ -90,14 +92,14 @@
           <div class="right-stack">
             <article class="card mini-card"><div class="card-head no-border"><h3>Bookings by Source <span>(This Month)</span></h3></div><div id="sourceDonutWrap" class="source-visual"><div class="donut"><div id="sourceTotal">0</div></div><div id="sourceLegend" class="legend-list"></div></div></article>
             <article class="card mini-card"><div class="card-head no-border"><h3>Dispatch Status <span>(Current)</span></h3></div><div id="dispatchBars" class="bar-list"></div></article>
-            <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(This Month)</span></h3></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Total Revenue</small><div class="sparkline"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+            <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(Last 6 Months)</span></h3><button class="mini-view-link" data-page-link="earnings">View all</button></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Current month booked revenue</small><div id="revenueChart" class="revenue-chart" aria-label="Monthly revenue chart"></div></article>
           </div>
         </div>
 
         <div class="dashboard-bottom-grid">
-          <article class="card"><div class="card-head no-border"><h3>Expiring Documents</h3></div><div id="complianceAlerts" class="alert-list"></div></article>
-          <article class="card"><div class="card-head no-border"><h3>Notifications</h3></div><div id="notificationsList" class="notification-list"></div></article>
-          <article class="card"><div class="card-head no-border"><h3>Quick Reports</h3></div><div class="quick-report-grid"><button>▣ Bookings Report</button><button>▣ Earnings Report</button><button>▥ Driver Performance</button><button>▤ Vehicle Utilisation</button></div></article>
+          <article class="card"><div class="card-head no-border"><h3>Expiring Documents</h3><button class="mini-view-link" data-page-link="drivers">View all</button></div><div id="complianceAlerts" class="alert-list"></div></article>
+          <article class="card"><div class="card-head no-border"><h3>Notifications</h3><button class="mini-view-link" data-page-link="bookings">View all</button></div><div id="notificationsList" class="notification-list"></div></article>
+          <article class="card"><div class="card-head no-border"><h3>Quick Reports</h3></div><div class="quick-report-grid"><button data-quick-report="bookings">▣ Bookings Report</button><button data-quick-report="earnings">▣ Earnings Report</button><button data-quick-report="drivers">▥ Driver Performance</button><button data-quick-report="vehicles">▤ Vehicle Utilisation</button></div></article>
         </div>
       </section>
 
@@ -207,23 +209,59 @@
           <div class="range-filter bookings-range">
             <label><span>From Date</span><input id="allFrom" type="date"></label>
             <label><span>To Date</span><input id="allTo" type="date"></label>
-            <input id="bookingSearch" type="search" placeholder="Search ref, passenger, route...">
+            <input id="bookingSearch" type="search" placeholder="Search ref, passenger, phone, route, source...">
+            <select id="allStatus"><option value="">All Statuses</option><option value="__active">Upcoming / Active</option><option value="__process">In Process</option><option>Assigned</option><option>Dispatched</option><option>On the Way</option><option>POB</option><option>Completed</option><option>Cancelled</option></select>
             <button id="applyAllRange" class="btn btn-light">Filter</button>
+            <button id="clearAllFilters" class="btn btn-light">Clear</button>
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
           </div>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
       <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
-      <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Track where bookings come from and revenue by account.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
-      <section id="customersPage" class="page"><article class="card empty-card"><h2>Customers</h2><p>Customer records are populated from bookings.</p></article></section>
-      <section id="calendarPage" class="page"><article class="card empty-card"><h2>Calendar View</h2><p>Calendar view is reserved for the next development step.</p></article></section>
-      <section id="quotesPage" class="page"><article class="card empty-card"><h2>Booking Quotes</h2><p>Quote management can be connected in the next development step.</p></article></section>
-      <section id="dispatchPage" class="page"><article class="card empty-card"><h2>Dispatch Board</h2><p>Use the Dashboard journey table for live manual dispatch control.</p></article></section>
-      <section id="earningsPage" class="page"><article class="card"><div class="section-head inside"><div><h2>Earnings</h2><p>Completed journey revenue.</p></div><strong id="earningsTotal" class="big-number">£0.00</strong></div></article></section>
-      <section id="expensesPage" class="page"><article class="card empty-card"><h2>Expenses</h2><p>Expense management will be connected with the online database.</p></article></section>
-      <section id="reportsPage" class="page"><div class="section-head"><div><h2>Reports & Export</h2><p>Download booking and source reports.</p></div></div><article class="card report-panel"><button id="downloadCsv" class="btn btn-primary">Download Bookings CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></article></section>
+
+      <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Partner profiles, booking sources, contacts, billing and account performance.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Company / Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
+
+      <section id="customersPage" class="page">
+        <div class="section-head"><div><h2>Customers</h2><p>Automatically built from booking history.</p></div><input id="customerSearch" class="page-search" type="search" placeholder="Search customer, phone or email..."></div>
+        <div id="customersGrid" class="management-grid"></div>
+      </section>
+
+      <section id="calendarPage" class="page">
+        <div class="section-head"><div><h2>Calendar View</h2><p>See journeys by day.</p></div><div class="inline-controls"><input id="calendarMonth" type="month"><button id="calendarTodayBtn" class="btn btn-light">This Month</button></div></div>
+        <article class="card"><div id="calendarGrid" class="calendar-grid"></div></article>
+      </section>
+
+      <section id="quotesPage" class="page">
+        <div class="section-head"><div><h2>Booking Quotes</h2><p>Create, track and convert enquiries into confirmed bookings.</p></div><button id="addQuoteBtn" class="btn btn-primary">+ New Quote</button></div>
+        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Quote Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Source</th><th>Quoted Fare</th><th>Status</th><th>Actions</th></tr></thead><tbody id="quotesBody"></tbody></table></div></article>
+      </section>
+
+      <section id="dispatchPage" class="page">
+        <div class="section-head"><div><h2>Dispatch Board</h2><p>Operational view of live journeys by dispatch stage.</p></div><div class="inline-controls"><input id="dispatchSearch" type="search" placeholder="Search journey..."><button id="dispatchRefresh" class="btn btn-light">Refresh</button></div></div>
+        <div id="dispatchBoard" class="dispatch-board"></div>
+      </section>
+
+      <section id="earningsPage" class="page">
+        <div class="section-head"><div><h2>Earnings</h2><p>Revenue, driver fares and company margin.</p></div><div class="range-filter"><label><span>From</span><input id="earningsFrom" type="date"></label><label><span>To</span><input id="earningsTo" type="date"></label><select id="earningsCompany"></select><button id="applyEarnings" class="btn btn-light">Apply</button></div></div>
+        <div class="finance-kpis"><div class="finance-kpi"><span>Total Fare</span><strong id="earningsTotal">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="earningsDriver">£0.00</strong></div><div class="finance-kpi"><span>Company Margin</span><strong id="earningsMargin">£0.00</strong></div><div class="finance-kpi"><span>Bookings</span><strong id="earningsJobs">0</strong></div></div>
+        <article class="card"><div id="earningsChart" class="wide-bar-chart"></div></article>
+      </section>
+
+      <section id="expensesPage" class="page">
+        <div class="section-head"><div><h2>Expenses</h2><p>Track operational costs and account-related expenses.</p></div><div class="inline-controls"><input id="expenseFrom" type="date"><input id="expenseTo" type="date"><button id="addExpenseBtn" class="btn btn-primary">+ Add Expense</button></div></div>
+        <div class="finance-kpis compact-finance"><div class="finance-kpi"><span>Filtered Expenses</span><strong id="expenseTotal">£0.00</strong></div><div class="finance-kpi"><span>Entries</span><strong id="expenseCount">0</strong></div></div>
+        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Company / Account</th><th>Amount</th><th></th></tr></thead><tbody id="expensesBody"></tbody></table></div></article>
+      </section>
+
+      <section id="reportsPage" class="page">
+        <div class="section-head"><div><h2>Reports</h2><p>Generate weekly, monthly or custom reports by company/account.</p></div></div>
+        <article class="card report-filter-card"><div class="report-filters"><label><span>From Date</span><input id="reportFrom" type="date"></label><label><span>To Date</span><input id="reportTo" type="date"></label><label class="report-search"><span>Search</span><input id="reportSearch" type="search" placeholder="Passenger, ref, phone, route..."></label><label><span>Company / Account</span><select id="reportCompany"></select></label><label><span>Preset</span><select id="reportPreset"><option value="custom">Custom</option><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option></select></label><button id="generateReport" class="btn btn-primary">Generate Report</button></div></article>
+        <div class="finance-kpis report-kpis"><div class="finance-kpi"><span>Bookings</span><strong id="reportJobs">0</strong></div><div class="finance-kpi"><span>Total Fare</span><strong id="reportRevenue">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="reportDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Margin</span><strong id="reportMargin">£0.00</strong></div></div>
+        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download Report CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Margin</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
+      </section>
+
       <section id="settingsPage" class="page"><article class="card empty-card"><h2>Settings</h2><p>Firebase, Google Maps and company branding will be configured here later.</p></article></section>
     </main>
   </div>
