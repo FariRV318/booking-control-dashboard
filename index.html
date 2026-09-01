@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3.3.8</title>
+  <title>Private Hire Booking Control Dashboard V3.3.9</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,8 +12,8 @@
 <body>
   <div id="loginView" class="login-shell">
     <div class="login-card">
-      <div class="login-logo">🚕</div>
-      <h1>Taxi Booking Control</h1>
+      <div class="login-logo luxury-car-logo" aria-hidden="true"><svg viewBox="0 0 64 32" role="img"><path d="M10 22h44l-3-9c-.7-2.1-2.7-3.5-4.9-3.5H18c-2.2 0-4.2 1.4-4.9 3.5L10 22Zm7-9h30l1.8 5H15.2L17 13Zm-7 10h44v4H10v-4Zm7 4a4 4 0 1 1-8 0h8Zm38 0a4 4 0 1 1-8 0h8Z" fill="currentColor"/></svg></div>
+      <h1>Private Hire Booking</h1>
       <p>Professional booking & dispatch dashboard</p>
       <form id="loginForm">
         <label>Email<input id="loginEmail" type="email" placeholder="admin@company.co.uk" required></label>
@@ -26,7 +26,7 @@
 
   <div id="appView" class="app hidden">
     <aside class="sidebar">
-      <div class="brand"><span class="brand-icon">🚕</span><div><strong>Taxi Booking</strong><small>Control Dashboard</small></div></div>
+      <div class="brand"><span class="brand-icon luxury-car-logo" aria-hidden="true"><svg viewBox="0 0 64 32"><path d="M10 22h44l-3-9c-.7-2.1-2.7-3.5-4.9-3.5H18c-2.2 0-4.2 1.4-4.9 3.5L10 22Zm7-9h30l1.8 5H15.2L17 13Zm-7 10h44v4H10v-4Zm7 4a4 4 0 1 1-8 0h8Zm38 0a4 4 0 1 1-8 0h8Z" fill="currentColor"/></svg></span><div><strong>Private Hire Booking</strong><small>Control Dashboard</small></div></div>
       <nav>
         <button class="nav-btn active" data-page="dashboard">▦ <span>Dashboard</span></button>
         <div class="nav-label">BOOKINGS</div>
@@ -57,7 +57,7 @@
       <header class="topbar">
         <div class="mobile-menu">☰</div>
         <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
-        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><button class="icon-btn">🔔<span class="notify-dot">6</span></button><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong>Admin User</strong><small>Administrator</small></div></div>
+        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong>Admin User</strong><small>Administrator</small></div></div>
       </header>
 
       <section id="dashboardPage" class="page active dashboard-page">
@@ -69,37 +69,34 @@
           <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong><button class="kpi-link" data-kpi-view="revenue">View all</button></div></div>
         </div>
 
-        <div class="dashboard-main-grid">
-          <article class="card upcoming-card">
-            <div class="card-head compact-head">
-              <div><h2>Upcoming / In Process Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
-              <div class="range-filter dashboard-filter">
-                <label><span>From Date</span><input id="upcomingFrom" type="date"></label>
-                <label><span>To Date</span><input id="upcomingTo" type="date"></label>
-                <label class="dashboard-search-label"><span>Search Journey</span><input id="dashboardSearch" type="search" placeholder="Passenger, ref, phone, route, source..." autocomplete="off"></label>
-                <button id="applyUpcomingRange" class="btn btn-light">⌕ Filter</button>
-                <button id="clearUpcomingFilter" class="btn btn-light">Clear</button>
-              </div>
+        <article class="card upcoming-card dashboard-journeys-wide">
+          <div class="card-head compact-head">
+            <div><h2>Upcoming / In Process Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
+            <div class="range-filter dashboard-filter">
+              <label><span>From Date</span><input id="upcomingFrom" type="date"></label>
+              <label><span>To Date</span><input id="upcomingTo" type="date"></label>
+              <label class="dashboard-search-label"><span>Search Journey</span><input id="dashboardSearch" type="search" placeholder="Passenger, ref, phone, location, source..." autocomplete="off"></label>
+              <button id="applyUpcomingRange" class="btn btn-light">⌕ Filter</button>
+              <button id="clearUpcomingFilter" class="btn btn-light">Clear</button>
             </div>
-            <div class="table-scroll fixed-rows">
-              <table class="pro-table compact-table">
-                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Driver Paid</th><th>Actions</th></tr></thead>
-                <tbody id="upcomingBody"></tbody>
-              </table>
-            </div>
-            <div class="table-footer"><button class="text-btn" data-page-link="bookings">View All Upcoming Journeys</button></div>
-          </article>
-
-          <div class="right-stack">
-            <article class="card mini-card"><div class="card-head no-border"><h3>Bookings by Source <span>(This Month)</span></h3></div><div id="sourceDonutWrap" class="source-visual"><div class="donut"><div id="sourceTotal">0</div></div><div id="sourceLegend" class="legend-list"></div></div></article>
-            <article class="card mini-card"><div class="card-head no-border"><h3>Dispatch Status <span>(Current)</span></h3></div><div id="dispatchBars" class="bar-list"></div></article>
-            <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(Last 6 Months)</span></h3><button class="mini-view-link" data-page-link="earnings">View all</button></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Current month booked revenue</small><div id="revenueChart" class="revenue-chart" aria-label="Monthly revenue chart"></div></article>
           </div>
+          <div class="table-scroll fixed-rows">
+            <table class="pro-table compact-table dashboard-journey-table">
+              <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From</th><th>To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Driver Paid</th><th>Actions</th></tr></thead>
+              <tbody id="upcomingBody"></tbody>
+            </table>
+          </div>
+          <div class="table-footer"><button class="text-btn" data-page-link="bookings">View All Upcoming Journeys</button></div>
+        </article>
+
+        <div class="dashboard-analytics-grid">
+          <article class="card mini-card"><div class="card-head no-border"><h3>Bookings by Source <span>(This Month)</span></h3></div><div id="sourceDonutWrap" class="source-visual"><div class="donut"><div id="sourceTotal">0</div></div><div id="sourceLegend" class="legend-list"></div></div></article>
+          <article class="card mini-card"><div class="card-head no-border"><h3>Dispatch Status <span>(Current)</span></h3></div><div id="dispatchBars" class="bar-list"></div></article>
+          <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(Last 6 Months)</span></h3><button class="mini-view-link" data-page-link="earnings">View all</button></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Current month booked revenue</small><div id="revenueChart" class="revenue-chart" aria-label="Monthly revenue chart"></div></article>
         </div>
 
-        <div class="dashboard-bottom-grid">
+        <div class="dashboard-support-grid">
           <article class="card"><div class="card-head no-border"><h3>Expiring Documents</h3><button class="mini-view-link" data-page-link="drivers">View all</button></div><div id="complianceAlerts" class="alert-list"></div></article>
-          <article class="card"><div class="card-head no-border"><h3>Notifications</h3><button class="mini-view-link" data-page-link="bookings">View all</button></div><div id="notificationsList" class="notification-list"></div></article>
           <article class="card"><div class="card-head no-border"><h3>Quick Reports</h3></div><div class="quick-report-grid"><button data-quick-report="bookings">▣ Bookings Report</button><button data-quick-report="earnings">▣ Earnings Report</button><button data-quick-report="drivers">▥ Driver Performance</button><button data-quick-report="vehicles">▤ Vehicle Utilisation</button></div></article>
         </div>
       </section>
@@ -218,7 +215,7 @@
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
           </div>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Complaint Resolved</th><th>Driver Paid</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>From</th><th>To</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Complaint Resolved</th><th>Driver Paid</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
       <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
@@ -237,7 +234,7 @@
 
       <section id="quotesPage" class="page">
         <div class="section-head"><div><h2>Booking Quotes</h2><p>Create, track and convert enquiries into confirmed bookings.</p></div><button id="addQuoteBtn" class="btn btn-primary">+ New Quote</button></div>
-        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Quote Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Source</th><th>Quoted Fare</th><th>Status</th><th>Actions</th></tr></thead><tbody id="quotesBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Quote Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Source</th><th>Quoted Fare</th><th>Status</th><th>Actions</th></tr></thead><tbody id="quotesBody"></tbody></table></div></article>
       </section>
 
       <section id="dispatchPage" class="page">
@@ -267,14 +264,14 @@
           <button id="generateStatement" class="btn btn-primary">Generate Statement</button>
         </div></article>
         <div class="finance-kpis statement-kpis"><div class="finance-kpi"><span>Statement Jobs</span><strong id="statementJobs">0</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="statementDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Cash Collected</span><strong id="statementCash">£0.00</strong></div><div class="finance-kpi"><span>Penalties</span><strong id="statementPenalty">£0.00</strong></div><div class="finance-kpi"><span>On Hold</span><strong id="statementHold">£0.00</strong></div><div class="finance-kpi statement-net"><span>Net Settlement</span><strong id="statementNet">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Positive net = company owes driver. Negative net = driver owes company. Unresolved complaint jobs are excluded from released payment.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Journey</th><th>Job Status</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
+        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Positive net = company owes driver. Negative net = driver owes company. Unresolved complaint jobs are excluded from released payment.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Passenger</th><th>From</th><th>To</th><th>Job Status</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
       </section>
 
       <section id="reportsPage" class="page">
         <div class="section-head"><div><h2>Reports</h2><p>Generate weekly, monthly or custom reports by company/account.</p></div></div>
         <article class="card report-filter-card"><div class="report-filters"><label><span>From Date</span><input id="reportFrom" type="date"></label><label><span>To Date</span><input id="reportTo" type="date"></label><label class="report-search"><span>Search</span><input id="reportSearch" type="search" placeholder="Passenger, ref, phone, route..."></label><label><span>Company / Account</span><select id="reportCompany"></select></label><label><span>Preset</span><select id="reportPreset"><option value="custom">Custom</option><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option></select></label><button id="generateReport" class="btn btn-primary">Generate Report</button></div></article>
         <div class="finance-kpis report-kpis"><div class="finance-kpi"><span>Bookings</span><strong id="reportJobs">0</strong></div><div class="finance-kpi"><span>Total Fare</span><strong id="reportRevenue">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="reportDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Margin</span><strong id="reportMargin">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download CSV</button><button id="downloadPdf" class="btn btn-primary">Download PDF</button><button id="printReport" class="btn btn-light">Print Report</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
+        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download CSV</button><button id="downloadPdf" class="btn btn-primary">Download PDF</button><button id="printReport" class="btn btn-light">Print Report</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
       </section>
 
       <section id="settingsPage" class="page"><article class="card empty-card"><h2>Settings</h2><p>Firebase, Google Maps and company branding will be configured here later.</p><p class="muted" style="margin-top:10px">Demo records load automatically whenever this development build finds an empty browser dataset.</p></article></section>
