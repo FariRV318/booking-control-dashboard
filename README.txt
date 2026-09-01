@@ -9,3 +9,6 @@ Key fixes in this build:
 - Print Report opens a dedicated report layout instead of printing the dashboard UI.
 
 Google Maps remains optional and uses config.js when an API key is added later.
+
+
+V3.3.5: Fixed booking navigation/table rendering; restored complete booking form logic and report PDF/print functions.
