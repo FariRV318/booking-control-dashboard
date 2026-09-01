@@ -1,10 +1,53 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // V3.5 owner workspace model: only the authenticated owner can access this workspace.
-    // Signing into the same account on another device gives that account the same synced data.
-    match /workspaces/{workspaceId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == workspaceId;
+    function signedIn() { return request.auth != null; }
+    function memberDoc() { return get(/databases/$(database)/documents/memberships/$(request.auth.uid)); }
+    function member(workspaceId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/memberships/$(request.auth.uid))
+        && memberDoc().data.workspaceId == workspaceId
+        && memberDoc().data.active == true;
+    }
+    function role(workspaceId) { return memberDoc().data.role; }
+    function canWrite(workspaceId) {
+      return member(workspaceId) && role(workspaceId) in ['Administrator','Dispatcher','Accounts'];
+    }
+    function isAdmin(workspaceId) { return member(workspaceId) && role(workspaceId) == 'Administrator'; }
+
+    match /workspaces/{workspaceId}/state/{docId} {
+      allow read: if member(workspaceId);
+      allow write: if canWrite(workspaceId);
+    }
+    match /workspaces/{workspaceId}/logs/{logId} {
+      allow read: if member(workspaceId);
+      allow create: if canWrite(workspaceId) && request.resource.data.actorUid == request.auth.uid;
+      allow update, delete: if false;
+    }
+    match /workspaces/{workspaceId}/meta/{docId} {
+      allow read: if member(workspaceId);
+      allow create: if signedIn() && workspaceId == request.auth.uid;
+      allow update: if isAdmin(workspaceId);
+      allow delete: if false;
+    }
+    match /memberships/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isAdmin(resource.data.workspaceId));
+      allow create: if signedIn() && request.auth.uid == userId && (
+        (request.resource.data.workspaceId == userId && request.resource.data.role == 'Administrator')
+        || (
+          exists(/databases/$(database)/documents/invites/$(request.auth.token.email))
+          && get(/databases/$(database)/documents/invites/$(request.auth.token.email)).data.active == true
+          && get(/databases/$(database)/documents/invites/$(request.auth.token.email)).data.workspaceId == request.resource.data.workspaceId
+          && get(/databases/$(database)/documents/invites/$(request.auth.token.email)).data.role == request.resource.data.role
+        )
+      );
+      allow update: if signedIn() && (request.auth.uid == userId || isAdmin(resource.data.workspaceId));
+      allow delete: if signedIn() && isAdmin(resource.data.workspaceId);
+    }
+    match /invites/{inviteEmail} {
+      allow read: if signedIn() && (inviteEmail == request.auth.token.email || isAdmin(resource.data.workspaceId));
+      allow create: if signedIn() && isAdmin(request.resource.data.workspaceId);
+      allow update, delete: if signedIn() && isAdmin(resource.data.workspaceId);
     }
   }
 }

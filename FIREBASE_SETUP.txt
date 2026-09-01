@@ -1,18 +1,16 @@
-PRIVATE HIRE BOOKING - FIREBASE SETUP (V3.5.0)
+PRIVATE HIRE BOOKING - FIREBASE STAFF + AUDIT SETUP (V3.6.0)
 
-1. Go to Firebase Console and create a project.
-2. Add a Web App to the project. Do not copy npm commands; copy the firebaseConfig object values.
-3. Open config.js in this package and paste these values into TAXI_CONFIG.firebase:
-   apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId.
-4. Firebase Console > Authentication > Get started > Sign-in method > enable Email/Password.
-5. Firebase Console > Firestore Database > Create database > choose a production location.
-6. Open Firestore > Rules. Replace the rules with the contents of firestore.rules and Publish.
-7. Upload ALL files in this package to GitHub/Netlify, including firebase-cloud.js and firestore.rules (rules file is for your reference/deployment; it is not loaded by the website).
-8. Open the website. Use Create Account once for the owner/admin account. Firebase keeps the login session on that device.
-9. Sign into the SAME account on another PC/tablet/phone. The same dashboard data will sync in real time.
-10. On first login, if the cloud workspace is empty, the dashboard uploads the current local browser data automatically. If cloud data already exists, cloud data wins and is loaded into the browser.
+Your Firebase Web App configuration is already present in config.js.
 
-IMPORTANT SECURITY NOTES
-- Firebase Web config is designed to be present in frontend code. Security comes from Firebase Authentication + Firestore Rules, not by hiding apiKey.
-- V3.5.0 uses a secure owner workspace: one authenticated account can use multiple devices.
-- Multi-staff roles/invitations (Admin, Dispatcher, Accounts, Read-only) are the next security layer and should use workspace membership rules rather than sharing one password.
+REQUIRED UPDATE
+1. Open Firebase Console > Firestore Database > Rules.
+2. Replace the current rules with the complete contents of firestore.rules from this V3.6.0 package.
+3. Click Publish.
+4. Upload all V3.6.0 website files to GitHub Pages / Netlify and replace the previous build.
+5. Sign in using the existing administrator account.
+6. Open Staff Accounts to invite additional users.
+
+Authentication > Email/Password must remain enabled.
+Cloud Firestore must remain active.
+
+The audit trail is stored under each workspace's /logs collection. Audit records are readable by active workspace members and append-only for authorised write roles.

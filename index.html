@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Hire Booking Control Dashboard V3.5.0</title>
+  <title>Private Hire Booking Control Dashboard V3.6.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -50,7 +50,9 @@
         <button class="nav-btn" data-page="statements">▤ <span>Driver Statements</span></button>
         <div class="nav-label">REPORTS</div>
         <button class="nav-btn" data-page="reports">▧ <span>Reports</span></button>
-        <div class="nav-label">SETTINGS</div>
+        <div class="nav-label">SYSTEM</div>
+        <button class="nav-btn" data-page="logs">≡ <span>Logs / Audit Trail</span></button>
+        <button class="nav-btn" data-page="staff" data-admin-only="true">♚ <span>Staff Accounts</span></button>
         <button class="nav-btn" data-page="settings">⚙ <span>Settings</span></button>
       </nav>
       <div class="sidebar-user"><div class="avatar">AU</div><div class="sidebar-user-copy"><strong id="sidebarUserName">Admin User</strong><small id="sidebarUserRole">Administrator</small></div><button id="logoutBtn" class="logout-mini" type="button" title="Sign out">↪</button></div>
@@ -277,11 +279,23 @@
         <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download CSV</button><button id="downloadPdf" class="btn btn-primary">Download PDF</button><button id="printReport" class="btn btn-light">Print Report</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Driver Penalty</th><th>Company Penalty</th><th>Net Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
       </section>
 
+
+      <section id="logsPage" class="page">
+        <div class="section-head"><div><h2>Logs / Audit Trail</h2><p>Permanent record of important changes made by signed-in staff.</p></div><button id="refreshLogsBtn" class="btn btn-light" type="button">Refresh</button></div>
+        <article class="card audit-filter-card"><div class="audit-filters"><label><span>Search</span><input id="auditSearch" type="search" placeholder="Staff, booking ref, action, details..."></label><label><span>Action</span><select id="auditAction"><option value="">All Actions</option><option>Created</option><option>Updated</option><option>Deleted</option><option>System</option></select></label><label><span>Staff</span><select id="auditStaff"><option value="">All Staff</option></select></label></div></article>
+        <article class="card"><div class="table-scroll audit-table-scroll"><table class="pro-table compact-table audit-table"><thead><tr><th>Date & Time</th><th>Staff Member</th><th>Role</th><th>Action</th><th>Record</th><th>Changes / Details</th></tr></thead><tbody id="auditBody"></tbody></table></div></article>
+      </section>
+
+      <section id="staffPage" class="page">
+        <div class="section-head"><div><h2>Staff Accounts</h2><p>Invite staff to the same company workspace and control their role.</p></div><button id="inviteStaffBtn" class="btn btn-primary" type="button">+ Invite Staff</button></div>
+        <div class="role-cards"><div class="role-card"><strong>Administrator</strong><span>Full access, staff management and settings.</span></div><div class="role-card"><strong>Dispatcher</strong><span>Bookings, dispatch, drivers and operational workflow.</span></div><div class="role-card"><strong>Accounts</strong><span>Bookings, accounts, earnings, expenses, statements and reports.</span></div><div class="role-card"><strong>Read Only</strong><span>View permitted pages without changing synced data.</span></div></div>
+        <article class="card"><div class="card-head"><div><h3>Workspace Staff</h3><p>Invited users create their own password using the same email address.</p></div></div><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Account</th><th>Actions</th></tr></thead><tbody id="staffBody"></tbody></table></div></article>
+      </section>
       <section id="settingsPage" class="page">
         <div class="section-head"><div><h2>Settings</h2><p>Authentication, cloud sync and system configuration.</p></div></div>
         <div class="settings-grid">
-          <article class="card settings-card"><h3>Cloud Account</h3><div class="settings-status-row"><span>Firebase</span><strong id="settingsFirebaseStatus">Not configured</strong></div><div class="settings-status-row"><span>Signed in as</span><strong id="settingsUserEmail">—</strong></div><div class="settings-status-row"><span>Last sync</span><strong id="settingsLastSync">—</strong></div><p class="muted">Your authenticated account owns this workspace. Sign into the same account on another device to load the same live data.</p><div class="settings-actions"><button id="syncNowBtn" class="btn btn-primary" type="button">Sync Now</button><button id="downloadCloudBtn" class="btn btn-light" type="button">Reload from Cloud</button></div></article>
-          <article class="card settings-card"><h3>Security</h3><p>Email/password authentication is handled by Firebase Authentication. Firestore rules in <strong>firestore.rules</strong> restrict each workspace to its authenticated owner.</p><p class="muted">The next phase can add separate staff accounts and roles such as Admin, Dispatcher, Accounts and Read-only.</p></article>
+          <article class="card settings-card"><h3>Cloud Account</h3><div class="settings-status-row"><span>Firebase</span><strong id="settingsFirebaseStatus">Not configured</strong></div><div class="settings-status-row"><span>Signed in as</span><strong id="settingsUserEmail">—</strong></div><div class="settings-status-row"><span>Last sync</span><strong id="settingsLastSync">—</strong></div><p class="muted">This account is connected to a shared company workspace. Staff members can use separate logins while authorised users see the same live data.</p><div class="settings-actions"><button id="syncNowBtn" class="btn btn-primary" type="button">Sync Now</button><button id="downloadCloudBtn" class="btn btn-light" type="button">Reload from Cloud</button></div></article>
+          <article class="card settings-card"><h3>Security & Access</h3><p>Email/password authentication is handled by Firebase Authentication. Firestore rules restrict access to active workspace members and allow synced changes only for authorised roles.</p><div class="settings-status-row"><span>Your role</span><strong id="settingsUserRole">—</strong></div><div class="settings-status-row"><span>Workspace</span><strong id="settingsWorkspaceId">—</strong></div></article>
         </div>
       </section>
     </main>

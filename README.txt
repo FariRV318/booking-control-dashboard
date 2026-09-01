@@ -1,22 +1,32 @@
-PRIVATE HIRE BOOKING CONTROL DASHBOARD V3.5.0
+PRIVATE HIRE BOOKING CONTROL DASHBOARD V3.6.0
 
-This build adds secure Firebase Authentication and real-time Firestore cloud sync on top of V3.4.4.
+This build adds shared staff accounts, role-based navigation and a permanent Firestore audit trail on top of the working V3.5.1 Firebase cloud-sync build.
 
-NEW
-- Email/password Sign In
-- Create Account
-- Forgot Password
-- Firebase persistent login session
-- Firestore cloud workspace sync across PC, tablet and phone
-- Automatic first-login migration of current local browser data when the cloud workspace is empty
-- Real-time cloud listener so changes from another signed-in device appear automatically
-- Settings page with cloud connection, signed-in account, last sync, Sync Now and Reload from Cloud
-- Secure owner-only Firestore rules supplied in firestore.rules
+NEW IN V3.6.0
+- Separate staff logins using Firebase Email/Password Authentication
+- One shared company workspace: staff do NOT need the owner's password
+- Roles: Administrator, Dispatcher, Accounts, Read Only
+- Administrator-only Staff Accounts page
+- Invite staff by name, email and role
+- Staff creates their own password with the invited email using Create Account
+- Staff role/status management (change role, disable/enable)
+- Dedicated Logs / Audit Trail page
+- Audit entries contain date/time, staff name/email, role, action, affected record and change summary
+- Logs are append-only in Firestore (normal users cannot edit/delete audit records)
+- Existing bookings, drivers, vehicles, companies, penalties, reports and statements remain in the same synced workspace
 
-SETUP
-Read FIREBASE_SETUP.txt before deployment. Firebase must be configured in config.js and Email/Password Authentication + Firestore must be enabled in Firebase Console.
+IMPORTANT FIRESTORE RULE UPDATE
+Before using Staff Accounts, replace the current Firestore Rules with the contents of firestore.rules in this package and Publish them.
 
-IMPORTANT
-V3.5.0 uses one secure owner workspace per Firebase account. Sign into the SAME account on multiple devices to share the same data. Separate staff accounts/roles can be added as the next phase without sharing the owner password.
+OWNER MIGRATION
+The first time the existing owner signs into V3.6.0, the app creates the owner's workspace membership automatically. Existing cloud data remains at the same workspace ID and is not moved or deleted.
 
-All V3.4.4 booking, dashboard, reports, penalties and driver statement logic is preserved.
+STAFF JOIN FLOW
+1. Administrator opens Staff Accounts and clicks Invite Staff.
+2. Enter staff name, email and role.
+3. Staff opens the same dashboard URL.
+4. Staff enters the invited email, chooses Create Account, and sets a password.
+5. The app automatically joins that login to the owner's shared workspace.
+
+SECURITY NOTE
+Read Only cannot write synced workspace state. Administrator, Dispatcher and Accounts are write-enabled roles. The UI exposes role-appropriate navigation; because the current dashboard stores operational state in one shared Firestore state document, finer field-level server enforcement can be added later if you want very granular permissions per booking field.
