@@ -40,9 +40,9 @@
 .upcoming-card .pro-table{min-width:1410px}.all-bookings-scroll .pro-table{min-width:1360px}
 .pro-table td.complaint-col{background:#fff2f2;text-align:center;min-width:82px}.pro-table td.driver-paid-col{background:#fff6df;text-align:center;min-width:92px}.pro-table td.driver-paid-col.is-paid{background:#e4f7e9}
 .flag-toggle{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:66px;padding:5px 7px;border:1px solid rgba(32,54,83,.10);border-radius:7px;background:rgba(255,255,255,.78);font-size:8px;font-weight:800;cursor:pointer;white-space:nowrap}.flag-toggle input{width:12px;height:12px;margin:0;accent-color:#2b74ef}.paid-toggle input{accent-color:#24a35a}.complaint-toggle input{accent-color:#b21f2d}
-.complaint-row td{background:#781c27!important;color:#fff!important;border-color:#8c3440!important}.complaint-row td .subline,.complaint-row td span,.complaint-row td strong,.complaint-row td .ref-link{color:#fff!important}.complaint-row td select,.complaint-row td input.inline-comment,.complaint-row td .flag-toggle,.complaint-row td .btn{background:#fff!important;color:#3d1f25!important;border-color:#f0c9cf!important}.complaint-row td .source-pill{background:#fff!important;color:#6b1d29!important}.complaint-row td.driver-paid-col.is-paid{box-shadow:inset 0 0 0 2px #6bd88e}
-.dispatch-card.dispatch-complaint{background:#781c27;color:#fff;border-color:#781c27}.dispatch-card.dispatch-complaint b,.dispatch-card.dispatch-complaint p,.dispatch-card.dispatch-complaint span,.dispatch-card.dispatch-complaint strong{color:#fff!important}
-.report-complaint{background:#781c27;color:#fff}.report-paid{background:#e3f6e8;color:#16703e}.report-pending{background:#fff1cf;color:#9b6600}
+.complaint-row td{background:#ffe3e6!important;color:#71232d!important;border-color:#f2c3ca!important}.complaint-row td .subline,.complaint-row td span,.complaint-row td strong,.complaint-row td .ref-link{color:#71232d!important}.complaint-row td select,.complaint-row td input.inline-comment,.complaint-row td .flag-toggle,.complaint-row td .btn{background:#fff!important;color:#4d252a!important;border-color:#edc8cd!important}.complaint-row td .source-pill{background:#fff!important;color:#71232d!important}.complaint-row td.driver-paid-col.is-paid{box-shadow:inset 0 0 0 2px #6bd88e}
+.dispatch-card.dispatch-complaint{background:#ffe3e6;color:#71232d;border-color:#efbbc3}.dispatch-card.dispatch-complaint b,.dispatch-card.dispatch-complaint p,.dispatch-card.dispatch-complaint span,.dispatch-card.dispatch-complaint strong{color:#71232d!important}
+.report-complaint{background:#ffd9de;color:#8a2432}.report-resolved{background:#dff5e5;color:#17683c}.report-paid{background:#e3f6e8;color:#16703e}.report-pending{background:#fff1cf;color:#9b6600}
 
 /* ===== V3.3.4 dashboard table fit + report polish ===== */
 @media (min-width:1401px){
@@ -65,7 +65,7 @@
   .all-bookings-scroll .table-select,.all-bookings-scroll .inline-comment{min-width:0;width:100%;font-size:7.5px}
   .all-bookings-scroll .flag-toggle{min-width:0;width:100%;padding:4px 2px;font-size:7.1px}
 }
-.complaint-row td.route-col,.complaint-row td.route-col strong,.complaint-row td.route-col .subline{color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.12)}
+.complaint-row td.route-col,.complaint-row td.route-col strong,.complaint-row td.route-col .subline{color:#71232d!important;text-shadow:none}
 .complaint-row td.complaint-col .flag-toggle,.complaint-row td.driver-paid-col .flag-toggle{background:#fff!important;color:#631923!important;font-weight:900!important}
 .complaint-row td.complaint-col .flag-toggle span,.complaint-row td.driver-paid-col .flag-toggle span{color:#631923!important}
 .complaint-row td.driver-paid-col.is-paid .flag-toggle{background:#e5f8ea!important;color:#17683c!important}
@@ -90,8 +90,8 @@
 .pro-table .complaint-row td.comment-col,
 .pro-table .complaint-row td.complaint-col,
 .pro-table .complaint-row td.driver-paid-col,
-.pro-table .complaint-row td.action-col{background:#871f2b!important;color:#fff!important}
-.pro-table .complaint-row td.route-col strong,.pro-table .complaint-row td.route-col .subline,.pro-table .complaint-row td.route-col{color:#fff!important}
+.pro-table .complaint-row td.action-col{background:#ffe3e6!important;color:#71232d!important}
+.pro-table .complaint-row td.route-col strong,.pro-table .complaint-row td.route-col .subline,.pro-table .complaint-row td.route-col{color:#71232d!important}
 .all-bookings-scroll .resolved-row td{background:#e3f7e9!important;color:#174f30!important;border-color:#bfe5cb!important}
 .all-bookings-scroll .resolved-row td.route-col,.all-bookings-scroll .resolved-row td.source-col,.all-bookings-scroll .resolved-row td.fare-col,.all-bookings-scroll .resolved-row td.comment-col{background:#d9f3e2!important}
 .all-bookings-scroll .resolved-row .subline,.all-bookings-scroll .resolved-row strong,.all-bookings-scroll .resolved-row .ref-link{color:#174f30!important}
@@ -101,6 +101,9 @@
 
 
 /* ===== V3.3.7 driver statements, IDs and payment filters ===== */
-.driver-id-sub{margin-top:3px;font-size:6.8px;font-weight:800;letter-spacing:.04em;color:#61748c}.complaint-row .driver-id-sub{color:#fff!important}.resolved-row .driver-id-sub{color:#174f30!important}
+.driver-id-sub{margin-top:3px;font-size:6.8px;font-weight:800;letter-spacing:.04em;color:#61748c}.complaint-row .driver-id-sub{color:#7a3a43!important}.resolved-row .driver-id-sub{color:#174f30!important}
 .job-status-badge{display:inline-block;max-width:100%;padding:4px 6px;border-radius:6px;background:#eef3fa;color:#30445f;font-size:7.4px;font-weight:800;line-height:1.25}.job-status-badge.status-completed{background:#dff5e5;color:#17683c}.job-status-badge.status-pax-no-show{background:#fff0dc;color:#955400}.job-status-badge.status-driver-no-show{background:#fde6ea;color:#9e2434}
 #allDriverPayment{min-width:145px}
+
+/* ===== V3.3.8 statement + complaint presentation ===== */
+.pro-table .resolved-row td{background:#e3f7e9!important;color:#174f30!important;border-color:#bfe5cb!important}.pro-table .resolved-row td.route-col,.pro-table .resolved-row td.source-col,.pro-table .resolved-row td.fare-col,.pro-table .resolved-row td.comment-col{background:#d9f3e2!important}.pro-table .resolved-row .subline,.pro-table .resolved-row strong,.pro-table .resolved-row .ref-link{color:#174f30!important}.statement-hold td{background:#ffe9ec!important;color:#7a2833!important}.statement-hold .subline{color:#8b4a52!important}
