@@ -1,46 +1,22 @@
-Private Hire Booking Control Dashboard V3.3.9
+PRIVATE HIRE BOOKING CONTROL DASHBOARD V3.5.0
 
-Private Hire Booking Control Dashboard V3.3.4
+This build adds secure Firebase Authentication and real-time Firestore cloud sync on top of V3.4.4.
 
-Key fixes in this build:
-- Main Upcoming / In Process table fits large desktop screens without a horizontal scrollbar.
-- Complaint rows keep readable white route text and clear Complaint / Driver Paid controls.
-- Dashboard remains compact while preserving all operational columns.
-- Reports now have three outputs: CSV, direct PDF download, and professional print view.
-- PDF uses A4 landscape with booking totals and a fitted data table.
-- Print Report opens a dedicated report layout instead of printing the dashboard UI.
+NEW
+- Email/password Sign In
+- Create Account
+- Forgot Password
+- Firebase persistent login session
+- Firestore cloud workspace sync across PC, tablet and phone
+- Automatic first-login migration of current local browser data when the cloud workspace is empty
+- Real-time cloud listener so changes from another signed-in device appear automatically
+- Settings page with cloud connection, signed-in account, last sync, Sync Now and Reload from Cloud
+- Secure owner-only Firestore rules supplied in firestore.rules
 
-Google Maps remains optional and uses config.js when an API key is added later.
+SETUP
+Read FIREBASE_SETUP.txt before deployment. Firebase must be configured in config.js and Email/Password Authentication + Firestore must be enabled in Firebase Console.
 
+IMPORTANT
+V3.5.0 uses one secure owner workspace per Firebase account. Sign into the SAME account on multiple devices to share the same data. Separate staff accounts/roles can be added as the next phase without sharing the owner password.
 
-V3.3.5: Fixed booking navigation/table rendering; restored complete booking form logic and report PDF/print functions.
-
-V3.3.9: fixed complaint-row route readability; added complaint resolution on All Bookings; added booking penalties; added Driver Statements with cash settlement, complaint holds and professional PDF/print output.
-
-V3.3.7 updates:
-- Persistent local demo login across refreshes.
-- Driver Statements include Completed, Pax No Show, Driver No Show and penalty jobs with clear Job Status.
-- Unresolved complaints remain ON HOLD; resolved complaints release normally.
-- Driver No Show can produce a negative penalty settlement.
-- Already paid driver jobs remain visible but are excluded from outstanding payable.
-- Unique Driver ID field (e.g. BN0075) and display under assigned driver.
-- All Bookings driver payment filter: Paid / Pending.
-
-V3.3.9 presentation fixes:
-- Driver Statement Job Status now shows only Completed / Pax No Show / Driver No Show.
-- Statement Settlement now uses only Released or On Hold.
-- Unresolved complaint rows use a light-red highlight instead of dark red.
-- Resolved complaint rows/reports use light green and show Resolved.
-
-
-V3.4.1 additions:
-- Separate Driver Penalty and Company Penalty / Chargeback fields.
-- Reports include both penalty types.
-- Net Margin = Total Fare - Driver Fare + Driver Penalties - Company Penalties / Chargebacks.
-- CSV, PDF, Print Report and Earnings margin calculations include both penalty types.
-
-
-V3.4.4
-- Driver penalties now always reduce the driver statement net settlement, including Driver No Show penalties.
-- Example: £80 payable work minus £35 penalty = £45 net settlement.
-- Complaint holds apply only to positive driver payments; penalties are not accidentally held/excluded.
+All V3.4.4 booking, dashboard, reports, penalties and driver statement logic is preserved.

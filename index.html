@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Hire Booking Control Dashboard V3.3.9</title>
+  <title>Private Hire Booking Control Dashboard V3.5.0</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,11 +16,14 @@
       <h1>Private Hire Booking</h1>
       <p>Professional booking & dispatch dashboard</p>
       <form id="loginForm">
-        <label>Email<input id="loginEmail" type="email" placeholder="admin@company.co.uk" required></label>
-        <label>Password<input id="loginPassword" type="password" placeholder="Enter password" required></label>
-        <button class="btn btn-primary full" type="submit">Sign In</button>
+        <label>Email<input id="loginEmail" type="email" placeholder="admin@company.co.uk" autocomplete="email" required></label>
+        <label>Password<input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password" minlength="6" required></label>
+        <div id="loginError" class="auth-message hidden"></div>
+        <button id="signInBtn" class="btn btn-primary full" type="submit">Sign In</button>
+        <button id="createAccountBtn" class="btn btn-light full" type="button">Create Account</button>
+        <button id="forgotPasswordBtn" class="auth-link" type="button">Forgot password?</button>
       </form>
-      <small>Demo mode: enter any email and password.</small>
+      <small id="loginCloudHint">Connect Firebase in config.js to enable secure login and cloud sync.</small>
     </div>
   </div>
 
@@ -50,14 +53,14 @@
         <div class="nav-label">SETTINGS</div>
         <button class="nav-btn" data-page="settings">⚙ <span>Settings</span></button>
       </nav>
-      <div class="sidebar-user"><div class="avatar">AU</div><div><strong>Admin User</strong><small>Administrator</small></div></div>
+      <div class="sidebar-user"><div class="avatar">AU</div><div class="sidebar-user-copy"><strong id="sidebarUserName">Admin User</strong><small id="sidebarUserRole">Administrator</small></div><button id="logoutBtn" class="logout-mini" type="button" title="Sign out">↪</button></div>
     </aside>
 
     <main class="workspace">
       <header class="topbar">
         <div class="mobile-menu">☰</div>
         <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
-        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong>Admin User</strong><small>Administrator</small></div></div>
+        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong id="topUserName">Admin User</strong><small id="topCloudStatus">Cloud offline</small></div></div>
       </header>
 
       <section id="dashboardPage" class="page active dashboard-page">
@@ -274,7 +277,13 @@
         <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download CSV</button><button id="downloadPdf" class="btn btn-primary">Download PDF</button><button id="printReport" class="btn btn-light">Print Report</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Driver Penalty</th><th>Company Penalty</th><th>Net Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
       </section>
 
-      <section id="settingsPage" class="page"><article class="card empty-card"><h2>Settings</h2><p>Firebase, Google Maps and company branding will be configured here later.</p><p class="muted" style="margin-top:10px">Demo records load automatically whenever this development build finds an empty browser dataset.</p></article></section>
+      <section id="settingsPage" class="page">
+        <div class="section-head"><div><h2>Settings</h2><p>Authentication, cloud sync and system configuration.</p></div></div>
+        <div class="settings-grid">
+          <article class="card settings-card"><h3>Cloud Account</h3><div class="settings-status-row"><span>Firebase</span><strong id="settingsFirebaseStatus">Not configured</strong></div><div class="settings-status-row"><span>Signed in as</span><strong id="settingsUserEmail">—</strong></div><div class="settings-status-row"><span>Last sync</span><strong id="settingsLastSync">—</strong></div><p class="muted">Your authenticated account owns this workspace. Sign into the same account on another device to load the same live data.</p><div class="settings-actions"><button id="syncNowBtn" class="btn btn-primary" type="button">Sync Now</button><button id="downloadCloudBtn" class="btn btn-light" type="button">Reload from Cloud</button></div></article>
+          <article class="card settings-card"><h3>Security</h3><p>Email/password authentication is handled by Firebase Authentication. Firestore rules in <strong>firestore.rules</strong> restrict each workspace to its authenticated owner.</p><p class="muted">The next phase can add separate staff accounts and roles such as Admin, Dispatcher, Accounts and Read-only.</p></article>
+        </div>
+      </section>
     </main>
   </div>
 
@@ -283,6 +292,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
   <script src="config.js"></script>
+  <script type="module" src="firebase-cloud.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
