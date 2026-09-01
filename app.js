@@ -114,6 +114,7 @@ function renderSourceVisual(arr){const counts=countBy(arr,b=>accountName(b.sourc
 function renderBars(id,obj){const el=$(id);if(!el)return;const max=Math.max(1,...Object.values(obj));el.innerHTML=Object.entries(obj).map(([name,count])=>`<div class="bar-row"><span>${name}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.max(8,count/max*100)}%"></div></div><strong>${count}</strong></div>`).join('')||'<div class="muted">No data</div>'}
 $('applyUpcomingRange').onclick=renderDashboard;
 window.assignDriver=(id,driverId)=>{const b=bookings.find(x=>x.id===id);if(!b)return;b.driverId=driverId;b.vehicleId=driverId?(vehicleForDriver(driverId)?.id||''):'';if(driverId&&!b.dispatch)b.dispatch='Assigned';persist();renderAll()};
+window.assignDriverSearch=(id,input)=>{const driverId=driverIdFromSearch(input?.value);if(input)setDriverSearchValue(input,driverId);window.assignDriver(id,driverId)};
 window.updateDispatch=(id,status)=>{const b=bookings.find(x=>x.id===id);if(!b)return;b.dispatch=status;persist();renderAll()};
 
 function initAllRange(){if(!$('allFrom').value)$('allFrom').value=addDays(-30);if(!$('allTo').value)$('allTo').value=addDays(30)}
@@ -244,7 +245,7 @@ function upcomingRow(b){const v=vehicles.find(x=>x.id===b.vehicleId),rowClass=(b
 <td class="date-col"><strong>${escapeHtml(b.date)}</strong><div class="subline">${escapeHtml(b.time)}</div></td>
 <td class="passenger-col"><strong>${escapeHtml(b.passenger)}</strong><div class="subline">${escapeHtml(b.phone)}</div></td>
 <td class="from-col location-col"><strong>${escapeHtml(b.pickup)}</strong>${b.vias?.length?`<div class="subline">${b.vias.length} via point${b.vias.length>1?'s':''}</div>`:''}</td><td class="to-col location-col"><strong>${escapeHtml(b.dropoff)}</strong></td>
-<td class="driver-col"><select class="table-select" onchange="assignDriver('${b.id}',this.value)"><option value="">Not Assigned</option>${drivers.map(d=>`<option value="${d.id}" ${b.driverId===d.id?'selected':''}>${escapeHtml(d.name)}</option>`).join('')}</select>${b.driverId&&driverCode(b.driverId)?`<div class="driver-id-sub">${escapeHtml(driverCode(b.driverId))}</div>`:''}</td>
+<td class="driver-col"><input class="table-driver-search" list="driverSearchList" value="${escapeHtml(b.driverId?driverSearchLabel(drivers.find(d=>d.id===b.driverId)):'' )}" placeholder="Select / search driver" onfocus="this.showPicker?.()" onclick="this.showPicker?.()" onchange="assignDriverSearch('${b.id}',this)">${b.driverId&&driverCode(b.driverId)?`<div class="driver-id-sub">${escapeHtml(driverCode(b.driverId))}</div>`:''}</td>
 <td class="vehicle-col"><div class="vehicle-cell">${v?`${escapeHtml(v.make)}<div class="subline">${escapeHtml(v.reg)} · ${escapeHtml(v.color||'')}</div>`:'Not Assigned'}</div></td>
 <td class="dispatch-col"><select class="table-select status-select" style="${statusStyle(b.dispatch)}" onchange="updateDispatch('${b.id}',this.value)">${dispatchStatuses.map(s=>`<option ${b.dispatch===s?'selected':''}>${s}</option>`).join('')}</select></td>
 <td class="source-col" style="background:${accountColor(b.sourceId)}">${sourceCell(b)}</td>
