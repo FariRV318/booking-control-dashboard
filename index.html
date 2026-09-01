@@ -3,150 +3,204 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control</title>
+  <title>Taxi Booking Control Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="loginView" class="login-shell">
     <div class="login-card">
-      <div class="brand-mark">TC</div>
-      <h1>Taxi Control</h1>
-      <p class="muted">Booking management dashboard</p>
+      <div class="login-logo">🚕</div>
+      <h1>Taxi Booking Control</h1>
+      <p>Professional booking & dispatch dashboard</p>
       <form id="loginForm">
-        <label>Email</label>
-        <input id="email" type="email" placeholder="admin@company.co.uk" required />
-        <label>Password</label>
-        <input id="password" type="password" placeholder="Enter password" required />
-        <button type="submit" class="btn primary full">Sign In</button>
+        <label>Email<input id="loginEmail" type="email" placeholder="admin@company.co.uk" required></label>
+        <label>Password<input id="loginPassword" type="password" placeholder="Enter password" required></label>
+        <button class="btn btn-primary full" type="submit">Sign In</button>
       </form>
-      <p class="demo-note">Demo login: enter any email and password.</p>
+      <small>Demo mode: enter any email and password.</small>
     </div>
   </div>
 
-  <div id="appView" class="app-shell hidden">
+  <div id="appView" class="app hidden">
     <aside class="sidebar">
-      <div class="brand"><span class="brand-mark small">TC</span><span>Taxi Control</span></div>
-      <nav id="navMenu">
-        <button class="nav-item active" data-section="dashboard">Dashboard</button>
-        <button class="nav-item" data-section="bookings">Bookings</button>
-        <button class="nav-item" data-section="drivers">Drivers</button>
-        <button class="nav-item" data-section="customers">Customers</button>
-        <button class="nav-item" data-section="vehicles">Vehicles</button>
-        <button class="nav-item" data-section="earnings">Earnings</button>
-        <button class="nav-item" data-section="expenses">Expenses</button>
-        <button class="nav-item" data-section="reports">Reports</button>
+      <div class="brand"><span class="brand-icon">🚕</span><div><strong>Taxi Booking</strong><small>Control Dashboard</small></div></div>
+      <nav>
+        <button class="nav-btn active" data-page="dashboard">▦ <span>Dashboard</span></button>
+        <div class="nav-label">BOOKINGS</div>
+        <button class="nav-btn" data-page="bookings">▤ <span>Bookings</span></button>
+        <button class="nav-btn" data-page="bookingForm">＋ <span>Add New Booking</span></button>
+        <button class="nav-btn" data-page="calendar">◫ <span>Calendar View</span></button>
+        <div class="nav-label">DISPATCH</div>
+        <button class="nav-btn" data-page="dashboard">⇄ <span>Upcoming Journeys</span></button>
+        <div class="nav-label">MANAGEMENT</div>
+        <button class="nav-btn" data-page="drivers">♙ <span>Drivers</span></button>
+        <button class="nav-btn" data-page="vehicles">▰ <span>Vehicles</span></button>
+        <button class="nav-btn" data-page="accounts">▥ <span>Companies / Accounts</span></button>
+        <button class="nav-btn" data-page="customers">♧ <span>Customers</span></button>
+        <div class="nav-label">FINANCE</div>
+        <button class="nav-btn" data-page="earnings">£ <span>Earnings</span></button>
+        <button class="nav-btn" data-page="expenses">◇ <span>Expenses</span></button>
+        <div class="nav-label">REPORTS</div>
+        <button class="nav-btn" data-page="reports">▧ <span>Reports</span></button>
+        <div class="nav-label">SETTINGS</div>
+        <button class="nav-btn" data-page="settings">⚙ <span>Settings</span></button>
       </nav>
-      <button id="logoutBtn" class="nav-item logout">Log out</button>
+      <div class="sidebar-user"><div class="avatar">AU</div><div><strong>Admin User</strong><small>Administrator</small></div></div>
     </aside>
 
-    <main class="main">
+    <main class="workspace">
       <header class="topbar">
-        <div>
-          <p class="eyebrow">Operations</p>
-          <h2 id="pageTitle">Dashboard</h2>
-        </div>
-        <div class="top-actions">
-          <input id="globalSearch" class="search" type="search" placeholder="Search bookings..." />
-          <button id="addBookingBtn" class="btn primary">+ Add Booking</button>
-        </div>
+        <div class="mobile-menu">☰</div>
+        <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
+        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><button class="icon-btn">🔔</button><div class="profile-dot">AU</div></div>
       </header>
 
-      <section id="dashboard" class="section active-section">
+      <section id="dashboardPage" class="page active">
         <div class="kpi-grid">
-          <article class="kpi"><span>Total Bookings</span><strong id="kpiBookings">0</strong><small>Today</small></article>
-          <article class="kpi"><span>Completed</span><strong id="kpiCompleted">0</strong><small>Today</small></article>
-          <article class="kpi"><span>Pending</span><strong id="kpiPending">0</strong><small>Needs attention</small></article>
-          <article class="kpi"><span>Revenue</span><strong id="kpiRevenue">£0</strong><small>Today</small></article>
+          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong></div></div>
+          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong></div></div>
+          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>Completed Today</span><strong id="completedToday">0</strong></div></div>
+          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong></div></div>
         </div>
 
-        <div class="dashboard-grid">
-          <article class="panel span-2">
-            <div class="panel-head"><h3>Recent Bookings</h3><button class="link-btn" data-go="bookings">View all</button></div>
-            <div class="table-wrap">
-              <table>
-                <thead><tr><th>ID</th><th>Customer</th><th>Pickup</th><th>Drop-off</th><th>Driver</th><th>Status</th><th>Fare</th></tr></thead>
-                <tbody id="recentBookingsBody"></tbody>
-              </table>
-            </div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head"><h3>Quick Actions</h3></div>
-            <div class="quick-actions">
-              <button id="quickAdd" class="action-card">+ New Booking</button>
-              <button id="quickCsv" class="action-card">Download CSV</button>
-              <button id="quickPrint" class="action-card">Print / Save PDF</button>
-            </div>
-          </article>
-
-          <article class="panel span-2">
-            <div class="panel-head"><h3>Today's Schedule</h3><span class="pill">Live overview</span></div>
-            <div id="scheduleList" class="schedule-list"></div>
-          </article>
-
-          <article class="panel">
-            <div class="panel-head"><h3>Driver Summary</h3></div>
-            <div id="driverSummary" class="stats-list"></div>
-          </article>
-        </div>
-      </section>
-
-      <section id="bookings" class="section">
-        <div class="section-toolbar">
-          <div class="filters">
-            <select id="statusFilter"><option value="all">All statuses</option><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option></select>
-            <input id="dateFilter" type="date" />
+        <article class="card upcoming-card">
+          <div class="card-head">
+            <div><h2>Upcoming Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
+            <div class="inline-actions"><input id="upcomingDate" type="date"><button class="btn btn-primary" data-open-booking>+ Add New Booking</button></div>
           </div>
-          <div><button id="exportCsvBtn" class="btn secondary">Export CSV</button><button id="printBtn" class="btn secondary">Print / PDF</button></div>
-        </div>
-        <article class="panel">
-          <div class="table-wrap"><table><thead><tr><th>ID</th><th>Date</th><th>Time</th><th>Customer</th><th>Pickup</th><th>Drop-off</th><th>Driver</th><th>Status</th><th>Fare</th><th>Actions</th></tr></thead><tbody id="bookingsBody"></tbody></table></div>
+          <div class="table-wrap">
+            <table class="pro-table">
+              <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Source</th><th>Fare</th><th></th></tr></thead>
+              <tbody id="upcomingBody"></tbody>
+            </table>
+          </div>
         </article>
+
+        <div class="dashboard-lower">
+          <article class="card"><div class="card-head compact"><div><h3>Bookings by Source</h3><p>This month</p></div></div><div id="sourceBars" class="bar-list"></div></article>
+          <article class="card"><div class="card-head compact"><div><h3>Dispatch Status</h3><p>Current workload</p></div></div><div id="dispatchBars" class="bar-list"></div></article>
+          <article class="card"><div class="card-head compact"><div><h3>Revenue Overview</h3><p>This month</p></div></div><div class="revenue-big" id="monthRevenue">£0.00</div><div class="fake-chart"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+          <article class="card"><div class="card-head compact"><div><h3>Expiring Documents</h3><p>Compliance reminders</p></div></div><div id="complianceAlerts" class="alert-list"></div></article>
+        </div>
       </section>
 
-      <section id="drivers" class="section"><article class="panel"><h3>Drivers</h3><div id="driversGrid" class="cards-grid"></div></article></section>
-      <section id="customers" class="section"><article class="panel"><h3>Customers</h3><p class="muted">Customer management will be connected to Firebase in the next version.</p></article></section>
-      <section id="vehicles" class="section"><article class="panel"><h3>Vehicles</h3><p class="muted">Vehicle records will be added after the booking database is connected.</p></article></section>
-      <section id="earnings" class="section"><article class="panel"><h3>Earnings</h3><div id="earningsSummary" class="summary-box"></div></article></section>
-      <section id="expenses" class="section"><article class="panel"><h3>Expenses</h3><p class="muted">Expense tracking is prepared as a separate module for the next version.</p></article></section>
-      <section id="reports" class="section"><article class="panel"><h3>Reports</h3><p class="muted">Use the buttons below to export the current booking data.</p><div class="report-actions"><button id="reportCsv" class="btn primary">Download Monthly CSV</button><button id="reportPrint" class="btn secondary">Print / Save PDF</button></div></article></section>
+      <section id="bookingFormPage" class="page booking-page">
+        <div class="page-toolbar">
+          <button class="text-btn" data-page-link="bookings">← Back to Bookings</button>
+          <div class="page-toolbar-actions"><button id="resetBookingBtn" class="btn btn-light">Reset</button><button id="saveBookingTop" class="btn btn-primary">Save Booking</button></div>
+        </div>
+        <form id="bookingForm">
+          <input type="hidden" id="bookingId">
+          <div class="booking-layout">
+            <div class="booking-left">
+              <article class="form-card">
+                <h3>Passenger & Booking Details</h3>
+                <div class="field-grid two">
+                  <label>Passenger Name *<input id="passengerName" required placeholder="Enter passenger name"></label>
+                  <label>Phone Number *<input id="passengerPhone" required placeholder="+44 ..."></label>
+                  <label>Email<input id="passengerEmail" type="email" placeholder="Optional"></label>
+                  <label>Booking Account (Source) *<select id="bookingSource" required></select></label>
+                  <label>External Reference<input id="externalRef" placeholder="Reference provided by company"></label>
+                  <label>Our Booking Reference<input id="ourRef" readonly></label>
+                </div>
+              </article>
+
+              <article class="form-card">
+                <h3>Journey Information</h3>
+                <div class="field-grid three">
+                  <label>Journey Type *<select id="journeyType"><option>One Way</option><option>Return (Same Day)</option><option>Return (Different Day)</option></select></label>
+                  <label>Date *<input id="journeyDate" type="date" required></label>
+                  <label>Time *<input id="journeyTime" type="time" required></label>
+                </div>
+                <div class="switch-row"><label class="switch-label"><input id="waitReturn" type="checkbox"><span class="switch"></span>Wait & Return</label></div>
+                <div id="returnFields" class="field-grid three hidden">
+                  <label>Waiting Time (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
+                  <label>Return Date<input id="returnDate" type="date"></label>
+                  <label>Return Time<input id="returnTime" type="time"></label>
+                </div>
+              </article>
+
+              <article class="form-card">
+                <h3>Flight Information <span class="optional">Optional</span></h3>
+                <div class="field-grid four">
+                  <label>Flight Number<input id="flightNumber" placeholder="e.g. EK001"></label>
+                  <label>Airline<input id="airline" placeholder="Airline"></label>
+                  <label>Airport / Terminal<input id="terminal" placeholder="e.g. Heathrow T5"></label>
+                  <label>Arrival Time<input id="arrivalTime" type="time"></label>
+                </div>
+              </article>
+
+              <article class="form-card">
+                <div class="form-card-head"><h3>Pickup, Via & Drop-off</h3><button type="button" id="addViaBtn" class="btn btn-light small">+ Add Via Point</button></div>
+                <div class="route-inputs">
+                  <div class="route-row"><span class="marker pickup">A</span><label>Pickup Location *<input id="pickup" class="map-address" required placeholder="Start typing pickup address..."></label></div>
+                  <div id="viaContainer"></div>
+                  <div class="route-row"><span class="marker drop">D</span><label>Drop-off Location *<input id="dropoff" class="map-address" required placeholder="Start typing destination..."></label></div>
+                </div>
+              </article>
+
+              <article class="form-card">
+                <h3>Passengers, Luggage & Requirements</h3>
+                <div class="field-grid three">
+                  <label>Number of Passengers *<select id="passengerCount"></select></label>
+                  <label>Hand Carry (Cabin Bags)<select id="handCarry"></select></label>
+                  <label>Suitcases (Large Bags)<select id="suitcases"></select></label>
+                </div>
+                <div class="requirements">
+                  <label><input type="checkbox" value="Child Car Seat" class="req"> Child Car Seat</label>
+                  <label><input type="checkbox" value="Booster Seat" class="req"> Booster Seat</label>
+                  <label><input type="checkbox" value="Wheelchair" class="req"> Wheelchair</label>
+                  <label><input type="checkbox" value="Medical Assistance" class="req"> Medical Assistance</label>
+                  <label><input type="checkbox" value="Elderly Assistance" class="req"> Elderly Assistance</label>
+                  <label><input type="checkbox" value="Meet & Greet" class="req"> Meet & Greet</label>
+                  <label><input type="checkbox" value="Pet" class="req"> Pet</label>
+                  <label><input type="checkbox" value="Other" class="req"> Other</label>
+                </div>
+                <label class="standalone-label">Other Requirement<input id="otherRequirement" placeholder="Enter any other requirement"></label>
+              </article>
+
+              <div class="bottom-grid">
+                <article class="form-card">
+                  <h3>Driver & Vehicle <span class="optional">Optional</span></h3>
+                  <div class="field-grid two"><label>Assign Driver<select id="bookingDriver"></select></label><label>Vehicle (Auto)<input id="bookingVehicle" readonly placeholder="Filled when driver selected"></label></div>
+                  <p class="field-help">You can save the booking without assigning a driver. Selecting a driver automatically fills their assigned vehicle.</p>
+                </article>
+                <article class="form-card"><h3>Pricing & Payment</h3><div class="field-grid two"><label>Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Payment Method<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div></article>
+                <article class="form-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes specifically for the driver..."></textarea></article>
+                <article class="form-card"><h3>Office Comments</h3><textarea id="officeComments" maxlength="1000" placeholder="Internal comments about this journey for office staff..."></textarea></article>
+              </div>
+            </div>
+
+            <aside class="booking-right">
+              <article class="map-card sticky-map">
+                <div class="map-summary"><div><span>Total Distance</span><strong id="routeMiles">—</strong><small>miles</small></div><div><span>Estimated Time</span><strong id="routeTime">—</strong><small>driving</small></div><div><span>Via Points</span><strong id="viaCount">0</strong><small>stops</small></div></div>
+                <div id="map" class="map-box"><div class="map-placeholder"><div class="map-road"></div><strong>Route Map</strong><span>Add a Google Maps API key in config.js for live map, address suggestions, mileage and journey time.</span></div></div>
+                <div id="routeSummary" class="route-summary"><div><span class="marker pickup">A</span><strong>Pickup</strong><span id="pickupSummary">Not entered</span></div><div><span class="marker drop">D</span><strong>Drop-off</strong><span id="dropoffSummary">Not entered</span></div></div>
+              </article>
+            </aside>
+          </div>
+          <div class="booking-footer"><button id="deleteBookingBtn" type="button" class="btn btn-danger hidden">Delete Booking</button><div class="spacer"></div><button type="button" class="btn btn-light" data-page-link="bookings">Cancel</button><button type="submit" class="btn btn-primary">Save Booking</button></div>
+        </form>
+      </section>
+
+      <section id="bookingsPage" class="page"><div class="section-head"><div><h2>All Bookings</h2><p>Search, review and modify every booking.</p></div><button class="btn btn-primary" data-open-booking>+ Add New Booking</button></div><article class="card"><div class="table-wrap"><table class="pro-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver / Vehicle</th><th>Dispatch</th><th>Fare</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article></section>
+
+      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers</h2><p>Driver records, assigned vehicles and compliance dates.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver</button></div><div id="driversGrid" class="management-grid"></div></section>
+      <section id="vehiclesPage" class="page"><div class="section-head"><div><h2>Vehicles</h2><p>Fleet details and MOT / insurance reminders.</p></div><button id="addVehicleBtn" class="btn btn-primary">+ Add Vehicle</button></div><div id="vehiclesGrid" class="management-grid"></div></section>
+      <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Track where bookings come from and revenue by account.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
+      <section id="customersPage" class="page"><article class="card empty-card"><h2>Customers</h2><p>Customer records will be populated automatically from bookings.</p></article></section>
+      <section id="calendarPage" class="page"><article class="card empty-card"><h2>Calendar View</h2><p>Calendar-style booking view is reserved for the next development step.</p></article></section>
+      <section id="earningsPage" class="page"><article class="card"><div class="section-head inside"><div><h2>Earnings</h2><p>Completed journey revenue.</p></div><strong id="earningsTotal" class="big-number">£0.00</strong></div></article></section>
+      <section id="expensesPage" class="page"><article class="card empty-card"><h2>Expenses</h2><p>Expense management will be connected with the online database.</p></article></section>
+      <section id="reportsPage" class="page"><div class="section-head"><div><h2>Reports & Export</h2><p>Download booking and source reports.</p></div></div><article class="card report-panel"><button id="downloadCsv" class="btn btn-primary">Download Bookings CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></article></section>
+      <section id="settingsPage" class="page"><article class="card empty-card"><h2>Settings</h2><p>Firebase, Google Maps and company branding will be configured here later.</p></article></section>
     </main>
   </div>
 
-  <div id="bookingModal" class="modal hidden">
-    <div class="modal-card">
-      <div class="modal-head"><h3 id="modalTitle">Add Booking</h3><button id="closeModal" class="icon-btn">×</button></div>
-      <form id="bookingForm" class="form-grid">
-        <input type="hidden" id="bookingId" />
-        <label>Date<input id="bookingDate" type="date" required></label>
-        <label>Time<input id="bookingTime" type="time" required></label>
-        <label>Customer<input id="customer" required placeholder="Customer name"></label>
-        <label>Phone<input id="phone" placeholder="Phone number"></label>
-        <label class="full-row">Pickup
-          <div class="address-field"><span class="address-icon">A</span><input id="pickup" class="map-address" required placeholder="Start typing pickup address..." autocomplete="off"></div>
-        </label>
-        <div class="full-row via-section">
-          <div class="via-head"><div><strong>Via / Additional Stops</strong><span class="muted via-help">Add one or more stops between pickup and drop-off.</span></div><button type="button" id="addViaBtn" class="btn secondary small-btn">+ Add Via</button></div>
-          <div id="viaStops" class="via-stops"></div>
-        </div>
-        <label class="full-row">Drop-off
-          <div class="address-field"><span class="address-icon end">B</span><input id="dropoff" class="map-address" required placeholder="Start typing destination..." autocomplete="off"></div>
-        </label>
-        <label>Journey Type<select id="journeyType"><option value="One Way">One Way</option><option value="Wait & Return">Wait & Return</option><option value="Return Later">Return Later</option></select></label>
-        <label id="waitMinutesWrap" class="conditional-field hidden">Waiting Time (minutes)<input id="waitMinutes" type="number" min="0" step="5" value="0"></label>
-        <label id="returnDateWrap" class="conditional-field hidden">Return Date<input id="returnDate" type="date"></label>
-        <label id="returnTimeWrap" class="conditional-field hidden">Return Time<input id="returnTime" type="time"></label>
-        <label>Driver<input id="driver" placeholder="Driver name"></label>
-        <label>Status<select id="status"><option>Pending</option><option>Confirmed</option><option>Completed</option><option>Cancelled</option></select></label>
-        <label>Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label>
-        <label>Payment<select id="payment"><option>Cash</option><option>Card</option><option>Account</option></select></label>
-        <div class="full-row modal-actions"><button type="button" id="cancelModal" class="btn secondary">Cancel</button><button type="submit" class="btn primary">Save Booking</button></div>
-      </form>
-    </div>
-  </div>
+  <div id="simpleModal" class="modal hidden"><div class="modal-dialog"><div class="modal-head"><h3 id="simpleModalTitle">Add</h3><button id="simpleModalClose" class="close-btn">×</button></div><form id="simpleModalForm" class="modal-form"></form></div></div>
 
   <script src="config.js"></script>
   <script src="app.js"></script>

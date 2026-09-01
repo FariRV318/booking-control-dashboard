@@ -1,20 +1,34 @@
-TAXI BOOKING CONTROL DASHBOARD V1.1
+TAXI BOOKING CONTROL DASHBOARD — V2
 
-Open index.html in a browser. Demo login accepts any email/password.
+WHAT CHANGED
+- Clean main Dashboard. Add New Booking is NOT embedded in the Dashboard.
+- Clicking Add New Booking opens a full dedicated booking page.
+- Upcoming Journeys table on Dashboard.
+- Driver assignment is optional when creating a booking.
+- On Dashboard, choose a Driver from a dropdown; their assigned Vehicle fills automatically.
+- Dispatch status is controlled separately and manually:
+  Assigned / Dispatched / On the Way / POB / Completed / Cancelled.
+- Booking Account (Source) + separate External Reference.
+- Passenger count, hand carry and suitcase counts.
+- Flight number, airline, terminal and arrival time.
+- Multiple Via points.
+- Wait & Return / return date & time.
+- Special requirements: car seat, booster, wheelchair, medical assistance, etc.
+- Driver Notes + Office Comments only (Passenger Notes removed).
+- Drivers / Vehicles / Companies sections with add buttons.
+- Driver licence, MOT and insurance expiry reminders (manual dates for now).
+- CSV export and Print / Save PDF.
+- Browser localStorage persistence for prototype testing.
 
-NEW BOOKING FEATURES
-- Pickup and Drop-off fields are ready for Google Places address autocomplete.
-- Unlimited Via / additional stops.
-- Journey types: One Way, Wait & Return, Return Later.
-- Wait duration and return date/time are saved with the booking.
-- CSV export now includes Via, journey type, wait and return details.
-
-GOOGLE ADDRESS AUTOCOMPLETE SETUP
-1. Open config.js.
-2. Paste your Google Maps JavaScript API key into googleMapsApiKey.
-3. In Google Cloud, enable Maps JavaScript API and Places API for the project.
-4. Restrict the key to your website/domain before production use.
-5. Google Maps/Places may require a billing account and usage above free allowances can cost money.
+GOOGLE MAPS
+Open config.js and add the company's Google Maps JavaScript API key.
+Enable Maps JavaScript API and Places API in Google Cloud.
+When configured, the booking page provides:
+- UK address autocomplete
+- live route map
+- via stops
+- mileage calculation
+- estimated driving time
 
 IMPORTANT
-This test version stores booking data in browser localStorage. Firebase login/database comes in a later version, so data is not yet shared between computers.
+This V2 is still a local prototype. Before real company use, connect Firebase Authentication + Firestore and proper user roles/backups.

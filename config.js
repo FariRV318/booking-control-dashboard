@@ -1,5 +1,5 @@
-// Add your Google Maps JavaScript API key here when ready.
-// Enable: Maps JavaScript API + Places API in Google Cloud.
 window.TAXI_CONFIG = {
-  googleMapsApiKey: ''
+  // Add the company's Google Maps JavaScript API key here later.
+  // Enable Maps JavaScript API + Places API. Route calculation uses DirectionsService.
+  googleMapsApiKey: ""
 };
