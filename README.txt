@@ -33,7 +33,7 @@ V3.3.9 presentation fixes:
 - Resolved complaint rows/reports use light green and show Resolved.
 
 
-V3.4.0 additions:
+V3.4.1 additions:
 - Separate Driver Penalty and Company Penalty / Chargeback fields.
 - Reports include both penalty types.
 - Net Margin = Total Fare - Driver Fare + Driver Penalties - Company Penalties / Chargebacks.

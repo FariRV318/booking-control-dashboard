@@ -122,3 +122,27 @@
 #reportDriverPenalties{color:#168456}#reportCompanyPenalties{color:#b22f3c}
 @media(max-width:1400px){.report-kpis{grid-template-columns:repeat(3,1fr)}.penalty-grid-four{grid-template-columns:1fr 1fr}}
 @media(max-width:900px){.report-kpis{grid-template-columns:1fr 1fr}.penalty-grid-four{grid-template-columns:1fr}}
+
+/* ===== V3.4.1 UI breathing room, readable tables & searchable drivers ===== */
+.luxury-car-logo{width:48px;min-width:48px;height:28px;overflow:visible}
+.luxury-car-logo img{display:block;width:48px;height:22px;object-fit:contain;object-position:center;filter:none}
+.brand{padding-left:7px;padding-right:7px}.brand>div{min-width:0}.brand>div strong{font-size:12.5px;white-space:nowrap}.brand>div small{color:#b8c8dc}
+.booking-page{padding:9px 14px 12px}.booking-toolbar{height:34px}.booking-one-screen{grid-template-columns:1.05fr .95fr;gap:10px}
+.compact-map{height:205px}.map-summary>div{padding:7px 10px}.map-summary strong{font-size:13px}.map-placeholder{min-height:205px}
+.right-form-grid{grid-template-columns:minmax(275px,.82fr) minmax(0,2.18fr);gap:10px;align-items:stretch}
+.right-form-grid>.form-card{min-width:0}.dense-card{padding:11px 12px}.dense-card h3{font-size:11px;margin-bottom:9px}
+.right-form-grid .compact-fields label,.right-form-grid .penalty-grid label{font-size:8.5px}.right-form-grid input,.right-form-grid select{height:32px;padding:7px 9px}
+.penalty-grid-four{grid-template-columns:115px minmax(150px,1fr) 165px minmax(155px,1fr);gap:7px}
+.note-card textarea{height:72px;min-height:72px;padding:9px;line-height:1.4}.margin-line{font-size:8.5px;margin-top:8px;padding-top:8px}
+#bookingDriver{background:#fff}
+/* Main dashboard: give comments and payment controls room, trim fare width. */
+.dashboard-journey-table{table-layout:fixed;min-width:0!important;width:100%}
+.dashboard-journey-table th,.dashboard-journey-table td{padding-left:6px;padding-right:6px;overflow:hidden}
+.dashboard-journey-table th:nth-child(1){width:6.4%}.dashboard-journey-table th:nth-child(2){width:7.3%}.dashboard-journey-table th:nth-child(3){width:8.5%}.dashboard-journey-table th:nth-child(4),.dashboard-journey-table th:nth-child(5){width:9%}.dashboard-journey-table th:nth-child(6){width:8%}.dashboard-journey-table th:nth-child(7){width:7.2%}.dashboard-journey-table th:nth-child(8){width:8.3%}.dashboard-journey-table th:nth-child(9){width:6.5%}.dashboard-journey-table th:nth-child(10){width:6.4%}.dashboard-journey-table th:nth-child(11){width:10.4%}.dashboard-journey-table th:nth-child(12){width:6.5%}.dashboard-journey-table th:nth-child(13){width:7.5%}.dashboard-journey-table th:nth-child(14){width:4%}
+.dashboard-journey-table .inline-comment{width:100%;min-width:0;height:31px;font-size:8px}.dashboard-journey-table .fare-stack{white-space:normal}.dashboard-journey-table .fare-stack strong,.dashboard-journey-table .fare-stack span{display:block;font-size:7.6px}.dashboard-journey-table .flag-toggle{width:100%;min-width:0;padding:5px 4px;gap:4px;justify-content:center;white-space:nowrap}.dashboard-journey-table .driver-paid-col{min-width:0!important}.dashboard-journey-table .driver-paid-col span{font-size:7.6px;overflow:visible}.dashboard-journey-table .complaint-col span{font-size:7.5px}
+/* Statement filter controls should sit comfortably inside their card. */
+.statement-filter-card{padding:14px 15px}.statement-filters{grid-template-columns:minmax(230px,1.25fr) minmax(145px,.75fr) minmax(145px,.75fr) minmax(155px,.8fr) auto;gap:11px;align-items:end}.statement-filters label{display:grid;gap:6px;min-width:0}.statement-filters label>span{font-size:9px;font-weight:700;color:#52637a}.statement-filters input,.statement-filters select{height:36px;padding:8px 10px}.statement-filters .btn{height:36px;white-space:nowrap}
+/* Keep controls away from card/page edges throughout the app. */
+.card .report-filters{padding-left:14px;padding-right:14px}.section-head,.card-head{min-width:0}.table-scroll{scrollbar-gutter:stable}.pro-table th:last-child,.pro-table td:last-child{padding-right:12px}.pro-table th:first-child,.pro-table td:first-child{padding-left:12px}
+@media(max-width:1450px){.right-form-grid{grid-template-columns:minmax(245px,.85fr) minmax(0,2.15fr)}.penalty-grid-four{grid-template-columns:1fr 1.25fr}.compact-map{height:185px}.map-placeholder{min-height:185px}.dashboard-journey-table th,.dashboard-journey-table td{padding-left:4px;padding-right:4px}.dashboard-journey-table .flag-toggle span{font-size:7px}}
+@media(max-width:1180px){.right-form-grid{grid-template-columns:1fr}.booking-page{height:auto;overflow:auto}.statement-filters{grid-template-columns:1fr 1fr}.dashboard-journey-table{min-width:1180px!important}.table-scroll{overflow-x:auto}}
