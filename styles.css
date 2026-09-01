@@ -34,3 +34,12 @@
 
 @media(max-width:1400px){.report-filters{grid-template-columns:repeat(3,1fr)}.dispatch-board{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:900px){.dashboard-search-label{width:100%}.dashboard-search-label input{width:100%!important}.finance-kpis,.compact-finance{grid-template-columns:1fr 1fr}.dispatch-board{grid-template-columns:1fr}.report-filters{grid-template-columns:1fr}.calendar-grid{min-width:760px}.account-details{grid-template-columns:1fr}.page-search{width:100%}}
+
+
+/* ===== V3.3 complaint + driver payment tracking ===== */
+.upcoming-card .pro-table{min-width:1410px}.all-bookings-scroll .pro-table{min-width:1360px}
+.pro-table td.complaint-col{background:#fff2f2;text-align:center;min-width:82px}.pro-table td.driver-paid-col{background:#fff6df;text-align:center;min-width:92px}.pro-table td.driver-paid-col.is-paid{background:#e4f7e9}
+.flag-toggle{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-width:66px;padding:5px 7px;border:1px solid rgba(32,54,83,.10);border-radius:7px;background:rgba(255,255,255,.78);font-size:8px;font-weight:800;cursor:pointer;white-space:nowrap}.flag-toggle input{width:12px;height:12px;margin:0;accent-color:#2b74ef}.paid-toggle input{accent-color:#24a35a}.complaint-toggle input{accent-color:#b21f2d}
+.complaint-row td{background:#781c27!important;color:#fff!important;border-color:#8c3440!important}.complaint-row td .subline,.complaint-row td span,.complaint-row td strong,.complaint-row td .ref-link{color:#fff!important}.complaint-row td select,.complaint-row td input.inline-comment,.complaint-row td .flag-toggle,.complaint-row td .btn{background:#fff!important;color:#3d1f25!important;border-color:#f0c9cf!important}.complaint-row td .source-pill{background:#fff!important;color:#6b1d29!important}.complaint-row td.driver-paid-col.is-paid{box-shadow:inset 0 0 0 2px #6bd88e}
+.dispatch-card.dispatch-complaint{background:#781c27;color:#fff;border-color:#781c27}.dispatch-card.dispatch-complaint b,.dispatch-card.dispatch-complaint p,.dispatch-card.dispatch-complaint span,.dispatch-card.dispatch-complaint strong{color:#fff!important}
+.report-complaint{background:#781c27;color:#fff}.report-paid{background:#e3f6e8;color:#16703e}.report-pending{background:#fff1cf;color:#9b6600}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3.2</title>
+  <title>Taxi Booking Control Dashboard V3.3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -82,7 +82,7 @@
             </div>
             <div class="table-scroll fixed-rows">
               <table class="pro-table compact-table">
-                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Staff Comment</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Driver Paid</th><th>Actions</th></tr></thead>
                 <tbody id="upcomingBody"></tbody>
               </table>
             </div>
@@ -210,13 +210,13 @@
             <label><span>From Date</span><input id="allFrom" type="date"></label>
             <label><span>To Date</span><input id="allTo" type="date"></label>
             <input id="bookingSearch" type="search" placeholder="Search ref, passenger, phone, route, source...">
-            <select id="allStatus"><option value="">All Statuses</option><option value="__active">Upcoming / Active</option><option value="__process">In Process</option><option>Assigned</option><option>Dispatched</option><option>On the Way</option><option>POB</option><option>Completed</option><option>Cancelled</option></select>
+            <select id="allStatus"><option value="">All Statuses</option><option value="__active">Upcoming / Active</option><option value="__process">In Process</option><option>Assigned</option><option>Dispatched</option><option>On the Way</option><option>POB</option><option>Completed</option><option>Cancelled</option><option>Driver No Show</option><option>Pax No Show</option></select>
             <button id="applyAllRange" class="btn btn-light">Filter</button>
             <button id="clearAllFilters" class="btn btn-light">Clear</button>
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
           </div>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Driver Paid</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
       <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
@@ -259,7 +259,7 @@
         <div class="section-head"><div><h2>Reports</h2><p>Generate weekly, monthly or custom reports by company/account.</p></div></div>
         <article class="card report-filter-card"><div class="report-filters"><label><span>From Date</span><input id="reportFrom" type="date"></label><label><span>To Date</span><input id="reportTo" type="date"></label><label class="report-search"><span>Search</span><input id="reportSearch" type="search" placeholder="Passenger, ref, phone, route..."></label><label><span>Company / Account</span><select id="reportCompany"></select></label><label><span>Preset</span><select id="reportPreset"><option value="custom">Custom</option><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option></select></label><button id="generateReport" class="btn btn-primary">Generate Report</button></div></article>
         <div class="finance-kpis report-kpis"><div class="finance-kpi"><span>Bookings</span><strong id="reportJobs">0</strong></div><div class="finance-kpi"><span>Total Fare</span><strong id="reportRevenue">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="reportDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Margin</span><strong id="reportMargin">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download Report CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Margin</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
+        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download Report CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>Route</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
       </section>
 
       <section id="settingsPage" class="page"><article class="card empty-card"><h2>Settings</h2><p>Firebase, Google Maps and company branding will be configured here later.</p></article></section>
