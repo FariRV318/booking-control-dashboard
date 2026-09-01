@@ -43,3 +43,34 @@
 .complaint-row td{background:#781c27!important;color:#fff!important;border-color:#8c3440!important}.complaint-row td .subline,.complaint-row td span,.complaint-row td strong,.complaint-row td .ref-link{color:#fff!important}.complaint-row td select,.complaint-row td input.inline-comment,.complaint-row td .flag-toggle,.complaint-row td .btn{background:#fff!important;color:#3d1f25!important;border-color:#f0c9cf!important}.complaint-row td .source-pill{background:#fff!important;color:#6b1d29!important}.complaint-row td.driver-paid-col.is-paid{box-shadow:inset 0 0 0 2px #6bd88e}
 .dispatch-card.dispatch-complaint{background:#781c27;color:#fff;border-color:#781c27}.dispatch-card.dispatch-complaint b,.dispatch-card.dispatch-complaint p,.dispatch-card.dispatch-complaint span,.dispatch-card.dispatch-complaint strong{color:#fff!important}
 .report-complaint{background:#781c27;color:#fff}.report-paid{background:#e3f6e8;color:#16703e}.report-pending{background:#fff1cf;color:#9b6600}
+
+/* ===== V3.3.4 dashboard table fit + report polish ===== */
+@media (min-width:1401px){
+  .dashboard-main-grid{grid-template-columns:minmax(0,1fr) 270px}
+  .upcoming-card .table-scroll{overflow-x:hidden}
+  .upcoming-card .pro-table{min-width:0!important;width:100%;table-layout:fixed}
+  .upcoming-card .pro-table th,.upcoming-card .pro-table td{padding:7px 5px;font-size:8px;overflow:hidden}
+  .upcoming-card .pro-table th:nth-child(1){width:7%}.upcoming-card .pro-table th:nth-child(2){width:7%}.upcoming-card .pro-table th:nth-child(3){width:9%}.upcoming-card .pro-table th:nth-child(4){width:13%}.upcoming-card .pro-table th:nth-child(5){width:9%}.upcoming-card .pro-table th:nth-child(6){width:8%}.upcoming-card .pro-table th:nth-child(7){width:9%}.upcoming-card .pro-table th:nth-child(8){width:7%}.upcoming-card .pro-table th:nth-child(9){width:7%}.upcoming-card .pro-table th:nth-child(10){width:11%}.upcoming-card .pro-table th:nth-child(11){width:5%}.upcoming-card .pro-table th:nth-child(12){width:5%}.upcoming-card .pro-table th:nth-child(13){width:3%}
+  .upcoming-card .table-select,.upcoming-card .inline-comment{min-width:0;width:100%;font-size:7.6px;padding:5px 4px}
+  .upcoming-card .flag-toggle{min-width:0;width:100%;padding:4px 2px;font-size:7.2px;gap:3px}
+  .upcoming-card .flag-toggle input{width:10px;height:10px;flex:0 0 auto}
+  .upcoming-card .source-pill,.upcoming-card .status-select{font-size:7.2px}
+  .upcoming-card .fare-stack strong,.upcoming-card .fare-stack span{font-size:7.4px}
+  .upcoming-card .subline{font-size:7.2px;line-height:1.25}
+  .upcoming-card td.route-col strong,.upcoming-card td.route-col .subline{display:block;white-space:normal;overflow-wrap:anywhere}
+  .upcoming-card .btn.tiny{padding:4px 3px;font-size:7px}
+  .all-bookings-scroll{overflow-x:hidden}
+  .all-bookings-scroll .pro-table{min-width:0!important;width:100%;table-layout:fixed}
+  .all-bookings-scroll .pro-table th,.all-bookings-scroll .pro-table td{padding:7px 5px;font-size:8px;overflow:hidden}
+  .all-bookings-scroll .table-select,.all-bookings-scroll .inline-comment{min-width:0;width:100%;font-size:7.5px}
+  .all-bookings-scroll .flag-toggle{min-width:0;width:100%;padding:4px 2px;font-size:7.1px}
+}
+.complaint-row td.route-col,.complaint-row td.route-col strong,.complaint-row td.route-col .subline{color:#fff!important;text-shadow:0 1px 0 rgba(0,0,0,.12)}
+.complaint-row td.complaint-col .flag-toggle,.complaint-row td.driver-paid-col .flag-toggle{background:#fff!important;color:#631923!important;font-weight:900!important}
+.complaint-row td.complaint-col .flag-toggle span,.complaint-row td.driver-paid-col .flag-toggle span{color:#631923!important}
+.complaint-row td.driver-paid-col.is-paid .flag-toggle{background:#e5f8ea!important;color:#17683c!important}
+.complaint-row td.driver-paid-col.is-paid .flag-toggle span{color:#17683c!important}
+.report-actions{gap:7px;flex-wrap:wrap}
+
+/* Dedicated print report classes used in popup print window */
+@page{size:A4 landscape;margin:9mm}
