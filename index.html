@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard</title>
+  <title>Taxi Booking Control Dashboard V3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -30,11 +30,13 @@
       <nav>
         <button class="nav-btn active" data-page="dashboard">▦ <span>Dashboard</span></button>
         <div class="nav-label">BOOKINGS</div>
-        <button class="nav-btn" data-page="bookings">▤ <span>Bookings</span></button>
+        <button class="nav-btn" data-page="bookings">▤ <span>All Bookings</span></button>
         <button class="nav-btn" data-page="bookingForm">＋ <span>Add New Booking</span></button>
         <button class="nav-btn" data-page="calendar">◫ <span>Calendar View</span></button>
+        <button class="nav-btn" data-page="quotes">◉ <span>Booking Quotes</span></button>
         <div class="nav-label">DISPATCH</div>
         <button class="nav-btn" data-page="dashboard">⇄ <span>Upcoming Journeys</span></button>
+        <button class="nav-btn" data-page="dispatch">◉ <span>Dispatch Board</span></button>
         <div class="nav-label">MANAGEMENT</div>
         <button class="nav-btn" data-page="drivers">♙ <span>Drivers</span></button>
         <button class="nav-btn" data-page="vehicles">▰ <span>Vehicles</span></button>
@@ -55,144 +57,167 @@
       <header class="topbar">
         <div class="mobile-menu">☰</div>
         <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
-        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><button class="icon-btn">🔔</button><div class="profile-dot">AU</div></div>
+        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><button class="icon-btn">🔔<span class="notify-dot">6</span></button><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong>Admin User</strong><small>Administrator</small></div></div>
       </header>
 
-      <section id="dashboardPage" class="page active">
-        <div class="kpi-grid">
-          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong></div></div>
-          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong></div></div>
-          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>Completed Today</span><strong id="completedToday">0</strong></div></div>
-          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong></div></div>
+      <section id="dashboardPage" class="page active dashboard-page">
+        <div class="kpi-grid five">
+          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong><small>View all</small></div></div>
+          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong><small>View all</small></div></div>
+          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>In Process</span><strong id="inProcessCount">0</strong><small>View all</small></div></div>
+          <div class="kpi-card"><div class="kpi-icon amber">⚑</div><div><span>Completed Today</span><strong id="completedToday">0</strong><small>View all</small></div></div>
+          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong><small>View all</small></div></div>
         </div>
 
-        <article class="card upcoming-card">
-          <div class="card-head">
-            <div><h2>Upcoming Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
-            <div class="inline-actions"><input id="upcomingDate" type="date"><button class="btn btn-primary" data-open-booking>+ Add New Booking</button></div>
-          </div>
-          <div class="table-wrap">
-            <table class="pro-table">
-              <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Source</th><th>Fare</th><th></th></tr></thead>
-              <tbody id="upcomingBody"></tbody>
-            </table>
-          </div>
-        </article>
+        <div class="dashboard-main-grid">
+          <article class="card upcoming-card">
+            <div class="card-head compact-head">
+              <div><h2>Upcoming / In Process Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
+              <div class="range-filter">
+                <label><span>From Date</span><input id="upcomingFrom" type="date"></label>
+                <label><span>To Date</span><input id="upcomingTo" type="date"></label>
+                <button id="applyUpcomingRange" class="btn btn-light">⌕ Filter</button>
+              </div>
+            </div>
+            <div class="table-scroll fixed-rows">
+              <table class="pro-table compact-table">
+                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fare</th><th>Actions</th></tr></thead>
+                <tbody id="upcomingBody"></tbody>
+              </table>
+            </div>
+            <div class="table-footer"><button class="text-btn" data-page-link="bookings">View All Upcoming Journeys</button></div>
+          </article>
 
-        <div class="dashboard-lower">
-          <article class="card"><div class="card-head compact"><div><h3>Bookings by Source</h3><p>This month</p></div></div><div id="sourceBars" class="bar-list"></div></article>
-          <article class="card"><div class="card-head compact"><div><h3>Dispatch Status</h3><p>Current workload</p></div></div><div id="dispatchBars" class="bar-list"></div></article>
-          <article class="card"><div class="card-head compact"><div><h3>Revenue Overview</h3><p>This month</p></div></div><div class="revenue-big" id="monthRevenue">£0.00</div><div class="fake-chart"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
-          <article class="card"><div class="card-head compact"><div><h3>Expiring Documents</h3><p>Compliance reminders</p></div></div><div id="complianceAlerts" class="alert-list"></div></article>
+          <div class="right-stack">
+            <article class="card mini-card"><div class="card-head no-border"><h3>Bookings by Source <span>(This Month)</span></h3></div><div id="sourceDonutWrap" class="source-visual"><div class="donut"><div id="sourceTotal">0</div></div><div id="sourceLegend" class="legend-list"></div></div></article>
+            <article class="card mini-card"><div class="card-head no-border"><h3>Dispatch Status <span>(Current)</span></h3></div><div id="dispatchBars" class="bar-list"></div></article>
+            <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(This Month)</span></h3></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Total Revenue</small><div class="sparkline"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></article>
+          </div>
+        </div>
+
+        <div class="dashboard-bottom-grid">
+          <article class="card"><div class="card-head no-border"><h3>Expiring Documents</h3></div><div id="complianceAlerts" class="alert-list"></div></article>
+          <article class="card"><div class="card-head no-border"><h3>Notifications</h3></div><div id="notificationsList" class="notification-list"></div></article>
+          <article class="card"><div class="card-head no-border"><h3>Quick Reports</h3></div><div class="quick-report-grid"><button>▣ Bookings Report</button><button>▣ Earnings Report</button><button>▥ Driver Performance</button><button>▤ Vehicle Utilisation</button></div></article>
         </div>
       </section>
 
       <section id="bookingFormPage" class="page booking-page">
-        <div class="page-toolbar">
-          <button class="text-btn" data-page-link="bookings">← Back to Bookings</button>
-          <div class="page-toolbar-actions"><button id="resetBookingBtn" class="btn btn-light">Reset</button><button id="saveBookingTop" class="btn btn-primary">Save Booking</button></div>
-        </div>
-        <form id="bookingForm">
+        <form id="bookingForm" class="booking-screen-form">
           <input type="hidden" id="bookingId">
-          <div class="booking-layout">
-            <div class="booking-left">
-              <article class="form-card">
-                <h3>Passenger & Booking Details</h3>
-                <div class="field-grid two">
-                  <label>Passenger Name *<input id="passengerName" required placeholder="Enter passenger name"></label>
+          <div class="booking-toolbar">
+            <button type="button" class="text-btn" data-page-link="bookings">← Back to Bookings</button>
+            <div><button id="resetBookingBtn" type="button" class="btn btn-light">Reset</button><button id="saveBookingTop" type="button" class="btn btn-primary">Save Booking</button></div>
+          </div>
+
+          <div class="booking-one-screen">
+            <div class="booking-column left-col">
+              <article class="form-card dense-card">
+                <h3>Passenger & Booking</h3>
+                <div class="field-grid three compact-fields">
+                  <label>Passenger Name *<input id="passengerName" required placeholder="Passenger name"></label>
                   <label>Phone Number *<input id="passengerPhone" required placeholder="+44 ..."></label>
-                  <label>Email<input id="passengerEmail" type="email" placeholder="Optional"></label>
                   <label>Booking Account (Source) *<select id="bookingSource" required></select></label>
-                  <label>External Reference<input id="externalRef" placeholder="Reference provided by company"></label>
+                  <label>Email<input id="passengerEmail" type="email" placeholder="Optional"></label>
+                  <label>External Reference<input id="externalRef" placeholder="Company ref"></label>
                   <label>Our Booking Reference<input id="ourRef" readonly></label>
                 </div>
               </article>
 
-              <article class="form-card">
-                <h3>Journey Information</h3>
-                <div class="field-grid three">
-                  <label>Journey Type *<select id="journeyType"><option>One Way</option><option>Return (Same Day)</option><option>Return (Different Day)</option></select></label>
+              <article class="form-card dense-card">
+                <h3>Journey & Flight</h3>
+                <div class="field-grid four compact-fields">
+                  <label>Journey Type<select id="journeyType"><option>One Way</option><option>Return (Same Day)</option><option>Return (Different Day)</option></select></label>
                   <label>Date *<input id="journeyDate" type="date" required></label>
                   <label>Time *<input id="journeyTime" type="time" required></label>
+                  <label>Flight Number<input id="flightNumber" placeholder="Optional"></label>
+                  <label>Airline<input id="airline" placeholder="Airline"></label>
+                  <label>Airport / Terminal<input id="terminal" placeholder="Terminal"></label>
+                  <label>Arrival Time<input id="arrivalTime" type="time"></label>
+                  <label class="toggle-field">Wait & Return <span><input id="waitReturn" type="checkbox"> Enable</span></label>
                 </div>
-                <div class="switch-row"><label class="switch-label"><input id="waitReturn" type="checkbox"><span class="switch"></span>Wait & Return</label></div>
-                <div id="returnFields" class="field-grid three hidden">
-                  <label>Waiting Time (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
+                <div id="returnFields" class="field-grid three compact-fields return-row hidden">
+                  <label>Waiting (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
                   <label>Return Date<input id="returnDate" type="date"></label>
                   <label>Return Time<input id="returnTime" type="time"></label>
                 </div>
               </article>
 
-              <article class="form-card">
-                <h3>Flight Information <span class="optional">Optional</span></h3>
-                <div class="field-grid four">
-                  <label>Flight Number<input id="flightNumber" placeholder="e.g. EK001"></label>
-                  <label>Airline<input id="airline" placeholder="Airline"></label>
-                  <label>Airport / Terminal<input id="terminal" placeholder="e.g. Heathrow T5"></label>
-                  <label>Arrival Time<input id="arrivalTime" type="time"></label>
-                </div>
-              </article>
-
-              <article class="form-card">
-                <div class="form-card-head"><h3>Pickup, Via & Drop-off</h3><button type="button" id="addViaBtn" class="btn btn-light small">+ Add Via Point</button></div>
-                <div class="route-inputs">
-                  <div class="route-row"><span class="marker pickup">A</span><label>Pickup Location *<input id="pickup" class="map-address" required placeholder="Start typing pickup address..."></label></div>
+              <article class="form-card dense-card route-card">
+                <div class="form-card-head"><h3>Pickup, Via & Drop-off</h3><button type="button" id="addViaBtn" class="btn btn-light tiny">+ Via</button></div>
+                <div class="route-inputs compact-route">
+                  <div class="route-row"><span class="marker pickup">A</span><label>Pickup *<input id="pickup" class="map-address" required placeholder="Start typing pickup..."></label></div>
                   <div id="viaContainer"></div>
-                  <div class="route-row"><span class="marker drop">D</span><label>Drop-off Location *<input id="dropoff" class="map-address" required placeholder="Start typing destination..."></label></div>
+                  <div class="route-row"><span class="marker drop">D</span><label>Drop-off *<input id="dropoff" class="map-address" required placeholder="Start typing destination..."></label></div>
                 </div>
               </article>
 
-              <article class="form-card">
+              <article class="form-card dense-card">
                 <h3>Passengers, Luggage & Requirements</h3>
-                <div class="field-grid three">
-                  <label>Number of Passengers *<select id="passengerCount"></select></label>
-                  <label>Hand Carry (Cabin Bags)<select id="handCarry"></select></label>
-                  <label>Suitcases (Large Bags)<select id="suitcases"></select></label>
+                <div class="field-grid three compact-fields">
+                  <label>Passengers *<select id="passengerCount"></select></label>
+                  <label>Hand Carry<select id="handCarry"></select></label>
+                  <label>Suitcases<select id="suitcases"></select></label>
                 </div>
-                <div class="requirements">
-                  <label><input type="checkbox" value="Child Car Seat" class="req"> Child Car Seat</label>
-                  <label><input type="checkbox" value="Booster Seat" class="req"> Booster Seat</label>
+                <div class="requirements compact-req">
+                  <label><input type="checkbox" value="Child Car Seat" class="req"> Car Seat</label>
+                  <label><input type="checkbox" value="Booster Seat" class="req"> Booster</label>
                   <label><input type="checkbox" value="Wheelchair" class="req"> Wheelchair</label>
-                  <label><input type="checkbox" value="Medical Assistance" class="req"> Medical Assistance</label>
-                  <label><input type="checkbox" value="Elderly Assistance" class="req"> Elderly Assistance</label>
+                  <label><input type="checkbox" value="Medical Assistance" class="req"> Medical</label>
+                  <label><input type="checkbox" value="Elderly Assistance" class="req"> Elderly</label>
                   <label><input type="checkbox" value="Meet & Greet" class="req"> Meet & Greet</label>
                   <label><input type="checkbox" value="Pet" class="req"> Pet</label>
                   <label><input type="checkbox" value="Other" class="req"> Other</label>
                 </div>
-                <label class="standalone-label">Other Requirement<input id="otherRequirement" placeholder="Enter any other requirement"></label>
+                <input id="otherRequirement" class="other-requirement" placeholder="Other requirement (optional)">
               </article>
-
-              <div class="bottom-grid">
-                <article class="form-card">
-                  <h3>Driver & Vehicle <span class="optional">Optional</span></h3>
-                  <div class="field-grid two"><label>Assign Driver<select id="bookingDriver"></select></label><label>Vehicle (Auto)<input id="bookingVehicle" readonly placeholder="Filled when driver selected"></label></div>
-                  <p class="field-help">You can save the booking without assigning a driver. Selecting a driver automatically fills their assigned vehicle.</p>
-                </article>
-                <article class="form-card"><h3>Pricing & Payment</h3><div class="field-grid two"><label>Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Payment Method<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div></article>
-                <article class="form-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes specifically for the driver..."></textarea></article>
-                <article class="form-card"><h3>Office Comments</h3><textarea id="officeComments" maxlength="1000" placeholder="Internal comments about this journey for office staff..."></textarea></article>
-              </div>
             </div>
 
-            <aside class="booking-right">
-              <article class="map-card sticky-map">
-                <div class="map-summary"><div><span>Total Distance</span><strong id="routeMiles">—</strong><small>miles</small></div><div><span>Estimated Time</span><strong id="routeTime">—</strong><small>driving</small></div><div><span>Via Points</span><strong id="viaCount">0</strong><small>stops</small></div></div>
-                <div id="map" class="map-box"><div class="map-placeholder"><div class="map-road"></div><strong>Route Map</strong><span>Add a Google Maps API key in config.js for live map, address suggestions, mileage and journey time.</span></div></div>
-                <div id="routeSummary" class="route-summary"><div><span class="marker pickup">A</span><strong>Pickup</strong><span id="pickupSummary">Not entered</span></div><div><span class="marker drop">D</span><strong>Drop-off</strong><span id="dropoffSummary">Not entered</span></div></div>
+            <div class="booking-column right-col">
+              <article class="map-card compact-map-card">
+                <div class="map-summary"><div><span>Distance</span><strong id="routeMiles">—</strong><small>miles</small></div><div><span>Estimated</span><strong id="routeTime">—</strong><small>driving</small></div><div><span>Via</span><strong id="viaCount">0</strong><small>stops</small></div></div>
+                <div id="map" class="map-box compact-map"><div class="map-placeholder"><div class="map-road"></div><strong>Route Map</strong><span>Google Maps activates when an API key is added in config.js.</span></div></div>
               </article>
-            </aside>
+
+              <div class="right-form-grid">
+                <article class="form-card dense-card"><h3>Driver & Vehicle <span class="optional">Optional</span></h3><div class="field-grid two compact-fields"><label>Assign Driver<select id="bookingDriver"></select></label><label>Vehicle (Auto)<input id="bookingVehicle" readonly placeholder="Auto from driver"></label></div></article>
+                <article class="form-card dense-card"><h3>Pricing & Payment</h3><div class="field-grid two compact-fields"><label>Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div></article>
+                <article class="form-card dense-card note-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes visible to driver..."></textarea></article>
+                <article class="form-card dense-card note-card"><h3>Office Comments</h3><textarea id="officeComments" maxlength="1000" placeholder="Internal journey comments..."></textarea></article>
+              </div>
+
+              <div class="booking-actions">
+                <button id="deleteBookingBtn" type="button" class="btn btn-danger hidden">Delete Booking</button>
+                <div class="spacer"></div>
+                <button type="button" class="btn btn-light" data-page-link="bookings">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Booking</button>
+              </div>
+            </div>
           </div>
-          <div class="booking-footer"><button id="deleteBookingBtn" type="button" class="btn btn-danger hidden">Delete Booking</button><div class="spacer"></div><button type="button" class="btn btn-light" data-page-link="bookings">Cancel</button><button type="submit" class="btn btn-primary">Save Booking</button></div>
         </form>
       </section>
 
-      <section id="bookingsPage" class="page"><div class="section-head"><div><h2>All Bookings</h2><p>Search, review and modify every booking.</p></div><button class="btn btn-primary" data-open-booking>+ Add New Booking</button></div><article class="card"><div class="table-wrap"><table class="pro-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver / Vehicle</th><th>Dispatch</th><th>Fare</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article></section>
+      <section id="bookingsPage" class="page">
+        <div class="section-head bookings-head">
+          <div><h2>All Bookings</h2><p>Search, filter, review and modify every booking.</p></div>
+          <div class="range-filter bookings-range">
+            <label><span>From Date</span><input id="allFrom" type="date"></label>
+            <label><span>To Date</span><input id="allTo" type="date"></label>
+            <input id="bookingSearch" type="search" placeholder="Search ref, passenger, route...">
+            <button id="applyAllRange" class="btn btn-light">Filter</button>
+            <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
+          </div>
+        </div>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fare</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+      </section>
 
       <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers</h2><p>Driver records, assigned vehicles and compliance dates.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver</button></div><div id="driversGrid" class="management-grid"></div></section>
       <section id="vehiclesPage" class="page"><div class="section-head"><div><h2>Vehicles</h2><p>Fleet details and MOT / insurance reminders.</p></div><button id="addVehicleBtn" class="btn btn-primary">+ Add Vehicle</button></div><div id="vehiclesGrid" class="management-grid"></div></section>
       <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Track where bookings come from and revenue by account.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
-      <section id="customersPage" class="page"><article class="card empty-card"><h2>Customers</h2><p>Customer records will be populated automatically from bookings.</p></article></section>
-      <section id="calendarPage" class="page"><article class="card empty-card"><h2>Calendar View</h2><p>Calendar-style booking view is reserved for the next development step.</p></article></section>
+      <section id="customersPage" class="page"><article class="card empty-card"><h2>Customers</h2><p>Customer records are populated from bookings.</p></article></section>
+      <section id="calendarPage" class="page"><article class="card empty-card"><h2>Calendar View</h2><p>Calendar view is reserved for the next development step.</p></article></section>
+      <section id="quotesPage" class="page"><article class="card empty-card"><h2>Booking Quotes</h2><p>Quote management can be connected in the next development step.</p></article></section>
+      <section id="dispatchPage" class="page"><article class="card empty-card"><h2>Dispatch Board</h2><p>Use the Dashboard journey table for live manual dispatch control.</p></article></section>
       <section id="earningsPage" class="page"><article class="card"><div class="section-head inside"><div><h2>Earnings</h2><p>Completed journey revenue.</p></div><strong id="earningsTotal" class="big-number">£0.00</strong></div></article></section>
       <section id="expensesPage" class="page"><article class="card empty-card"><h2>Expenses</h2><p>Expense management will be connected with the online database.</p></article></section>
       <section id="reportsPage" class="page"><div class="section-head"><div><h2>Reports & Export</h2><p>Download booking and source reports.</p></div></div><article class="card report-panel"><button id="downloadCsv" class="btn btn-primary">Download Bookings CSV</button><button id="printReport" class="btn btn-light">Print / Save PDF</button></article></section>
