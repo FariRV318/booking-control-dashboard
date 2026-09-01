@@ -1,7 +1,7 @@
-Taxi Booking Control Dashboard V3.3
+Taxi Booking Control Dashboard V3.3.2
 ===================================
 
-V3.3 major operational update:
+V3.3.2 major operational update:
 - Professional dashboard with From/To date + journey search.
 - Working View All navigation from KPI cards and dashboard panels.
 - Today's Revenue = total fare of today's non-cancelled bookings.
@@ -29,9 +29,14 @@ production database yet.
 Google Maps:
 Add your own restricted Google Maps API key to config.js when ready.
 
-V3.3 additions:
+V3.3.2 additions:
 - Driver No Show and Pax No Show dispatch statuses.
 - Complaint checkbox; complaint rows turn dark red across Dashboard, All Bookings and Reports.
 - Driver Paid checkbox; Paid is green and Pending is amber.
 - Complaint and driver-payment state included in reports and CSV.
 - No-show jobs are treated as closed outcomes and leave the active/upcoming queue.
+
+
+V3.3.2 FIX:
+Professional demo records now seed automatically when browser data is missing or empty.
+No Reset / Load Demo Data button is required, and automatic seeding does not log the user out.

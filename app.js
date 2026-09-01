@@ -65,21 +65,25 @@ const defaultExpenses=[
 {id:'EXP-1004',date:addDays(-3),category:'Office',description:'Dispatch phone / office supplies',sourceId:'ACC-OWN',amount:42.80}
 ];
 
-let accounts=load('tbc_accounts_v3',load('tbc_accounts_v2',defaultAccounts));
-let vehicles=load('tbc_vehicles_v3',load('tbc_vehicles_v2',defaultVehicles));
-let drivers=load('tbc_drivers_v3',load('tbc_drivers_v2',defaultDrivers));
-let bookings=load('tbc_bookings_v3',load('tbc_bookings_v2',defaultBookings));
-let quotes=load('tbc_quotes_v3',defaultQuotes);
-let expenses=load('tbc_expenses_v3',defaultExpenses);
-// Older test versions may have saved empty arrays. Seed useful demo data instead of opening blank.
-if(!Array.isArray(accounts)||accounts.length<3) accounts=defaultAccounts;
-if(!Array.isArray(vehicles)||vehicles.length<3) vehicles=defaultVehicles;
-if(!Array.isArray(drivers)||drivers.length<3) drivers=defaultDrivers;
-if(!Array.isArray(bookings)||bookings.length<8) bookings=defaultBookings;
-if(!Array.isArray(quotes)||quotes.length<2) quotes=defaultQuotes;
-if(!Array.isArray(expenses)||expenses.length<2) expenses=defaultExpenses;
+// Load saved browser data, but automatically seed the professional demo dataset whenever
+// an older build has stored a missing/empty collection. No button is required.
+const loadCollection=(primaryKey,legacyKey,demo)=>{
+  const primary=load(primaryKey,null);
+  if(Array.isArray(primary)&&primary.length) return primary;
+  const legacy=legacyKey?load(legacyKey,null):null;
+  if(Array.isArray(legacy)&&legacy.length) return legacy;
+  return demo.map(item=>({...item}));
+};
+let accounts=loadCollection('tbc_accounts_v3','tbc_accounts_v2',defaultAccounts);
+let vehicles=loadCollection('tbc_vehicles_v3','tbc_vehicles_v2',defaultVehicles);
+let drivers=loadCollection('tbc_drivers_v3','tbc_drivers_v2',defaultDrivers);
+let bookings=loadCollection('tbc_bookings_v3','tbc_bookings_v2',defaultBookings);
+let quotes=loadCollection('tbc_quotes_v3',null,defaultQuotes);
+let expenses=loadCollection('tbc_expenses_v3',null,defaultExpenses);
 
 function persist(){store('tbc_accounts_v3',accounts);store('tbc_vehicles_v3',vehicles);store('tbc_drivers_v3',drivers);store('tbc_bookings_v3',bookings);store('tbc_quotes_v3',quotes);store('tbc_expenses_v3',expenses)}
+// Persist the automatic seed immediately so it survives refresh and re-login.
+persist();
 
 $('loginForm').addEventListener('submit',e=>{e.preventDefault();$('loginView').classList.add('hidden');$('appView').classList.remove('hidden');showPage('dashboard')});
 
@@ -100,7 +104,6 @@ function isActiveJourney(b){return !['Completed','Cancelled','Driver No Show','P
 function countBy(arr,keyFn){return arr.reduce((m,x)=>{const k=keyFn(x)||'Other';m[k]=(m[k]||0)+1;return m},{})}
 
 function renderAll(){populateSelects();renderDashboard();renderBookings();renderDrivers();renderAccounts();renderEarnings();renderCompliance();renderNotifications()}
-window.resetDemoData=()=>{if(!confirm('Reset all browser test data and reload the professional demo records?'))return;['tbc_accounts_v3','tbc_vehicles_v3','tbc_drivers_v3','tbc_bookings_v3','tbc_quotes_v3','tbc_expenses_v3'].forEach(k=>localStorage.removeItem(k));location.reload()};
 function populateSelects(){
  const src=$('bookingSource');if(src){const cur=src.value;src.innerHTML='<option value="">Select booking account</option>'+accounts.map(a=>`<option value="${a.id}">${a.name}</option>`).join('');if(accounts.some(a=>a.id===cur))src.value=cur}
  const drv=$('bookingDriver');if(drv){const cur=drv.value;drv.innerHTML='<option value="">Not assigned</option>'+drivers.map(d=>`<option value="${d.id}">${d.name}</option>`).join('');if(drivers.some(d=>d.id===cur))drv.value=cur}
