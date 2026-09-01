@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3.3.6</title>
+  <title>Taxi Booking Control Dashboard V3.3.7</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -212,6 +212,7 @@
             <label><span>To Date</span><input id="allTo" type="date"></label>
             <input id="bookingSearch" type="search" placeholder="Search ref, passenger, phone, route, source...">
             <select id="allStatus"><option value="">All Statuses</option><option value="__active">Upcoming / Active</option><option value="__process">In Process</option><option>Assigned</option><option>Dispatched</option><option>On the Way</option><option>POB</option><option>Completed</option><option>Cancelled</option><option>Driver No Show</option><option>Pax No Show</option></select>
+            <select id="allDriverPayment"><option value="">All Driver Payments</option><option value="pending">Pending Driver Payment</option><option value="paid">Paid Driver Payment</option></select>
             <button id="applyAllRange" class="btn btn-light">Filter</button>
             <button id="clearAllFilters" class="btn btn-light">Clear</button>
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
@@ -265,8 +266,8 @@
           <label><span>Preset</span><select id="statementPreset"><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option><option value="custom">Custom</option></select></label>
           <button id="generateStatement" class="btn btn-primary">Generate Statement</button>
         </div></article>
-        <div class="finance-kpis statement-kpis"><div class="finance-kpi"><span>Completed Jobs</span><strong id="statementJobs">0</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="statementDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Cash Collected</span><strong id="statementCash">£0.00</strong></div><div class="finance-kpi"><span>Penalties</span><strong id="statementPenalty">£0.00</strong></div><div class="finance-kpi"><span>On Hold</span><strong id="statementHold">£0.00</strong></div><div class="finance-kpi statement-net"><span>Net Settlement</span><strong id="statementNet">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Positive net = company owes driver. Negative net = driver owes company. Unresolved complaint jobs are excluded from released payment.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Journey</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
+        <div class="finance-kpis statement-kpis"><div class="finance-kpi"><span>Statement Jobs</span><strong id="statementJobs">0</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="statementDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Cash Collected</span><strong id="statementCash">£0.00</strong></div><div class="finance-kpi"><span>Penalties</span><strong id="statementPenalty">£0.00</strong></div><div class="finance-kpi"><span>On Hold</span><strong id="statementHold">£0.00</strong></div><div class="finance-kpi statement-net"><span>Net Settlement</span><strong id="statementNet">£0.00</strong></div></div>
+        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Positive net = company owes driver. Negative net = driver owes company. Unresolved complaint jobs are excluded from released payment.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Journey</th><th>Job Status</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
       </section>
 
       <section id="reportsPage" class="page">
