@@ -74,3 +74,27 @@
 
 /* Dedicated print report classes used in popup print window */
 @page{size:A4 landscape;margin:9mm}
+
+
+/* V3.3.6 complaint readability + statement settlement */
+.pro-table .complaint-row td,
+.pro-table .complaint-row td.route-col,
+.pro-table .complaint-row td.ref-col,
+.pro-table .complaint-row td.date-col,
+.pro-table .complaint-row td.passenger-col,
+.pro-table .complaint-row td.driver-col,
+.pro-table .complaint-row td.vehicle-col,
+.pro-table .complaint-row td.dispatch-col,
+.pro-table .complaint-row td.source-col,
+.pro-table .complaint-row td.fare-col,
+.pro-table .complaint-row td.comment-col,
+.pro-table .complaint-row td.complaint-col,
+.pro-table .complaint-row td.driver-paid-col,
+.pro-table .complaint-row td.action-col{background:#871f2b!important;color:#fff!important}
+.pro-table .complaint-row td.route-col strong,.pro-table .complaint-row td.route-col .subline,.pro-table .complaint-row td.route-col{color:#fff!important}
+.all-bookings-scroll .resolved-row td{background:#e3f7e9!important;color:#174f30!important;border-color:#bfe5cb!important}
+.all-bookings-scroll .resolved-row td.route-col,.all-bookings-scroll .resolved-row td.source-col,.all-bookings-scroll .resolved-row td.fare-col,.all-bookings-scroll .resolved-row td.comment-col{background:#d9f3e2!important}
+.all-bookings-scroll .resolved-row .subline,.all-bookings-scroll .resolved-row strong,.all-bookings-scroll .resolved-row .ref-link{color:#174f30!important}
+.resolved-toggle{background:#e2f7e8!important;color:#17683c!important}.resolved-toggle input:disabled+span{opacity:.55}
+.penalty-grid{display:grid;grid-template-columns:140px 1fr;gap:8px;margin-top:7px}.penalty-grid label{font-size:8px;font-weight:700;color:#5d6c80}.penalty-grid input{margin-top:4px;height:30px}.penalty-mini,.penalty-text{color:#b22f3c!important;font-weight:800}.statement-filter-card{margin-bottom:10px}.statement-filters{grid-template-columns:1.15fr .8fr .8fr .9fr auto}.statement-kpis{grid-template-columns:repeat(6,1fr)}.statement-net{background:#edf7ff}.statement-net .negative{color:#a12836}.statement-note{font-size:8.5px;color:#64758a;padding:9px 12px;border-bottom:1px solid #e7ebf1;background:#f8fbff}.statement-table-scroll{max-height:500px}.statement-hold td{background:#fff0f1!important}.hold-badge{display:inline-block;background:#8b1f2c;color:#fff;padding:4px 6px;border-radius:6px;font-size:8px;font-weight:800}.resolved-badge,.released-badge{display:inline-block;background:#dff5e5;color:#17683c;padding:4px 6px;border-radius:6px;font-size:8px;font-weight:800}.driver-owes{display:inline-block;background:#fff0d9;color:#905b00;padding:4px 6px;border-radius:6px;font-size:8px;font-weight:800}.negative-money{color:#aa2933}.positive-money{color:#17683c}
+@media(max-width:1100px){.statement-filters{grid-template-columns:1fr 1fr}.statement-kpis{grid-template-columns:repeat(3,1fr)}}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3.3</title>
+  <title>Taxi Booking Control Dashboard V3.3.6</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -44,6 +44,7 @@
         <div class="nav-label">FINANCE</div>
         <button class="nav-btn" data-page="earnings">£ <span>Earnings</span></button>
         <button class="nav-btn" data-page="expenses">◇ <span>Expenses</span></button>
+        <button class="nav-btn" data-page="statements">▤ <span>Driver Statements</span></button>
         <div class="nav-label">REPORTS</div>
         <button class="nav-btn" data-page="reports">▧ <span>Reports</span></button>
         <div class="nav-label">SETTINGS</div>
@@ -187,7 +188,7 @@
 
               <div class="right-form-grid">
                 <article class="form-card dense-card"><h3>Driver & Vehicle <span class="optional">Optional</span></h3><div class="field-grid two compact-fields"><label>Assign Driver<select id="bookingDriver"></select></label><label>Vehicle (Auto)<input id="bookingVehicle" readonly placeholder="Auto from driver"></label></div></article>
-                <article class="form-card dense-card"><h3>Pricing & Payment</h3><div class="field-grid three compact-fields pricing-fields"><label>Total Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Driver Fare (£)<input id="driverFare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div><div class="margin-line">Company Margin <strong id="companyMargin">£0.00</strong></div></article>
+                <article class="form-card dense-card"><h3>Pricing & Payment</h3><div class="field-grid three compact-fields pricing-fields"><label>Total Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Driver Fare (£)<input id="driverFare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div><div class="penalty-grid"><label>Driver Penalty (£)<input id="penaltyAmount" type="number" step="0.01" min="0" value="0" placeholder="0.00"></label><label>Penalty Reason<input id="penaltyReason" placeholder="e.g. Driver No Show, late arrival"></label></div><div class="margin-line">Company Margin <strong id="companyMargin">£0.00</strong></div></article>
                 <article class="form-card dense-card note-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes visible to driver..."></textarea></article>
                 <article class="form-card dense-card note-card"><h3>Office Comments</h3><textarea id="officeComments" maxlength="1000" placeholder="Internal journey comments..."></textarea></article>
               </div>
@@ -216,7 +217,7 @@
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
           </div>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Driver Paid</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th>Staff Comment</th><th>Complaint</th><th>Complaint Resolved</th><th>Driver Paid</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
       <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
@@ -253,6 +254,19 @@
         <div class="section-head"><div><h2>Expenses</h2><p>Track operational costs and account-related expenses.</p></div><div class="inline-controls"><input id="expenseFrom" type="date"><input id="expenseTo" type="date"><button id="addExpenseBtn" class="btn btn-primary">+ Add Expense</button></div></div>
         <div class="finance-kpis compact-finance"><div class="finance-kpi"><span>Filtered Expenses</span><strong id="expenseTotal">£0.00</strong></div><div class="finance-kpi"><span>Entries</span><strong id="expenseCount">0</strong></div></div>
         <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Company / Account</th><th>Amount</th><th></th></tr></thead><tbody id="expensesBody"></tbody></table></div></article>
+      </section>
+
+      <section id="statementsPage" class="page">
+        <div class="section-head"><div><h2>Driver Statements</h2><p>Generate professional weekly, monthly or custom driver settlement statements.</p></div></div>
+        <article class="card statement-filter-card"><div class="report-filters statement-filters">
+          <label><span>Driver</span><select id="statementDriver"></select></label>
+          <label><span>From Date</span><input id="statementFrom" type="date"></label>
+          <label><span>To Date</span><input id="statementTo" type="date"></label>
+          <label><span>Preset</span><select id="statementPreset"><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option><option value="custom">Custom</option></select></label>
+          <button id="generateStatement" class="btn btn-primary">Generate Statement</button>
+        </div></article>
+        <div class="finance-kpis statement-kpis"><div class="finance-kpi"><span>Completed Jobs</span><strong id="statementJobs">0</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="statementDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Cash Collected</span><strong id="statementCash">£0.00</strong></div><div class="finance-kpi"><span>Penalties</span><strong id="statementPenalty">£0.00</strong></div><div class="finance-kpi"><span>On Hold</span><strong id="statementHold">£0.00</strong></div><div class="finance-kpi statement-net"><span>Net Settlement</span><strong id="statementNet">£0.00</strong></div></div>
+        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Positive net = company owes driver. Negative net = driver owes company. Unresolved complaint jobs are excluded from released payment.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Journey</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
       </section>
 
       <section id="reportsPage" class="page">

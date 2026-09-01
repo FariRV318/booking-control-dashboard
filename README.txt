@@ -12,3 +12,5 @@ Google Maps remains optional and uses config.js when an API key is added later.
 
 
 V3.3.5: Fixed booking navigation/table rendering; restored complete booking form logic and report PDF/print functions.
+
+V3.3.6: fixed complaint-row route readability; added complaint resolution on All Bookings; added booking penalties; added Driver Statements with cash settlement, complaint holds and professional PDF/print output.
