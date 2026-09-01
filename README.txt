@@ -38,3 +38,9 @@ V3.4.1 additions:
 - Reports include both penalty types.
 - Net Margin = Total Fare - Driver Fare + Driver Penalties - Company Penalties / Chargebacks.
 - CSV, PDF, Print Report and Earnings margin calculations include both penalty types.
+
+
+V3.4.4
+- Driver penalties now always reduce the driver statement net settlement, including Driver No Show penalties.
+- Example: £80 payable work minus £35 penalty = £45 net settlement.
+- Complaint holds apply only to positive driver payments; penalties are not accidentally held/excluded.
