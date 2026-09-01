@@ -1,33 +1,18 @@
-Taxi Booking Control Dashboard V3
+TAXI BOOKING CONTROL DASHBOARD V3.1
 
-What's new in V3
-- Professional compact dashboard matching the approved reference style.
-- Smaller, cleaner typography and controls.
-- Dashboard shows active upcoming + in-process journeys in a fixed-height scrollable table.
-- From Date / To Date filters on Dashboard.
-- From Date / To Date + text search on All Bookings.
-- Add New Booking remains a separate full page.
-- Add Booking page redesigned to fit on one desktop screen at common desktop resolutions, with compact sections.
-- Driver and Vehicle are optional during booking creation.
-- Selecting a driver auto-fills their assigned vehicle.
-- Dispatch status remains manual: Assigned, Dispatched, On the Way, POB, Completed, Cancelled.
-- Booking Account / Source + External Reference.
-- Flight details.
-- Pickup, multiple Via points, Drop-off.
-- Wait & Return with return date/time and waiting minutes.
-- Passenger count, hand carry, suitcases.
-- Special requirements: car seat, booster, wheelchair, medical, elderly, meet & greet, pet, other.
-- Driver Notes + Office Comments only.
-- Companies / Accounts reporting summary.
-- Driver / Vehicle compliance reminders.
-- CSV export and Print / Save PDF.
-- Google Maps / Places / route mileage & time support remains ready via config.js.
+LATEST UPDATES
+- Vehicle Class Requested added inside Passengers, Luggage & Requirements.
+- Vehicle classes: Saloon, Estate, MPV, Minivan, Executive Saloon, Executive MPV, Luxury/VIP, Large MPV, Wheelchair Accessible, Other.
+- Drivers and Vehicles merged into one Drivers & Vehicles management section.
+- Add Driver & Vehicle captures driver contact/licence/PCO details plus vehicle registration, make, model, year, colour, class, seats, MOT, insurance, PHV vehicle licence and road tax dates.
+- Total Fare and Driver Fare added to booking form.
+- Company Margin is calculated automatically.
+- Dashboard and All Bookings show Total Fare and Driver Fare for every journey.
+- CSV export now includes vehicle class, total fare, driver fare and margin.
+- Existing V3 local browser data is preserved.
 
-Run
-1. Keep index.html, styles.css, app.js and config.js together.
-2. Open index.html or host the files on GitHub Pages / Firebase Hosting.
-3. Demo login accepts any email/password.
-4. Add your own Google Maps key in config.js later to activate address autocomplete, route map, mileage and ETA.
+GOOGLE MAPS
+Add your restricted Google Maps key in config.js when ready.
 
-Important
-V3 still uses browser localStorage for demo/testing. Firebase should be connected before multiple team members rely on the system, so everyone sees the same live booking data.
+DATA
+This development version still uses browser localStorage. Connect Firebase before multi-computer production use.

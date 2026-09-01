@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Taxi Booking Control Dashboard V3</title>
+  <title>Taxi Booking Control Dashboard V3.1</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -38,8 +38,7 @@
         <button class="nav-btn" data-page="dashboard">⇄ <span>Upcoming Journeys</span></button>
         <button class="nav-btn" data-page="dispatch">◉ <span>Dispatch Board</span></button>
         <div class="nav-label">MANAGEMENT</div>
-        <button class="nav-btn" data-page="drivers">♙ <span>Drivers</span></button>
-        <button class="nav-btn" data-page="vehicles">▰ <span>Vehicles</span></button>
+        <button class="nav-btn" data-page="drivers">♙ <span>Drivers & Vehicles</span></button>
         <button class="nav-btn" data-page="accounts">▥ <span>Companies / Accounts</span></button>
         <button class="nav-btn" data-page="customers">♧ <span>Customers</span></button>
         <div class="nav-label">FINANCE</div>
@@ -81,7 +80,7 @@
             </div>
             <div class="table-scroll fixed-rows">
               <table class="pro-table compact-table">
-                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fare</th><th>Actions</th></tr></thead>
+                <thead><tr><th>Booking Ref</th><th>Date & Time</th><th>Passenger</th><th>From → To</th><th>Driver</th><th>Vehicle</th><th>Dispatch Status</th><th>Source</th><th>Fares</th><th>Actions</th></tr></thead>
                 <tbody id="upcomingBody"></tbody>
               </table>
             </div>
@@ -154,10 +153,15 @@
 
               <article class="form-card dense-card">
                 <h3>Passengers, Luggage & Requirements</h3>
-                <div class="field-grid three compact-fields">
+                <div class="field-grid four compact-fields passenger-requirements-grid">
                   <label>Passengers *<select id="passengerCount"></select></label>
                   <label>Hand Carry<select id="handCarry"></select></label>
                   <label>Suitcases<select id="suitcases"></select></label>
+                  <label>Vehicle Class Requested<select id="vehicleClassRequested">
+                    <option>Saloon</option><option>Estate</option><option>MPV</option><option>Minivan</option>
+                    <option>Executive Saloon</option><option>Executive MPV</option><option>Luxury / VIP</option>
+                    <option>8-Seater / Large MPV</option><option>Wheelchair Accessible</option><option>Other</option>
+                  </select></label>
                 </div>
                 <div class="requirements compact-req">
                   <label><input type="checkbox" value="Child Car Seat" class="req"> Car Seat</label>
@@ -181,7 +185,7 @@
 
               <div class="right-form-grid">
                 <article class="form-card dense-card"><h3>Driver & Vehicle <span class="optional">Optional</span></h3><div class="field-grid two compact-fields"><label>Assign Driver<select id="bookingDriver"></select></label><label>Vehicle (Auto)<input id="bookingVehicle" readonly placeholder="Auto from driver"></label></div></article>
-                <article class="form-card dense-card"><h3>Pricing & Payment</h3><div class="field-grid two compact-fields"><label>Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div></article>
+                <article class="form-card dense-card"><h3>Pricing & Payment</h3><div class="field-grid three compact-fields pricing-fields"><label>Total Fare (£)<input id="fare" type="number" step="0.01" min="0" value="0"></label><label>Driver Fare (£)<input id="driverFare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div><div class="margin-line">Company Margin <strong id="companyMargin">£0.00</strong></div></article>
                 <article class="form-card dense-card note-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes visible to driver..."></textarea></article>
                 <article class="form-card dense-card note-card"><h3>Office Comments</h3><textarea id="officeComments" maxlength="1000" placeholder="Internal journey comments..."></textarea></article>
               </div>
@@ -208,11 +212,10 @@
             <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
           </div>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fare</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date & Time</th><th>Passenger</th><th>Route</th><th>Source</th><th>Driver</th><th>Vehicle</th><th>Dispatch</th><th>Fares</th><th></th></tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
-      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers</h2><p>Driver records, assigned vehicles and compliance dates.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver</button></div><div id="driversGrid" class="management-grid"></div></section>
-      <section id="vehiclesPage" class="page"><div class="section-head"><div><h2>Vehicles</h2><p>Fleet details and MOT / insurance reminders.</p></div><button id="addVehicleBtn" class="btn btn-primary">+ Add Vehicle</button></div><div id="vehiclesGrid" class="management-grid"></div></section>
+      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
       <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Track where bookings come from and revenue by account.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
       <section id="customersPage" class="page"><article class="card empty-card"><h2>Customers</h2><p>Customer records are populated from bookings.</p></article></section>
       <section id="calendarPage" class="page"><article class="card empty-card"><h2>Calendar View</h2><p>Calendar view is reserved for the next development step.</p></article></section>
