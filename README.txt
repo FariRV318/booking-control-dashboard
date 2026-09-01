@@ -31,3 +31,10 @@ V3.3.9 presentation fixes:
 - Statement Settlement now uses only Released or On Hold.
 - Unresolved complaint rows use a light-red highlight instead of dark red.
 - Resolved complaint rows/reports use light green and show Resolved.
+
+
+V3.4.0 additions:
+- Separate Driver Penalty and Company Penalty / Chargeback fields.
+- Reports include both penalty types.
+- Net Margin = Total Fare - Driver Fare + Driver Penalties - Company Penalties / Chargebacks.
+- CSV, PDF, Print Report and Earnings margin calculations include both penalty types.
