@@ -32,7 +32,7 @@ SECURITY NOTE
 Read Only cannot write synced workspace state. Administrator, Dispatcher and Accounts are write-enabled roles. The UI exposes role-appropriate navigation; because the current dashboard stores operational state in one shared Firestore state document, finer field-level server enforcement can be added later if you want very granular permissions per booking field.
 
 
-V3.7.0 APPROVED OPERATIONS UPDATE
+V3.7.1 CLEAN RESPONSIVE TABLE UPDATE
 - Sidebar hidden by default on desktop/tablet/mobile; hamburger opens overlay drawer.
 - Add Booking button on Dashboard.
 - Analytics moved above Upcoming / In Process Journeys.
@@ -45,3 +45,14 @@ V3.7.0 APPROVED OPERATIONS UPDATE
 - Booking page has action buttons under the map and corrected penalty field alignment.
 - Send SMS modal builds journey details and opens the device SMS composer.
 - Existing Firebase sync, staff roles and audit logs preserved.
+
+
+V3.7.1 CLEAN RESPONSIVE TABLE UPDATE
+- Dashboard Add Booking button aligned to the upper-right.
+- Dashboard and All Bookings tables use natural column sizing with horizontal scroll instead of overlapping/squeezing.
+- Dark, high-contrast table headers on Dashboard and All Bookings.
+- Soft operational column colours restored.
+- Dashboard Hide / Show now includes Complaint, Complaint Resolved and Driver Paid as optional columns.
+- Rebuilt Hide / Show panel with aligned checkbox + label layout and viewport-safe scrolling.
+- Booking Pricing & Payment layout hardened for large displays; penalty fields stay inside the card.
+- Existing Firebase sync, staff roles, audit logs, reports, statements, SMS UI and permissions preserved.

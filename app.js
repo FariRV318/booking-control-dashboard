@@ -435,15 +435,32 @@ const mobileMenuBtn=document.querySelector('.mobile-menu');if(mobileMenuBtn){mob
 
   // Column visibility controls.
   const columns={
-    dashboard:{ref:'Booking Ref',date:'Date & Time',passenger:'Passenger',pax:'Pax & Lugg',from:'From',to:'To',vehicleReq:'Vehicle Requested / Mileage',flight:'Flight No.',fare:'£ Fare',driver:'Driver',driverVehicle:'Driver Vehicle',dispatch:'Dispatch Status',source:'Source',comment:'Staff Comment',actions:'Actions'},
+    dashboard:{ref:'Booking Ref',date:'Date & Time',passenger:'Passenger',pax:'Pax & Lugg',from:'From',to:'To',vehicleReq:'Vehicle Requested / Mileage',flight:'Flight No.',fare:'£ Fare',driver:'Driver',driverVehicle:'Driver Vehicle',dispatch:'Dispatch Status',source:'Source',comment:'Staff Comment',complaint:'Complaint',resolved:'Complaint Resolved',paid:'Driver Paid',actions:'Actions'},
     all:{ref:'Ref',date:'Date & Time',passenger:'Passenger',pax:'Pax & Lugg',from:'From',to:'To',vehicleReq:'Vehicle Requested / Mileage',flight:'Flight No.',fare:'£ Fare',source:'Source',driver:'Driver',driverVehicle:'Driver Vehicle',dispatch:'Dispatch',comment:'Staff Comment',complaint:'Complaint',resolved:'Complaint Resolved',paid:'Driver Paid',actions:'Actions'}
   };
-  const storageKey=t=>`phb_visible_cols_${t}_v370`;
-  function visibleCols(type){try{const x=JSON.parse(localStorage.getItem(storageKey(type))||'null');if(Array.isArray(x)&&x.length)return x}catch(e){}return Object.keys(columns[type])}
+  const storageKey=t=>`phb_visible_cols_${t}_v371`;
+  const defaultVisible={dashboard:['ref','date','passenger','pax','from','to','vehicleReq','flight','fare','driver','driverVehicle','dispatch','source','comment','actions'],all:Object.keys(columns.all)};
+  function visibleCols(type){try{const x=JSON.parse(localStorage.getItem(storageKey(type))||'null');if(Array.isArray(x)&&x.length)return x.filter(k=>columns[type][k])}catch(e){}return [...(defaultVisible[type]||Object.keys(columns[type]))]}
   function applyColumnVisibility(type){const table=document.querySelector(`table[data-table="${type}"]`);if(!table)return;const visible=new Set(visibleCols(type));Object.keys(columns[type]).forEach(key=>table.querySelectorAll(`[data-col="${key}"]`).forEach(el=>el.classList.toggle('column-hidden',!visible.has(key))))}
   function ensureCellCols(){document.querySelectorAll('table.configurable-table').forEach(table=>{const keys=[...table.querySelectorAll('thead th')].map(th=>th.dataset.col);table.querySelectorAll('tbody tr').forEach(tr=>[...tr.children].forEach((td,i)=>{if(keys[i])td.dataset.col=keys[i]}))})}
   let picker=document.querySelector('.column-picker');if(!picker){picker=document.createElement('div');picker.className='column-picker hidden';document.body.appendChild(picker)}
-  function openColumnPicker(type,btn){const current=new Set(visibleCols(type));picker.innerHTML=`<div class="column-picker-head"><strong>Choose visible columns</strong><button class="close-btn" type="button">×</button></div><div class="column-picker-list">${Object.entries(columns[type]).map(([k,l])=>`<label><input type="checkbox" value="${k}" ${current.has(k)?'checked':''}> ${escapeHtml(l)}</label>`).join('')}</div><div class="column-picker-actions"><button class="btn btn-light" data-cols="all" type="button">Show all</button><button class="btn btn-light" data-cols="reset" type="button">Reset</button></div>`;picker.dataset.type=type;const r=btn.getBoundingClientRect();picker.style.top=Math.min(window.innerHeight-360,r.bottom+7)+'px';picker.style.left=Math.max(10,Math.min(window.innerWidth-265,r.right-255))+'px';picker.classList.remove('hidden');picker.querySelector('.close-btn').onclick=()=>picker.classList.add('hidden');picker.querySelectorAll('.column-picker-list input').forEach(ch=>ch.onchange=()=>{const selected=[...picker.querySelectorAll('.column-picker-list input:checked')].map(x=>x.value);if(!selected.includes('actions'))selected.push('actions');localStorage.setItem(storageKey(type),JSON.stringify(selected));applyColumnVisibility(type)});picker.querySelector('[data-cols="all"]').onclick=()=>{localStorage.setItem(storageKey(type),JSON.stringify(Object.keys(columns[type])));openColumnPicker(type,btn);applyColumnVisibility(type)};picker.querySelector('[data-cols="reset"]').onclick=()=>{localStorage.removeItem(storageKey(type));openColumnPicker(type,btn);applyColumnVisibility(type)}}
+  function openColumnPicker(type,btn){
+    const current=new Set(visibleCols(type));
+    picker.innerHTML=`<div class="column-picker-head"><strong>Choose visible columns</strong><button class="close-btn" type="button" aria-label="Close">×</button></div><div class="column-picker-list">${Object.entries(columns[type]).map(([k,l])=>`<label class="column-picker-option"><input type="checkbox" value="${k}" ${current.has(k)?'checked':''}><span class="column-picker-label">${escapeHtml(l)}</span></label>`).join('')}</div><div class="column-picker-actions"><button class="btn btn-light" data-cols="all" type="button">Show all</button><button class="btn btn-light" data-cols="reset" type="button">Reset</button></div>`;
+    picker.dataset.type=type;
+    picker.classList.remove('hidden');
+    const r=btn.getBoundingClientRect(),margin=10,maxW=Math.min(330,window.innerWidth-margin*2);
+    picker.style.width=maxW+'px';
+    const box=picker.getBoundingClientRect();
+    let left=Math.min(window.innerWidth-box.width-margin,Math.max(margin,r.right-box.width));
+    let top=r.bottom+7;
+    if(top+Math.min(box.height,window.innerHeight*.72)>window.innerHeight-margin)top=Math.max(margin,r.top-Math.min(box.height,window.innerHeight*.72)-7);
+    picker.style.left=left+'px';picker.style.top=top+'px';
+    picker.querySelector('.close-btn').onclick=()=>picker.classList.add('hidden');
+    picker.querySelectorAll('.column-picker-list input').forEach(ch=>ch.onchange=()=>{const selected=[...picker.querySelectorAll('.column-picker-list input:checked')].map(x=>x.value);if(!selected.includes('actions'))selected.push('actions');localStorage.setItem(storageKey(type),JSON.stringify(selected));applyColumnVisibility(type)});
+    picker.querySelector('[data-cols="all"]').onclick=()=>{localStorage.setItem(storageKey(type),JSON.stringify(Object.keys(columns[type])));openColumnPicker(type,btn);applyColumnVisibility(type)};
+    picker.querySelector('[data-cols="reset"]').onclick=()=>{localStorage.removeItem(storageKey(type));openColumnPicker(type,btn);applyColumnVisibility(type)};
+  }
   $('dashboardColumnsBtn')?.addEventListener('click',e=>{e.stopPropagation();openColumnPicker('dashboard',e.currentTarget)});$('allColumnsBtn')?.addEventListener('click',e=>{e.stopPropagation();openColumnPicker('all',e.currentTarget)});document.addEventListener('click',e=>{if(!e.target.closest('.column-picker')&&!e.target.closest('.column-picker-btn'))picker.classList.add('hidden')});
 
   function paxLuggHtml(b){return `<div class="pax-lugg-icons" title="Passengers / Hand carry / Suitcases"><span title="Passengers">👤 ${Number(b.passengers||1)}</span><span title="Hand carry">👜 ${Number(b.handCarry||0)}</span><span title="Suitcases">🧳 ${Number(b.suitcases||0)}</span></div>`}
@@ -466,6 +483,9 @@ const mobileMenuBtn=document.querySelector('.mobile-menu');if(mobileMenuBtn){mob
     <td data-col="dispatch"><select class="table-select status-select" style="${statusStyle(b.dispatch)}" onchange="updateDispatch('${b.id}',this.value)">${dispatchStatuses.map(s=>`<option ${b.dispatch===s?'selected':''}>${s}</option>`).join('')}</select></td>
     <td data-col="source" class="source-col" style="background:${accountColor(b.sourceId)}">${sourceCell(b)}</td>
     <td data-col="comment"><input class="inline-comment" value="${escapeHtml(b.dashboardComment||'')}" placeholder="Staff comment..." onchange="saveDashboardComment('${b.id}',this.value)"></td>
+    <td data-col="complaint"><label class="flag-toggle complaint-toggle"><input type="checkbox" ${b.complaint?'checked':''} onchange="toggleComplaint('${b.id}',this.checked)"><span>${b.complaint?'Complaint':'No'}</span></label></td>
+    <td data-col="resolved"><label class="flag-toggle resolved-toggle"><input type="checkbox" ${b.complaintResolved?'checked':''} ${b.complaint?'':'disabled'} onchange="toggleComplaintResolved('${b.id}',this.checked)"><span>${b.complaintResolved?'Resolved':'No'}</span></label></td>
+    <td data-col="paid" class="driver-paid-col ${b.driverPaid?'is-paid':'is-pending'}"><label class="flag-toggle paid-toggle"><input type="checkbox" ${b.driverPaid?'checked':''} onchange="toggleDriverPaid('${b.id}',this.checked)"><span>${b.driverPaid?'Paid':'Pending'}</span></label></td>
     <td data-col="actions"><button class="btn btn-light tiny" onclick="editBooking('${b.id}')">Open</button></td>
   </tr>`}
 
@@ -473,7 +493,7 @@ const mobileMenuBtn=document.querySelector('.mobile-menu');if(mobileMenuBtn){mob
   renderDashboard=function(){
     defaultDashboardRange();const todays=bookings.filter(b=>b.date===todayISO()),active=bookings.filter(isActiveJourney),inProcess=active.filter(b=>['Dispatched','On the Way','POB'].includes(b.dispatch));
     $('todayBookings').textContent=todays.length;$('upcomingCount').textContent=active.filter(b=>b.date>=todayISO()).length;$('inProcessCount').textContent=inProcess.length;$('completedToday').textContent=todays.filter(b=>b.dispatch==='Completed').length;$('todayRevenue').textContent=money(bookedRevenue(todays));
-    const list=dashboardFilteredList();$('upcomingBody').innerHTML=list.length?list.map(dashboardRow370).join(''):'<tr><td colspan="15" class="muted">No active journeys match these filters.</td></tr>';
+    const list=dashboardFilteredList();$('upcomingBody').innerHTML=list.length?list.map(dashboardRow370).join(''):'<tr><td colspan="18" class="muted">No active journeys match these filters.</td></tr>';
     const monthBookings=bookings.filter(b=>b.date.startsWith(currentMonthPrefix()));renderSourceVisual(monthBookings);renderBars('dispatchBars',countBy(active,b=>b.dispatch));$('monthRevenue').textContent=money(bookedRevenue(monthBookings));renderRevenueChart();ensureCellCols();applyColumnVisibility('dashboard')
   };
   $('applyUpcomingRange').onclick=renderDashboard;$('dashboardSearch').oninput=renderDashboard;$('clearUpcomingFilter').onclick=()=>{$('upcomingFrom').value=addDays(-3);$('upcomingTo').value=addDays(2);$('dashboardSearch').value='';renderDashboard()};
