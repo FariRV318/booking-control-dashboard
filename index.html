@@ -100,7 +100,7 @@
           <div class="table-scroll fixed-rows dashboard-table-scroll">
             <table class="pro-table compact-table dashboard-journey-table configurable-table" data-table="dashboard">
               <thead><tr>
-                <th data-col="ref">Booking Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch Status</th><th data-col="source">Source</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
+                <th data-col="ref">Booking Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="specialReq">Sp. Req</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch Status</th><th data-col="source">Source</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
               </tr></thead>
               <tbody id="upcomingBody"></tbody>
             </table>
@@ -143,10 +143,17 @@
                   <label>Arrival Time<input id="arrivalTime" type="time"></label>
                   <label class="toggle-field">Wait & Return <span><input id="waitReturn" type="checkbox"> Enable</span></label>
                 </div>
-                <div id="returnFields" class="field-grid three compact-fields return-row hidden">
-                  <label>Waiting (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
-                  <label>Return Date<input id="returnDate" type="date"></label>
-                  <label>Return Time<input id="returnTime" type="time"></label>
+                <div id="returnFields" class="return-journey-panel hidden">
+                  <div class="return-journey-title">Return Journey Details</div>
+                  <div class="field-grid four compact-fields return-row">
+                    <label id="returnDateLabel">Return Date<input id="returnDate" type="date"></label>
+                    <label>Return Time *<input id="returnTime" type="time"></label>
+                    <label>Return Pickup *<input id="returnPickup" placeholder="Return pickup"></label>
+                    <label>Return Drop-off *<input id="returnDropoff" placeholder="Return destination"></label>
+                  </div>
+                  <div id="waitingField" class="field-grid one compact-fields hidden">
+                    <label>Waiting (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
+                  </div>
                 </div>
               </article>
 
@@ -235,7 +242,7 @@
           </div>
         </div>
         <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table configurable-table all-bookings-table" data-table="all"><thead><tr>
-          <th data-col="ref">Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="source">Source</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
+          <th data-col="ref">Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="specialReq">Sp. Req</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="source">Source</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
         </tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 

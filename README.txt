@@ -62,3 +62,10 @@ V3.7.2 final fixes:
 - Booking Driver & Vehicle dropdown is no longer clipped by its card.
 - SMS template updated to requested asterisk format and removed Driver Fare Only text.
 - Send To recipient panel redesigned for clearer selection.
+
+
+V3.7.5 updates:
+- Special Requirements column on Dashboard and All Bookings (requirements + Other Requirement).
+- Passenger cells open the booking directly.
+- Journey Type return options now reveal/save return date/time/pickup/drop-off correctly.
+- Premium dark gradient page header.

@@ -359,3 +359,12 @@ body>.driver-combo-menu.portal-open{display:block!important;z-index:2147483000!i
 .booking-bottom-grid .pricing-card{overflow:hidden!important}
 @media(max-width:1200px){.booking-bottom-grid{grid-template-columns:1fr!important}.booking-bottom-grid .note-card textarea{min-height:100px!important}}
 @media(max-width:650px){.driver-vehicle-wide .field-grid.two{grid-template-columns:1fr!important}.booking-bottom-grid{grid-template-columns:1fr!important}}
+
+
+/* V3.7.5 premium header, special requirements and return journey improvements */
+.topbar{background:linear-gradient(105deg,#0b2440 0%,#123b68 62%,#0d2c4f 100%)!important;border-bottom-color:#214a74!important;color:#fff!important;box-shadow:0 3px 14px rgba(6,29,54,.18)}
+.topbar .mobile-menu,.topbar .top-title h1,.topbar .profile-copy strong{color:#fff!important}.topbar .top-title p,.topbar .profile-copy small{color:#c9d8e9!important}.topbar .icon-btn{background:#fff!important;border-color:rgba(255,255,255,.3)!important}.topbar .top-actions>input{background:#fff!important;border-color:#dbe5f1!important}.topbar .profile-dot{background:#eaf2fc!important;color:#163554!important}
+.special-req-list{display:flex;flex-wrap:wrap;gap:4px;min-width:105px;max-width:185px}.special-req-chip{display:inline-flex;align-items:center;padding:3px 6px;border-radius:999px;background:#fff2d9;color:#7b4b00;border:1px solid #f1d59c;font-size:8.5px;font-weight:700;line-height:1.2;white-space:normal}.passenger-open-cell{cursor:pointer;transition:background .15s ease}.passenger-open-cell:hover{background:#e9f2ff!important}.passenger-open-cell strong{color:#0d4f9c;text-decoration:underline;text-decoration-color:transparent;text-underline-offset:2px}.passenger-open-cell:hover strong{text-decoration-color:#0d4f9c}
+.return-journey-panel{margin-top:10px;padding:11px;border:1px solid #d9e5f3;border-radius:9px;background:#f7fbff}.return-journey-title{font-size:10px;font-weight:800;color:#163d67;margin-bottom:8px}.return-journey-panel .field-grid{margin-bottom:0}.return-journey-panel #waitingField{margin-top:8px;max-width:220px}
+.dashboard-journey-table th[data-col="specialReq"],.all-bookings-table th[data-col="specialReq"]{min-width:130px!important}.dashboard-journey-table td[data-col="specialReq"],.all-bookings-table td[data-col="specialReq"]{min-width:130px!important;max-width:190px!important}
+@media(max-width:760px){.special-req-list{max-width:none}.return-journey-panel .field-grid.four{grid-template-columns:1fr!important}}
