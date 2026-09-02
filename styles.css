@@ -346,3 +346,16 @@ input::placeholder,textarea::placeholder{color:#6d7c90!important;opacity:1}
 .right-form-grid{grid-template-columns:minmax(390px,.95fr) minmax(0,2.05fr)!important}
 @media(max-width:1100px){.right-form-grid{grid-template-columns:1fr!important}.driver-vehicle-booking-card{min-width:0!important}.driver-vehicle-booking-card .field-grid.two{grid-template-columns:1fr 1fr!important}.right-form-grid>.note-card{grid-column:auto!important}}
 @media(max-width:650px){.driver-vehicle-booking-card .field-grid.two{grid-template-columns:1fr!important}}
+
+/* V3.7.4 final: body-level driver menu + booking layout */
+body>.driver-combo-menu.portal-open{display:block!important;z-index:2147483000!important;background:#fff!important;border:1px solid #d9e2ee!important;border-radius:9px!important;box-shadow:0 18px 48px rgba(10,28,52,.28)!important;overflow-y:auto!important;overflow-x:hidden!important}
+.driver-vehicle-wide{width:100%!important;min-width:0!important;margin:10px 0 12px!important;overflow:visible!important}
+.driver-vehicle-wide .field-grid.two{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:12px!important}
+.driver-vehicle-wide .driver-combo,.driver-vehicle-wide input{width:100%!important;min-width:0!important}
+.booking-bottom-grid{display:grid!important;grid-template-columns:minmax(260px,.72fr) minmax(0,2.28fr)!important;gap:12px!important;align-items:stretch!important}
+.booking-bottom-grid>.form-card{margin:0!important;min-width:0!important;height:100%!important}
+.booking-bottom-grid .note-card{display:flex!important;flex-direction:column!important}
+.booking-bottom-grid .note-card textarea{flex:1!important;min-height:155px!important;height:auto!important;resize:vertical!important}
+.booking-bottom-grid .pricing-card{overflow:hidden!important}
+@media(max-width:1200px){.booking-bottom-grid{grid-template-columns:1fr!important}.booking-bottom-grid .note-card textarea{min-height:100px!important}}
+@media(max-width:650px){.driver-vehicle-wide .field-grid.two{grid-template-columns:1fr!important}.booking-bottom-grid{grid-template-columns:1fr!important}}
