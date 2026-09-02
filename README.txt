@@ -30,3 +30,18 @@ STAFF JOIN FLOW
 
 SECURITY NOTE
 Read Only cannot write synced workspace state. Administrator, Dispatcher and Accounts are write-enabled roles. The UI exposes role-appropriate navigation; because the current dashboard stores operational state in one shared Firestore state document, finer field-level server enforcement can be added later if you want very granular permissions per booking field.
+
+
+V3.7.0 APPROVED OPERATIONS UPDATE
+- Sidebar hidden by default on desktop/tablet/mobile; hamburger opens overlay drawer.
+- Add Booking button on Dashboard.
+- Analytics moved above Upcoming / In Process Journeys.
+- Dashboard keeps From Date, To Date, Search, Filter, Clear and Hide/Show controls.
+- Expiring Documents moved to its own page; Quick Reports removed from Dashboard.
+- Dashboard removes Complaint and Driver Paid only; All Bookings keeps both.
+- Added Pax & Lugg, Vehicle Requested + mileage, Flight No., compact £ fare, Driver, Driver Vehicle and Dispatch columns.
+- Dashboard and All Bookings columns are user-customisable with Hide / Show.
+- Larger/darker typography and responsive layouts.
+- Booking page has action buttons under the map and corrected penalty field alignment.
+- Send SMS modal builds journey details and opens the device SMS composer.
+- Existing Firebase sync, staff roles and audit logs preserved.
