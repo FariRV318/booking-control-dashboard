@@ -69,3 +69,8 @@ V3.7.5 updates:
 - Passenger cells open the booking directly.
 - Journey Type return options now reveal/save return date/time/pickup/drop-off correctly.
 - Premium dark gradient page header.
+
+V3.7.6 updates:
+- Return Same Day / Return Different Day now create a second linked booking record for the return leg, so both legs appear on Dashboard and All Bookings.
+- Separate Journey 1 and Return fare / driver fare fields for return bookings.
+- Vehicle suitability validation blocks bookings that exceed configured passenger/luggage guidelines and recommends a suitable vehicle class.

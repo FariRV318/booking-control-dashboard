@@ -368,3 +368,8 @@ body>.driver-combo-menu.portal-open{display:block!important;z-index:2147483000!i
 .return-journey-panel{margin-top:10px;padding:11px;border:1px solid #d9e5f3;border-radius:9px;background:#f7fbff}.return-journey-title{font-size:10px;font-weight:800;color:#163d67;margin-bottom:8px}.return-journey-panel .field-grid{margin-bottom:0}.return-journey-panel #waitingField{margin-top:8px;max-width:220px}
 .dashboard-journey-table th[data-col="specialReq"],.all-bookings-table th[data-col="specialReq"]{min-width:130px!important}.dashboard-journey-table td[data-col="specialReq"],.all-bookings-table td[data-col="specialReq"]{min-width:130px!important;max-width:190px!important}
 @media(max-width:760px){.special-req-list{max-width:none}.return-journey-panel .field-grid.four{grid-template-columns:1fr!important}}
+
+/* V3.7.6 — return fares + capacity validation */
+.return-fare-fields{margin-top:10px;padding-top:10px;border-top:1px dashed #d8e2ef}.return-fare-fields.hidden{display:none!important}
+.return-fare-fields label{min-width:0}
+@media (max-width:760px){.return-fare-fields{grid-template-columns:1fr!important}}
