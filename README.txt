@@ -56,3 +56,9 @@ V3.7.1 CLEAN RESPONSIVE TABLE UPDATE
 - Rebuilt Hide / Show panel with aligned checkbox + label layout and viewport-safe scrolling.
 - Booking Pricing & Payment layout hardened for large displays; penalty fields stay inside the card.
 - Existing Firebase sync, staff roles, audit logs, reports, statements, SMS UI and permissions preserved.
+
+V3.7.2 final fixes:
+- All Bookings driver column is editable/searchable like Dashboard.
+- Booking Driver & Vehicle dropdown is no longer clipped by its card.
+- SMS template updated to requested asterisk format and removed Driver Fare Only text.
+- Send To recipient panel redesigned for clearer selection.

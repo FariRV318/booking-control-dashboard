@@ -297,3 +297,35 @@ input::placeholder,textarea::placeholder{color:#6d7c90!important;opacity:1}
 @media(min-width:1700px){.page{max-width:none!important}.booking-one-screen{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr)!important}.right-form-grid{grid-template-columns:minmax(300px,.72fr) minmax(0,2.28fr)!important}.dashboard-journey-table,.all-bookings-table{font-size:11px!important}}
 @media(max-width:1300px){.right-form-grid{grid-template-columns:1fr!important}.right-form-grid>.note-card{grid-column:auto!important}.penalty-grid-four{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}}
 @media(max-width:900px){.dashboard-primary-actions{justify-content:stretch!important}.dashboard-add-booking{width:100%!important}.configurable-table{min-width:max-content!important}.column-picker{width:calc(100vw - 24px)!important;left:12px!important;right:12px!important}.booking-one-screen{grid-template-columns:1fr!important}.right-form-grid{grid-template-columns:1fr!important}.penalty-grid-four,.pricing-fields{grid-template-columns:1fr!important}}
+
+/* V3.7.2 final polish: unclipped driver selector + SMS recipients */
+.booking-page .right-form-grid,
+.booking-page .right-form-grid>.form-card,
+.booking-page .dense-card,
+.booking-page .driver-combo{overflow:visible!important}
+.booking-page .right-form-grid>.form-card{position:relative;z-index:12}
+.booking-page .driver-combo{position:relative;z-index:40}
+.booking-page .driver-combo.open{z-index:10020}
+.booking-page .driver-combo-menu{z-index:10030!important;min-width:260px!important;max-height:260px!important;overflow-y:auto!important;box-shadow:0 14px 34px rgba(16,33,59,.2)!important}
+.booking-page .driver-combo-input{padding-right:36px!important}
+.booking-page .note-card{align-self:start!important}
+
+.all-bookings-table .driver-col{min-width:205px!important}
+.all-bookings-table .table-driver-combo{min-width:190px!important}
+.all-bookings-table .driver-combo-menu{z-index:10020!important}
+
+.sms-recipient-panel{background:#f7f9fc;border:1px solid #e0e7f0;border-radius:12px;padding:12px}
+.sms-recipient-panel h4{font-size:13px!important;color:#10233b!important;margin-bottom:10px!important}
+.sms-recipient-option{position:relative!important;display:grid!important;grid-template-columns:22px minmax(0,1fr)!important;align-items:center!important;gap:10px!important;min-height:72px!important;padding:12px!important;border:1px solid #d9e2ee!important;border-radius:10px!important;background:#fff!important;cursor:pointer!important;transition:.15s ease!important}
+.sms-recipient-option:hover{border-color:#8ab0ff!important;background:#f8fbff!important;transform:translateY(-1px)}
+.sms-recipient-option:has(input:checked){border-color:#1767ed!important;background:#eef5ff!important;box-shadow:0 0 0 2px rgba(23,103,237,.08)!important}
+.sms-recipient-option>input{width:17px!important;height:17px!important;margin:0!important;accent-color:#1767ed!important;justify-self:center!important}
+.sms-recipient-option span{min-width:0!important;align-items:flex-start!important;text-align:left!important}
+.sms-recipient-option strong{font-size:10.5px!important;line-height:1.35!important;word-break:normal!important;overflow-wrap:anywhere!important}
+.sms-recipient-option small{font-size:9px!important;line-height:1.35!important;color:#64758b!important;overflow-wrap:anywhere!important}
+.sms-recipient-option.custom-number{align-items:start!important}
+.sms-recipient-option.custom-number span{width:100%!important}
+.sms-recipient-option.custom-number input[type=tel]{margin-top:7px!important;height:34px!important}
+.sms-template-label{background:#fff;border:1px solid #dfe6ef;border-radius:10px;padding:10px;margin-top:10px!important}
+.sms-help{padding:9px 2px 0!important}
+@media(max-width:760px){.sms-recipient-option{min-height:64px!important}.booking-page .driver-combo-menu{min-width:100%!important;max-width:calc(100vw - 36px)!important}}
