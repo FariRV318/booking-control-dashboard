@@ -80,3 +80,13 @@ V3.7.7 updates:
 - Passenger-capacity validation only; luggage no longer blocks booking saves.
 - Return bookings have a separate Return Driver & Vehicle assignment section.
 - Return leg stores its own driver and auto-assigned vehicle.
+
+V3.7.8 updates:
+- Compact professional Dashboard for 13–15 inch laptops so KPIs, analytics and Upcoming Journeys fit higher on screen.
+- Compact Bookings by Source, Dispatch Status and Revenue Overview cards.
+- Dispatch Board rebalanced into responsive lanes across large, laptop, tablet and phone widths.
+- Booking page includes a Logs button showing audit history for the selected journey only.
+- Working top-right account menu: Account, Settings and Logout.
+- New My Account page with name, company name, email, role, profile picture upload/remove and password-change email.
+- Profile picture appears in top-right and sidebar account areas.
+- Drivers & Vehicles page adds live search and Edit Details for each driver/vehicle record.

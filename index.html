@@ -54,16 +54,17 @@
         <div class="nav-label">SYSTEM</div>
         <button class="nav-btn" data-page="logs">≡ <span>Logs / Audit Trail</span></button>
         <button class="nav-btn" data-page="staff" data-admin-only="true">♚ <span>Staff Accounts</span></button>
+        <button class="nav-btn" data-page="profile">◉ <span>Account</span></button>
         <button class="nav-btn" data-page="settings">⚙ <span>Settings</span></button>
       </nav>
-      <div class="sidebar-user"><div class="avatar">AU</div><div class="sidebar-user-copy"><strong id="sidebarUserName">Admin User</strong><small id="sidebarUserRole">Administrator</small></div><button id="logoutBtn" class="logout-mini" type="button" title="Sign out">↪</button></div>
+      <div class="sidebar-user"><div id="sidebarAvatar" class="avatar user-avatar">AU</div><div class="sidebar-user-copy"><strong id="sidebarUserName">Admin User</strong><small id="sidebarUserRole">Administrator</small></div><button id="logoutBtn" class="logout-mini" type="button" title="Sign out">↪</button></div>
     </aside>
 
     <main class="workspace">
       <header class="topbar">
         <div class="mobile-menu">☰</div>
         <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
-        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="profile-dot">AU</div><div class="profile-copy"><strong id="topUserName">Admin User</strong><small id="topCloudStatus">Cloud offline</small></div></div>
+        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="account-menu-wrap"><button id="accountMenuTrigger" class="account-menu-trigger" type="button"><span id="topAvatar" class="profile-dot user-avatar">AU</span><span class="profile-copy"><strong id="topUserName">Admin User</strong><small id="topCloudStatus">Cloud offline</small></span><span class="account-caret">⌄</span></button><div id="accountMenu" class="account-menu hidden"><button type="button" data-account-action="profile">◉ Account</button><button type="button" data-account-action="settings">⚙ Settings</button><button type="button" data-account-action="logout">↪ Logout</button></div></div></div>
       </header>
 
       <section id="dashboardPage" class="page active dashboard-page">
@@ -204,6 +205,7 @@
                 <button id="driverSmsBtn" type="button" class="quick-action sms-driver">Driver SMS</button>
                 <button id="printBookingBtn" type="button" class="quick-action action-print">Print</button>
                 <button id="copyBookingBtn" type="button" class="quick-action action-copy">Copy</button>
+                <button id="journeyLogsBtn" type="button" class="quick-action action-logs">Logs</button>
                 <button id="moreBookingBtn" type="button" class="quick-action action-more">••• More</button>
               </div>
 
@@ -247,7 +249,7 @@
         </tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
       </section>
 
-      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
+      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><div class="inline-controls driver-page-tools"><input id="driverSearch" class="page-search" type="search" placeholder="Search driver ID, name, phone, vehicle or registration..."><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
 
       <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Partner profiles, booking sources, contacts, billing and account performance.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Company / Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
 
@@ -320,6 +322,15 @@
         <div class="role-cards"><div class="role-card"><strong>Administrator</strong><span>Full access, staff management and settings.</span></div><div class="role-card"><strong>Dispatcher</strong><span>Bookings, dispatch, drivers and operational workflow.</span></div><div class="role-card"><strong>Accounts</strong><span>Bookings, accounts, earnings, expenses, statements and reports.</span></div><div class="role-card"><strong>Read Only</strong><span>View permitted pages without changing synced data.</span></div></div>
         <article class="card"><div class="card-head"><div><h3>Workspace Staff</h3><p>Invited users create their own password using the same email address.</p></div></div><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Account</th><th>Actions</th></tr></thead><tbody id="staffBody"></tbody></table></div></article>
       </section>
+      <section id="accountPage" class="page">
+        <div class="section-head"><div><h2>My Account</h2><p>Manage your profile and company details.</p></div></div>
+        <div class="account-profile-grid">
+          <article class="card account-profile-card"><div class="account-photo-wrap"><div id="accountPhotoPreview" class="account-photo user-avatar">AU</div><div><h3>Profile Picture</h3><p>Upload a square JPG or PNG. It will appear in the top bar and sidebar.</p><label class="btn btn-light account-photo-btn">Upload Picture<input id="accountPhotoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="removeAccountPhoto" class="btn btn-light" type="button">Remove</button></div></div></article>
+          <article class="card account-profile-card"><h3>Account Details</h3><div class="account-form-grid"><label>Name<input id="accountNameInput" placeholder="Your name"></label><label>Company Name<input id="accountCompanyInput" placeholder="Company name"></label><label>Email<input id="accountEmailInput" type="email" readonly></label><label>Role<input id="accountRoleInput" readonly></label></div><div class="account-form-actions"><button id="saveAccountProfile" class="btn btn-primary" type="button">Save Profile</button></div></article>
+          <article class="card account-profile-card account-security-card"><h3>Password & Security</h3><p>Your password is securely managed by Firebase Authentication. Use the button below to receive a password reset/change link at your signed-in email address.</p><button id="changePasswordBtn" class="btn btn-light" type="button">Change Password</button></article>
+        </div>
+      </section>
+
       <section id="settingsPage" class="page">
         <div class="section-head"><div><h2>Settings</h2><p>Authentication, cloud sync and system configuration.</p></div></div>
         <div class="settings-grid">
