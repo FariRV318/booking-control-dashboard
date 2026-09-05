@@ -2,367 +2,244 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Hire Booking Control Dashboard V3.7.1</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b766d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Fari Money Assistant</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="favicon-v4.png?v=11" />
+  <link rel="apple-touch-icon" href="apple-touch-icon-v4.png?v=11" />
+  <script>
+    (function(){
+      var mobileUA=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+      var smallScreen=Math.min(screen.width||9999,screen.height||9999)<=768;
+      if(mobileUA||smallScreen) document.documentElement.classList.add('force-mobile');
+      window.openEntryPanel=function(kind){
+        var actions=document.getElementById('authActions');
+        var login=document.getElementById('gateLoginPanel');
+        var create=document.getElementById('gateCreatePanel');
+        if(!actions||!login||!create)return;
+        actions.style.display='none'; login.classList.remove('open'); create.classList.remove('open');
+        (kind==='create'?create:login).classList.add('open');
+        setTimeout(function(){(kind==='create'?create:login).scrollIntoView({behavior:'smooth',block:'center'});},50);
+      };
+      window.enterMoneyGuest=function(){
+        sessionStorage.setItem('fariMoneyEntered','1');
+        var gate=document.getElementById('authGate'); if(gate) gate.classList.add('hidden');
+      };
+    })();
+  </script>
+  <link rel="stylesheet" href="style.css?v=11.0.0" />
+
+  <script>
+  // v12: clear stale GitHub Pages/PWA caches from older builds once.
+  (function(){
+    const k='fariMoneyCacheResetV12';
+    if(!localStorage.getItem(k)){
+      localStorage.setItem(k,'1');
+      if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(rs=>Promise.all(rs.map(r=>r.unregister()))).catch(()=>{});}
+      if('caches' in window){caches.keys().then(keys=>Promise.all(keys.map(key=>caches.delete(key)))).catch(()=>{});}
+    }
+  })();
+  </script>
 </head>
 <body>
-  <div id="loginView" class="login-shell">
-    <div class="login-card">
-      <div class="login-logo luxury-car-logo" aria-hidden="true"><svg viewBox="0 0 64 32" role="img"><path d="M10 22h44l-3-9c-.7-2.1-2.7-3.5-4.9-3.5H18c-2.2 0-4.2 1.4-4.9 3.5L10 22Zm7-9h30l1.8 5H15.2L17 13Zm-7 10h44v4H10v-4Zm7 4a4 4 0 1 1-8 0h8Zm38 0a4 4 0 1 1-8 0h8Z" fill="currentColor"/></svg></div>
-      <h1>Private Hire Booking</h1>
-      <p>Professional booking & dispatch dashboard</p>
-      <form id="loginForm">
-        <label>Email<input id="loginEmail" type="email" placeholder="admin@company.co.uk" autocomplete="email" required></label>
-        <label>Password<input id="loginPassword" type="password" placeholder="Enter password" autocomplete="current-password" minlength="6" required></label>
-        <div id="loginError" class="auth-message hidden"></div>
-        <button id="signInBtn" class="btn btn-primary full" type="submit">Sign In</button>
-        <button id="createAccountBtn" class="btn btn-light full" type="button">Create Account</button>
-        <button id="forgotPasswordBtn" class="auth-link" type="button">Forgot password?</button>
+  <div class="auth-gate" id="authGate">
+    <div class="auth-card">
+      <div class="auth-visual"><img class="auth-wallpaper" src="login-wallpaper-hd.jpg?v=11" alt="Fari Money Assistant"></div>
+      
+      <p class="auth-welcome">Your personal money guide for smarter spending, debt freedom, urgent goals and better financial decisions.</p>
+      <div class="auth-actions" id="authActions">
+        <button type="button" class="auth-login-btn" id="gateLoginBtn" onclick="openEntryPanel('login')">👤 Login</button>
+        <button type="button" class="auth-create-btn" id="gateCreateBtn" onclick="openEntryPanel('create')">Create Account</button>
+        <button type="button" class="auth-guest-btn" id="gateGuestBtn" onclick="enterMoneyGuest()">Continue as Guest ›</button>
+      </div>
+      <form class="auth-panel" id="gateLoginPanel">
+        <h3>Welcome Back ♥</h3>
+        <label>Email<input id="gateLoginEmail" type="email" required placeholder="you@example.com"></label>
+        <label>Password<input id="gateLoginPassword" type="password" required minlength="6" placeholder="••••••••"></label>
+        <div id="gateLoginStatus" class="auth-status" aria-live="polite"></div>
+        <button class="primary" id="gateLoginSubmit" type="submit">Login</button>
+        <button class="auth-back" type="button" data-auth-back>← Back</button>
+        <button class="auth-offline" id="gateOfflineAfterError" type="button" style="display:none">Open app offline</button>
       </form>
-      <small id="loginCloudHint">Connect Firebase in config.js to enable secure login and cloud sync.</small>
+      <form class="auth-panel" id="gateCreatePanel">
+        <h3>Create Your Account ♥</h3>
+        <label>Name<input id="gateSignupName" placeholder="Fari"></label>
+        <label>Email<input id="gateSignupEmail" type="email" required></label>
+        <label>Password<input id="gateSignupPassword" type="password" required minlength="6"></label>
+        <div id="gateSignupStatus" class="auth-status" aria-live="polite"></div>
+        <button class="primary" id="gateSignupSubmit" type="submit">Create Account</button>
+        <button class="auth-back" type="button" data-auth-back>← Back</button>
+      </form>
+      <p class="auth-quote">“Dreams don’t work unless you plan.”</p>
+      <p class="auth-credit">Created by <strong>Fari-RV ♥</strong></p>
     </div>
   </div>
 
-  <div id="appView" class="app hidden">
-    <aside class="sidebar">
-      <div class="brand"><span class="brand-icon luxury-car-logo" aria-hidden="true"><img src="luxury-car-logo-white.png" alt=""></span><div><strong>Private Hire Booking</strong><small>Control Dashboard</small></div></div>
-      <nav>
-        <button class="nav-btn active" data-page="dashboard">▦ <span>Dashboard</span></button>
-        <div class="nav-label">BOOKINGS</div>
-        <button class="nav-btn" data-page="bookings">▤ <span>All Bookings</span></button>
-        <button class="nav-btn" data-page="bookingForm">＋ <span>Add New Booking</span></button>
-        <button class="nav-btn" data-page="calendar">◫ <span>Calendar View</span></button>
-        <button class="nav-btn" data-page="quotes">◉ <span>Booking Quotes</span></button>
-        <div class="nav-label">DISPATCH</div>
-        <button class="nav-btn" data-page="dashboard">⇄ <span>Upcoming Journeys</span></button>
-        <button class="nav-btn" data-page="dispatch">◉ <span>Dispatch Board</span></button>
-        <div class="nav-label">MANAGEMENT</div>
-        <button class="nav-btn" data-page="drivers">♙ <span>Drivers & Vehicles</span></button>
-        <button class="nav-btn" data-page="compliance">⚠ <span>Expiring Documents</span></button>
-        <button class="nav-btn" data-page="accounts">▥ <span>Companies / Accounts</span></button>
-        <button class="nav-btn" data-page="customers">♧ <span>Customers</span></button>
-        <div class="nav-label">FINANCE</div>
-        <button class="nav-btn" data-page="earnings">£ <span>Earnings</span></button>
-        <button class="nav-btn" data-page="expenses">◇ <span>Expenses</span></button>
-        <button class="nav-btn" data-page="statements">▤ <span>Driver Statements</span></button>
-        <div class="nav-label">REPORTS</div>
-        <button class="nav-btn" data-page="reports">▧ <span>Reports</span></button>
-        <div class="nav-label">SYSTEM</div>
-        <button class="nav-btn" data-page="logs">≡ <span>Logs / Audit Trail</span></button>
-        <button class="nav-btn" data-page="staff" data-admin-only="true">♚ <span>Staff Accounts</span></button>
-        <button class="nav-btn" data-page="profile">◉ <span>Account</span></button>
-        <button class="nav-btn" data-page="settings">⚙ <span>Settings</span></button>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <img class="brand-logo" src="icon-v4-192.png?v=5" alt="Fari Money Assistant">
+        <div><strong>Fari Money</strong><span>Assistant</span></div>
+      </div>
+      <nav id="nav">
+        <button class="nav-btn active" data-view="dashboard">🏠 <span>Dashboard</span></button>
+        <button class="nav-btn" data-view="plan">🤖 <span>My Money Plan</span></button>
+        <button class="nav-btn" data-view="transactions">💳 <span>Transactions</span></button>
+        <button class="nav-btn" data-view="debts">🧾 <span>Debt Manager</span></button>
+        <button class="nav-btn" data-view="goals">🎯 <span>Urgent Goals</span></button>
+        <button class="nav-btn" data-view="afford">🛍️ <span>Can I Afford This?</span></button>
+        <button class="nav-btn" data-view="credit">🔁 <span>Revolving Credit</span></button>
+        <button class="nav-btn" data-view="account">👤 <span>Account & Login</span></button>
+        <button class="nav-btn" data-view="settings">⚙️ <span>Settings & Backup</span></button>
       </nav>
-      <div class="sidebar-user"><div id="sidebarAvatar" class="avatar user-avatar">AU</div><div class="sidebar-user-copy"><strong id="sidebarUserName">Admin User</strong><small id="sidebarUserRole">Administrator</small></div><button id="logoutBtn" class="logout-mini" type="button" title="Sign out">↪</button></div>
+      <div class="sidebar-foot"><strong>Created by Fari-RV ♥</strong><br>Plan today. Breathe easier tomorrow.</div>
     </aside>
 
-    <main class="workspace">
+    <main>
       <header class="topbar">
-        <div class="mobile-menu">☰</div>
-        <div class="top-title"><h1 id="pageTitle">Dashboard</h1><p id="pageSubtitle">Booking operations at a glance</p></div>
-        <div class="top-actions"><input id="globalSearch" type="search" placeholder="Search bookings, drivers, passengers..."><div class="notification-center"><button id="notificationBell" class="icon-btn" type="button" aria-label="Notifications">🔔<span id="notificationCount" class="notify-dot">0</span></button><div id="notificationPopover" class="notification-popover hidden"><div class="notification-popover-head"><strong>Recent Notifications</strong><button id="closeNotifications" type="button">×</button></div><div id="notificationPopoverList" class="notification-list"></div><button class="notification-view-all" data-page-link="bookings">View all bookings</button></div></div><button class="icon-btn">✉</button><div class="account-menu-wrap"><button id="accountMenuTrigger" class="account-menu-trigger" type="button"><span id="topAvatar" class="profile-dot user-avatar">AU</span><span class="profile-copy"><strong id="topUserName">Admin User</strong><small id="topCloudStatus">Cloud offline</small></span><span class="account-caret">⌄</span></button><div id="accountMenu" class="account-menu hidden"><button type="button" data-account-action="profile">◉ Account</button><button type="button" data-account-action="settings">⚙ Settings</button><button type="button" data-account-action="logout">↪ Logout</button></div></div></div>
+        <button class="icon-btn" id="menuBtn" aria-label="Menu">☰</button>
+        <div>
+          <h1 id="pageTitle">Dashboard</h1>
+          <p id="todayText"></p>
+        </div>
+        <button class="avatar" id="quickAdd">＋</button>
       </header>
 
-      <section id="dashboardPage" class="page active dashboard-page">
-        <div class="dashboard-primary-actions">
-          <button class="btn btn-primary dashboard-add-booking" data-open-booking>＋ Add Booking</button>
-        </div>
-
-        <div class="kpi-grid five">
-          <div class="kpi-card"><div class="kpi-icon blue">▣</div><div><span>Today's Bookings</span><strong id="todayBookings">0</strong><button class="kpi-link" data-kpi-view="today">View all</button></div></div>
-          <div class="kpi-card"><div class="kpi-icon violet">▤</div><div><span>Upcoming Journeys</span><strong id="upcomingCount">0</strong><button class="kpi-link" data-kpi-view="upcoming">View all</button></div></div>
-          <div class="kpi-card"><div class="kpi-icon green">✓</div><div><span>In Process</span><strong id="inProcessCount">0</strong><button class="kpi-link" data-kpi-view="process">View all</button></div></div>
-          <div class="kpi-card"><div class="kpi-icon amber">⚑</div><div><span>Completed Today</span><strong id="completedToday">0</strong><button class="kpi-link" data-kpi-view="completed">View all</button></div></div>
-          <div class="kpi-card"><div class="kpi-icon purple">£</div><div><span>Today's Revenue</span><strong id="todayRevenue">£0.00</strong><button class="kpi-link" data-kpi-view="revenue">View all</button></div></div>
-        </div>
-
-        <div class="dashboard-analytics-grid dashboard-analytics-top">
-          <article class="card mini-card"><div class="card-head no-border"><h3>Bookings by Source <span>(This Month)</span></h3></div><div id="sourceDonutWrap" class="source-visual"><div class="donut"><div id="sourceTotal">0</div></div><div id="sourceLegend" class="legend-list"></div></div></article>
-          <article class="card mini-card"><div class="card-head no-border"><h3>Dispatch Status <span>(Current)</span></h3></div><div id="dispatchBars" class="bar-list"></div></article>
-          <article class="card mini-card revenue-card"><div class="card-head no-border"><h3>Revenue Overview <span>(Last 6 Months)</span></h3><button class="mini-view-link" data-page-link="earnings">View all</button></div><div class="revenue-big" id="monthRevenue">£0.00</div><small>Current month booked revenue</small><div id="revenueChart" class="revenue-chart" aria-label="Monthly revenue chart"></div></article>
-        </div>
-
-        <article class="card upcoming-card dashboard-journeys-wide">
-          <div class="card-head compact-head journey-head-row">
-            <div><h2>Upcoming / In Process Journeys</h2><p>Assign drivers and manually control dispatch status</p></div>
-            <div class="range-filter dashboard-filter">
-              <label><span>From Date</span><input id="upcomingFrom" type="date"></label>
-              <label><span>To Date</span><input id="upcomingTo" type="date"></label>
-              <label class="dashboard-search-label"><span>Search Journey</span><input id="dashboardSearch" type="search" placeholder="Passenger, ref, phone, location, source..." autocomplete="off"></label>
-              <button id="applyUpcomingRange" class="btn btn-light">⌕ Filter</button>
-              <button id="clearUpcomingFilter" class="btn btn-light">Clear</button>
-              <button id="dashboardColumnsBtn" class="btn btn-light column-picker-btn" type="button">◉ Hide / Show</button>
-            </div>
+      <section class="view active" id="dashboard-view">
+        <div class="hero">
+          <div>
+            <span class="eyebrow">Safe to spend today</span>
+            <h2 id="safeToSpend">AED 0</h2>
+            <p id="heroMessage">Add your income and commitments to generate your plan.</p>
           </div>
-          <div class="table-scroll fixed-rows dashboard-table-scroll">
-            <table class="pro-table compact-table dashboard-journey-table configurable-table" data-table="dashboard">
-              <thead><tr>
-                <th data-col="ref">Booking Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="specialReq">Sp. Req</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch Status</th><th data-col="source">Source</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
-              </tr></thead>
-              <tbody id="upcomingBody"></tbody>
-            </table>
-          </div>
-          <div class="table-footer"><button class="text-btn" data-page-link="bookings">View All Upcoming Journeys</button></div>
+          <div class="health" id="healthBadge">SETUP</div>
+        </div>
+
+        <article class="journey-banner">
+          <div><span class="eyebrow">Your debt-free journey</span><h3 id="freedomHeadline">Your future plan will appear here.</h3><p id="freedomMessage">Add your income and debts and I’ll map the road ahead month by month.</p></div>
+          <div class="freedom-badge" id="freedomBadge">♥ FUTURE YOU</div>
+        </article>
+
+        <article class="card roadmap-card">
+          <div class="card-head"><div><span class="eyebrow">Beyond this month</span><h3>Debt Freedom Roadmap</h3><p class="subtle">See what September, October, November and the months ahead could look like.</p></div><button class="text-btn" data-jump="plan">View full plan</button></div>
+          <div id="roadmap" class="roadmap empty-state">Add income and debts to build your timeline.</div>
+        </article>
+
+        <div class="stats-grid">
+          <article class="stat"><span>Total income</span><strong id="statIncome">AED 0</strong><small>This month</small></article>
+          <article class="stat"><span>Mandatory reserved</span><strong id="statMandatory">AED 0</strong><small>Fixed commitments</small></article>
+          <article class="stat"><span>Total debt</span><strong id="statDebt">AED 0</strong><small>Outstanding</small></article>
+          <article class="stat"><span>Goal funding needed</span><strong id="statGoals">AED 0</strong><small>Before deadlines</small></article>
+        </div>
+
+        <div class="grid-2">
+          <article class="card">
+            <div class="card-head"><div><span class="eyebrow">Assistant recommendation</span><h3>This month’s priorities</h3></div><button class="text-btn" data-jump="plan">Open plan</button></div>
+            <div id="priorityList" class="priority-list empty-state">No plan yet.</div>
+          </article>
+          <article class="card">
+            <div class="card-head"><div><span class="eyebrow">Upcoming</span><h3>Next important payments</h3></div></div>
+            <div id="upcomingList" class="timeline empty-state">Nothing due yet.</div>
+          </article>
+        </div>
+
+        <article class="card">
+          <div class="card-head"><div><span class="eyebrow">Cash-flow map</span><h3>Where your monthly income goes</h3></div></div>
+          <div class="flow-bar" id="flowBar"></div>
+          <div class="flow-legend" id="flowLegend"></div>
         </article>
       </section>
 
-      <section id="bookingFormPage" class="page booking-page">
-        <form id="bookingForm" class="booking-screen-form">
-          <input type="hidden" id="bookingId">
-          <div class="booking-toolbar">
-            <button type="button" class="text-btn" data-page-link="bookings">← Back to Bookings</button>
-            <div><button id="resetBookingBtn" type="button" class="btn btn-light">Reset</button><button id="saveBookingTop" type="button" class="btn btn-primary">Save Booking</button></div>
-          </div>
-
-          <div class="booking-one-screen">
-            <div class="booking-column left-col">
-              <article class="form-card dense-card">
-                <h3>Passenger & Booking</h3>
-                <div class="field-grid three compact-fields">
-                  <label>Passenger Name *<input id="passengerName" required placeholder="Passenger name"></label>
-                  <label>Phone Number *<input id="passengerPhone" required placeholder="+44 ..."></label>
-                  <label>Booking Account (Source) *<select id="bookingSource" required></select></label>
-                  <label>Email<input id="passengerEmail" type="email" placeholder="Optional"></label>
-                  <label>External Reference<input id="externalRef" placeholder="Company ref"></label>
-                  <label>Our Booking Reference<input id="ourRef" readonly></label>
-                </div>
-              </article>
-
-              <article class="form-card dense-card">
-                <h3>Journey & Flight</h3>
-                <div class="field-grid four compact-fields">
-                  <label>Journey Type<select id="journeyType"><option>One Way</option><option>Return (Same Day)</option><option>Return (Different Day)</option></select></label>
-                  <label>Date *<input id="journeyDate" type="date" required></label>
-                  <label>Time *<input id="journeyTime" type="time" required></label>
-                  <label>Flight Number<input id="flightNumber" placeholder="Optional"></label>
-                  <label>Airline<input id="airline" placeholder="Airline"></label>
-                  <label>Airport / Terminal<input id="terminal" placeholder="Terminal"></label>
-                  <label>Arrival Time<input id="arrivalTime" type="time"></label>
-                  <label class="toggle-field">Wait & Return <span><input id="waitReturn" type="checkbox"> Enable</span></label>
-                </div>
-                <div id="returnFields" class="return-journey-panel hidden">
-                  <div class="return-journey-title">Return Journey Details</div>
-                  <div class="field-grid four compact-fields return-row">
-                    <label id="returnDateLabel">Return Date<input id="returnDate" type="date"></label>
-                    <label>Return Time *<input id="returnTime" type="time"></label>
-                    <label>Return Pickup *<input id="returnPickup" placeholder="Return pickup"></label>
-                    <label>Return Drop-off *<input id="returnDropoff" placeholder="Return destination"></label>
-                  </div>
-                  <div id="waitingField" class="field-grid one compact-fields hidden">
-                    <label>Waiting (mins)<input id="waitingMinutes" type="number" min="0" step="5" value="0"></label>
-                  </div>
-                </div>
-              </article>
-
-              <article class="form-card dense-card route-card">
-                <div class="form-card-head"><h3>Pickup, Via & Drop-off</h3><button type="button" id="addViaBtn" class="btn btn-light tiny">+ Via</button></div>
-                <div class="route-inputs compact-route">
-                  <div class="route-row"><span class="marker pickup">A</span><label>Pickup *<input id="pickup" class="map-address" required placeholder="Start typing pickup..."></label></div>
-                  <div id="viaContainer"></div>
-                  <div class="route-row"><span class="marker drop">D</span><label>Drop-off *<input id="dropoff" class="map-address" required placeholder="Start typing destination..."></label></div>
-                </div>
-              </article>
-
-              <article class="form-card dense-card">
-                <h3>Passengers, Luggage & Requirements</h3>
-                <div class="field-grid four compact-fields passenger-requirements-grid">
-                  <label>Passengers *<select id="passengerCount"></select></label>
-                  <label>Hand Carry<select id="handCarry"></select></label>
-                  <label>Suitcases<select id="suitcases"></select></label>
-                  <label>Vehicle Class Requested<select id="vehicleClassRequested">
-                    <option>Saloon</option><option>Estate</option><option>MPV</option><option>Minivan</option>
-                    <option>Executive Saloon</option><option>Executive MPV</option><option>Luxury / VIP</option>
-                    <option>8-Seater / Large MPV</option><option>Wheelchair Accessible</option><option>Other</option>
-                  </select></label>
-                </div>
-                <div class="requirements compact-req">
-                  <label><input type="checkbox" value="Child Car Seat" class="req"> Car Seat</label>
-                  <label><input type="checkbox" value="Booster Seat" class="req"> Booster</label>
-                  <label><input type="checkbox" value="Wheelchair" class="req"> Wheelchair</label>
-                  <label><input type="checkbox" value="Medical Assistance" class="req"> Medical</label>
-                  <label><input type="checkbox" value="Elderly Assistance" class="req"> Elderly</label>
-                  <label><input type="checkbox" value="Meet & Greet" class="req"> Meet & Greet</label>
-                  <label><input type="checkbox" value="Pet" class="req"> Pet</label>
-                  <label><input type="checkbox" value="Other" class="req"> Other</label>
-                </div>
-                <input id="otherRequirement" class="other-requirement" placeholder="Other requirement (optional)">
-              </article>
-            </div>
-
-            <div class="booking-column right-col">
-              <article class="map-card compact-map-card">
-                <div class="map-summary"><div><span>Distance</span><strong id="routeMiles">—</strong><small>miles</small></div><div><span>Estimated</span><strong id="routeTime">—</strong><small>driving</small></div><div><span>Via</span><strong id="viaCount">0</strong><small>stops</small></div></div>
-                <div id="map" class="map-box compact-map"><div class="map-placeholder"><div class="map-road"></div><strong>Route Map</strong><span>Google Maps activates when an API key is added in config.js.</span></div></div>
-              </article>
-
-              <div class="booking-quick-actions" aria-label="Booking actions">
-                <button id="sendSmsBtn" type="button" class="quick-action sms-main">Send SMS</button>
-                <button id="confirmSmsBtn" type="button" class="quick-action sms-confirm">Confirm SMS</button>
-                <button id="driverSmsBtn" type="button" class="quick-action sms-driver">Driver SMS</button>
-                <button id="printBookingBtn" type="button" class="quick-action action-print">Print</button>
-                <button id="copyBookingBtn" type="button" class="quick-action action-copy">Copy</button>
-                <button id="journeyLogsBtn" type="button" class="quick-action action-logs">Logs</button>
-                <button id="moreBookingBtn" type="button" class="quick-action action-more">••• More</button>
-              </div>
-
-              <article class="form-card dense-card driver-vehicle-booking-card driver-vehicle-wide"><h3>Driver & Vehicle</h3><div class="field-grid two compact-fields"><label>Assign Driver<div class="driver-combo"><input id="bookingDriver" class="driver-combo-input" autocomplete="off" placeholder="Select or type driver name / ID..."><button class="driver-combo-toggle" type="button" aria-label="Show drivers">⌄</button><div class="driver-combo-menu"></div></div></label><label>Vehicle<input id="bookingVehicle" readonly placeholder="Auto from driver"></label></div></article>
-              <article id="returnDriverVehicleFields" class="form-card dense-card driver-vehicle-booking-card driver-vehicle-wide return-driver-vehicle-card hidden"><h3>Return Driver & Vehicle</h3><div class="field-grid two compact-fields"><label>Assign Return Driver<div class="driver-combo"><input id="returnBookingDriver" class="driver-combo-input" autocomplete="off" placeholder="Select or type return driver name / ID..."><button class="driver-combo-toggle" type="button" aria-label="Show drivers">⌄</button><div class="driver-combo-menu"></div></div></label><label>Return Vehicle<input id="returnBookingVehicle" readonly placeholder="Auto from return driver"></label></div></article>
-
-              <div class="booking-bottom-grid">
-                <article class="form-card dense-card note-card"><h3>Driver Notes</h3><textarea id="driverNotes" maxlength="700" placeholder="Notes visible to driver..."></textarea></article>
-                <article class="form-card dense-card pricing-card"><h3>Pricing & Payment</h3><div class="field-grid three compact-fields pricing-fields"><label><span id="fareLabel">Total Fare (£)</span><input id="fare" type="number" step="0.01" min="0" value="0"></label><label><span id="driverFareLabel">Driver Fare (£)</span><input id="driverFare" type="number" step="0.01" min="0" value="0"></label><label>Payment<select id="paymentMethod"><option>Account</option><option>Cash</option><option>Card</option><option>Bank Transfer</option></select></label></div><div id="returnFareFields" class="field-grid two compact-fields return-fare-fields hidden"><label>Return Fare (£)<input id="returnFare" type="number" step="0.01" min="0" value="0"></label><label>Return Driver Fare (£)<input id="returnDriverFare" type="number" step="0.01" min="0" value="0"></label></div><div class="penalty-grid penalty-grid-four"><label>Driver Penalty (£)<input id="penaltyAmount" type="number" step="0.01" min="0" value="0" placeholder="0.00"></label><label>Driver Penalty Reason<input id="penaltyReason" placeholder="e.g. Driver No Show, late arrival"></label><label>Company Penalty / Chargeback (£)<input id="companyPenaltyAmount" type="number" step="0.01" min="0" value="0" placeholder="0.00"></label><label>Company Penalty Reason<input id="companyPenaltyReason" placeholder="e.g. partner chargeback, service failure"></label></div><div class="margin-line">Net Company Margin <strong id="companyMargin">£0.00</strong></div></article>
-                <input id="officeComments" type="hidden" value="">
-              </div>
-
-              <div class="booking-actions">
-                <button id="deleteBookingBtn" type="button" class="btn btn-danger hidden">Delete Booking</button>
-                <div class="spacer"></div>
-                <button type="button" class="btn btn-light" data-page-link="bookings">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save Booking</button>
-              </div>
-            </div>
-          </div>
-        </form>
-      </section>
-
-      <section id="bookingsPage" class="page">
-        <div class="section-head bookings-head">
-          <div><h2>All Bookings</h2><p>Search, filter, review and modify every booking.</p></div>
-          <div class="range-filter bookings-range">
-            <label><span>From Date</span><input id="allFrom" type="date"></label>
-            <label><span>To Date</span><input id="allTo" type="date"></label>
-            <input id="bookingSearch" type="search" placeholder="Search ref, passenger, phone, route, source...">
-            <select id="allStatus"><option value="">All Statuses</option><option value="__active">Upcoming / Active</option><option value="__process">In Process</option><option>Assigned</option><option>Dispatched</option><option>On the Way</option><option>POB</option><option>Completed</option><option>Cancelled</option><option>Driver No Show</option><option>Pax No Show</option></select>
-            <select id="allDriverPayment"><option value="">All Driver Payments</option><option value="pending">Pending Driver Payment</option><option value="paid">Paid Driver Payment</option></select>
-            <button id="applyAllRange" class="btn btn-light">Filter</button>
-            <button id="clearAllFilters" class="btn btn-light">Clear</button>
-            <button id="allColumnsBtn" class="btn btn-light column-picker-btn" type="button">◉ Hide / Show</button>
-            <button class="btn btn-primary" data-open-booking>+ Add New Booking</button>
-          </div>
+      <section class="view" id="plan-view">
+        <div class="section-intro"><div><span class="eyebrow">Your financial brain</span><h2>My Money Plan</h2><p>Creates a priority-based plan using your income, fixed commitments, debts, goals and monthly buffer.</p></div><button class="primary" id="generatePlanBtn">Generate / Refresh Plan</button></div>
+        <div class="grid-2">
+          <article class="card"><h3>Income setup</h3><form id="incomeForm" class="form-grid"><label>Fixed salary<input type="number" min="0" step="0.01" id="fixedIncome" placeholder="5000"></label><label>Side / online income<input type="number" min="0" step="0.01" id="sideIncome" placeholder="2500"></label><label>Trading income<input type="number" step="0.01" id="tradingIncome" placeholder="0"></label><label>Other income<input type="number" step="0.01" id="otherIncome" placeholder="0"></label><label>Essential living budget<input type="number" min="0" step="0.01" id="essentialBudget" placeholder="1200"></label><label>Emergency buffer target<input type="number" min="0" step="0.01" id="bufferTarget" placeholder="500"></label><button class="primary span-2" type="submit">Save Income & Budget</button></form></article>
+          <article class="card"><h3>Assistant summary</h3><div id="planSummary" class="assistant-box">Enter your monthly income, then add debts and goals. I’ll calculate what is non-negotiable and how to use the rest.</div></article>
         </div>
-        <article class="card"><div class="table-scroll all-bookings-scroll"><table class="pro-table compact-table configurable-table all-bookings-table" data-table="all"><thead><tr>
-          <th data-col="ref">Ref</th><th data-col="date">Date & Time</th><th data-col="passenger">Passenger</th><th data-col="pax">Pax & Lugg</th><th data-col="specialReq">Sp. Req</th><th data-col="from">From</th><th data-col="to">To</th><th data-col="vehicleReq">Vehicle Req.<br><span class="th-sub">Mileage</span></th><th data-col="flight">F/N</th><th data-col="fare">£</th><th data-col="source">Source</th><th data-col="driver">Driver</th><th data-col="driverVehicle">Driver Vehicle</th><th data-col="dispatch">Dispatch</th><th data-col="comment">Staff Comment</th><th data-col="complaint">Complaint</th><th data-col="resolved">Complaint Resolved</th><th data-col="paid">Driver Paid</th><th data-col="actions">Actions</th>
-        </tr></thead><tbody id="allBookingsBody"></tbody></table></div></article>
+        <article class="card"><h3>Recommended allocation</h3><div id="allocationTable" class="table-wrap empty-state">No plan generated yet.</div></article>
       </section>
 
-      <section id="driversPage" class="page"><div class="section-head"><div><h2>Drivers & Vehicles</h2><p>Complete driver, vehicle and compliance records together in one place.</p></div><div class="inline-controls driver-page-tools"><input id="driverSearch" class="page-search" type="search" placeholder="Search driver ID, name, phone, vehicle or registration..."><button id="addDriverBtn" class="btn btn-primary">+ Add Driver & Vehicle</button></div></div><div id="driversGrid" class="management-grid driver-vehicle-grid"></div></section>
-
-      <section id="accountsPage" class="page"><div class="section-head"><div><h2>Companies / Accounts</h2><p>Partner profiles, booking sources, contacts, billing and account performance.</p></div><button id="addAccountBtn" class="btn btn-primary">+ Add Company / Account</button></div><div id="accountsGrid" class="management-grid"></div></section>
-
-      <section id="customersPage" class="page">
-        <div class="section-head"><div><h2>Customers</h2><p>Automatically built from booking history.</p></div><input id="customerSearch" class="page-search" type="search" placeholder="Search customer, phone or email..."></div>
-        <div id="customersGrid" class="management-grid"></div>
+      <section class="view" id="transactions-view">
+        <div class="section-intro"><div><span class="eyebrow">Daily money</span><h2>Transactions</h2><p>Track income and spending. Your plan updates automatically.</p></div><button class="primary" data-modal="transaction">+ Add transaction</button></div>
+        <div class="filter-row"><input id="txnSearch" placeholder="Search transactions"><select id="txnTypeFilter"><option value="all">All types</option><option>Expense</option><option>Income</option><option>Debt Payment</option><option>Debt Received</option></select></div>
+        <article class="card"><div id="transactionList" class="list"></div></article>
       </section>
 
-      <section id="calendarPage" class="page">
-        <div class="section-head"><div><h2>Calendar View</h2><p>See journeys by day.</p></div><div class="inline-controls"><input id="calendarMonth" type="month"><button id="calendarTodayBtn" class="btn btn-light">This Month</button></div></div>
-        <article class="card"><div id="calendarGrid" class="calendar-grid"></div></article>
+      <section class="view" id="debts-view">
+        <div class="section-intro"><div><span class="eyebrow">Priority-aware repayment</span><h2>Debt Manager</h2><p>Fixed EMIs are protected. Flexible debts are adjusted when your budget is tight.</p></div><button class="primary" data-modal="debt">+ Add debt</button></div>
+        <div id="debtCards" class="cards-grid"></div>
       </section>
 
-      <section id="quotesPage" class="page">
-        <div class="section-head"><div><h2>Booking Quotes</h2><p>Create, track and convert enquiries into confirmed bookings.</p></div><button id="addQuoteBtn" class="btn btn-primary">+ New Quote</button></div>
-        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Quote Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Source</th><th>Quoted Fare</th><th>Status</th><th>Actions</th></tr></thead><tbody id="quotesBody"></tbody></table></div></article>
+      <section class="view" id="goals-view">
+        <div class="section-intro"><div><span class="eyebrow">Deadlines that matter</span><h2>Urgent Goals</h2><p>Tell the app what you must buy or pay for and by when. It works backward to create a funding path.</p></div><button class="primary" data-modal="goal">+ Add urgent goal</button></div>
+        <div id="goalCards" class="cards-grid"></div>
       </section>
 
-      <section id="dispatchPage" class="page">
-        <div class="section-head"><div><h2>Dispatch Board</h2><p>Operational view of live journeys by dispatch stage.</p></div><div class="inline-controls"><input id="dispatchSearch" type="search" placeholder="Search journey..."><button id="dispatchRefresh" class="btn btn-light">Refresh</button></div></div>
-        <div id="dispatchBoard" class="dispatch-board"></div>
-      </section>
-
-      <section id="earningsPage" class="page">
-        <div class="section-head"><div><h2>Earnings</h2><p>Revenue, driver fares and company margin.</p></div><div class="range-filter"><label><span>From</span><input id="earningsFrom" type="date"></label><label><span>To</span><input id="earningsTo" type="date"></label><select id="earningsCompany"></select><button id="applyEarnings" class="btn btn-light">Apply</button></div></div>
-        <div class="finance-kpis"><div class="finance-kpi"><span>Total Fare</span><strong id="earningsTotal">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="earningsDriver">£0.00</strong></div><div class="finance-kpi"><span>Company Margin</span><strong id="earningsMargin">£0.00</strong></div><div class="finance-kpi"><span>Bookings</span><strong id="earningsJobs">0</strong></div></div>
-        <article class="card"><div id="earningsChart" class="wide-bar-chart"></div></article>
-      </section>
-
-      <section id="expensesPage" class="page">
-        <div class="section-head"><div><h2>Expenses</h2><p>Track operational costs and account-related expenses.</p></div><div class="inline-controls"><input id="expenseFrom" type="date"><input id="expenseTo" type="date"><button id="addExpenseBtn" class="btn btn-primary">+ Add Expense</button></div></div>
-        <div class="finance-kpis compact-finance"><div class="finance-kpi"><span>Filtered Expenses</span><strong id="expenseTotal">£0.00</strong></div><div class="finance-kpi"><span>Entries</span><strong id="expenseCount">0</strong></div></div>
-        <article class="card"><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Company / Account</th><th>Amount</th><th></th></tr></thead><tbody id="expensesBody"></tbody></table></div></article>
-      </section>
-
-      <section id="statementsPage" class="page">
-        <div class="section-head"><div><h2>Driver Statements</h2><p>Generate professional weekly, monthly or custom driver settlement statements.</p></div></div>
-        <article class="card statement-filter-card"><div class="report-filters statement-filters">
-          <label><span>Driver</span><div class="driver-combo"><input id="statementDriver" class="driver-combo-input" autocomplete="off" placeholder="Select or type driver name / ID..."><button class="driver-combo-toggle" type="button" aria-label="Show drivers">⌄</button><div class="driver-combo-menu"></div></div></label>
-          <label><span>From Date</span><input id="statementFrom" type="date"></label>
-          <label><span>To Date</span><input id="statementTo" type="date"></label>
-          <label><span>Preset</span><select id="statementPreset"><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option><option value="custom">Custom</option></select></label>
-          <button id="generateStatement" class="btn btn-primary">Generate Statement</button>
-        </div></article>
-        <div class="finance-kpis statement-kpis"><div class="finance-kpi"><span>Statement Jobs</span><strong id="statementJobs">0</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="statementDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Cash Collected</span><strong id="statementCash">£0.00</strong></div><div class="finance-kpi"><span>Penalties</span><strong id="statementPenalty">£0.00</strong></div><div class="finance-kpi"><span>On Hold</span><strong id="statementHold">£0.00</strong></div><div class="finance-kpi statement-net"><span>Net Settlement</span><strong id="statementNet">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="statementPdf" class="btn btn-primary">Download PDF</button><button id="statementPrint" class="btn btn-light">Print Statement</button></div><div class="statement-note">Net Settlement is the final amount after cash and all driver penalties. Positive net = company owes driver; negative net = driver owes company. Complaint holds pause positive driver payments, but penalties still deduct from the balance.</div><div class="table-scroll statement-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Date</th><th>Ref</th><th>Passenger</th><th>From</th><th>To</th><th>Job Status</th><th>Driver Fare</th><th>Payment</th><th>Cash Collected</th><th>Penalty</th><th>Complaint</th><th>Net</th><th>Settlement</th></tr></thead><tbody id="statementBody"></tbody></table></div></article>
-      </section>
-
-      <section id="reportsPage" class="page">
-        <div class="section-head"><div><h2>Reports</h2><p>Generate weekly, monthly or custom reports by company/account.</p></div></div>
-        <article class="card report-filter-card"><div class="report-filters"><label><span>From Date</span><input id="reportFrom" type="date"></label><label><span>To Date</span><input id="reportTo" type="date"></label><label class="report-search"><span>Search</span><input id="reportSearch" type="search" placeholder="Passenger, ref, phone, route..."></label><label><span>Company / Account</span><select id="reportCompany"></select></label><label><span>Preset</span><select id="reportPreset"><option value="custom">Custom</option><option value="thisWeek">This Week</option><option value="lastWeek">Last Week</option><option value="thisMonth">This Month</option><option value="lastMonth">Last Month</option></select></label><button id="generateReport" class="btn btn-primary">Generate Report</button></div></article>
-        <div class="finance-kpis report-kpis"><div class="finance-kpi"><span>Bookings</span><strong id="reportJobs">0</strong></div><div class="finance-kpi"><span>Total Fare</span><strong id="reportRevenue">£0.00</strong></div><div class="finance-kpi"><span>Driver Fare</span><strong id="reportDriverFare">£0.00</strong></div><div class="finance-kpi"><span>Driver Penalties</span><strong id="reportDriverPenalties">£0.00</strong></div><div class="finance-kpi"><span>Company Penalties</span><strong id="reportCompanyPenalties">£0.00</strong></div><div class="finance-kpi"><span>Net Margin</span><strong id="reportMargin">£0.00</strong></div></div>
-        <article class="card"><div class="report-actions"><button id="downloadCsv" class="btn btn-primary">Download CSV</button><button id="downloadPdf" class="btn btn-primary">Download PDF</button><button id="printReport" class="btn btn-light">Print Report</button></div><div class="table-scroll report-table-scroll"><table class="pro-table compact-table"><thead><tr><th>Ref</th><th>Date</th><th>Passenger</th><th>From</th><th>To</th><th>Company</th><th>Status</th><th>Total</th><th>Driver</th><th>Driver Penalty</th><th>Company Penalty</th><th>Net Margin</th><th>Complaint</th><th>Driver Payment</th></tr></thead><tbody id="reportBody"></tbody></table></div></article>
-      </section>
-
-
-      <section id="compliancePage" class="page">
-        <div class="section-head"><div><h2>Expiring Documents</h2><p>Driving licences, PHV/PCO documents, MOT, insurance, road tax and vehicle licences due within 30 days.</p></div><button class="btn btn-light" data-page-link="drivers">Open Drivers & Vehicles</button></div>
-        <article class="card compliance-page-card"><div id="complianceAlerts" class="compliance-page-list"></div></article>
-      </section>
-
-      <section id="logsPage" class="page">
-        <div class="section-head"><div><h2>Logs / Audit Trail</h2><p>Permanent record of important changes made by signed-in staff.</p></div><button id="refreshLogsBtn" class="btn btn-light" type="button">Refresh</button></div>
-        <article class="card audit-filter-card"><div class="audit-filters"><label><span>Search</span><input id="auditSearch" type="search" placeholder="Staff, booking ref, action, details..."></label><label><span>Action</span><select id="auditAction"><option value="">All Actions</option><option>Created</option><option>Updated</option><option>Deleted</option><option>System</option></select></label><label><span>Staff</span><select id="auditStaff"><option value="">All Staff</option></select></label></div></article>
-        <article class="card"><div class="table-scroll audit-table-scroll"><table class="pro-table compact-table audit-table"><thead><tr><th>Date & Time</th><th>Staff Member</th><th>Role</th><th>Action</th><th>Record</th><th>Changes / Details</th></tr></thead><tbody id="auditBody"></tbody></table></div></article>
-      </section>
-
-      <section id="staffPage" class="page">
-        <div class="section-head"><div><h2>Staff Accounts</h2><p>Invite staff to the same company workspace and control their role.</p></div><button id="inviteStaffBtn" class="btn btn-primary" type="button">+ Invite Staff</button></div>
-        <div class="role-cards"><div class="role-card"><strong>Administrator</strong><span>Full access, staff management and settings.</span></div><div class="role-card"><strong>Dispatcher</strong><span>Bookings, dispatch, drivers and operational workflow.</span></div><div class="role-card"><strong>Accounts</strong><span>Bookings, accounts, earnings, expenses, statements and reports.</span></div><div class="role-card"><strong>Read Only</strong><span>View permitted pages without changing synced data.</span></div></div>
-        <article class="card"><div class="card-head"><div><h3>Workspace Staff</h3><p>Invited users create their own password using the same email address.</p></div></div><div class="table-scroll"><table class="pro-table compact-table"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Account</th><th>Actions</th></tr></thead><tbody id="staffBody"></tbody></table></div></article>
-      </section>
-      <section id="accountPage" class="page">
-        <div class="section-head"><div><h2>My Account</h2><p>Manage your profile and company details.</p></div></div>
-        <div class="account-profile-grid">
-          <article class="card account-profile-card"><div class="account-photo-wrap"><div id="accountPhotoPreview" class="account-photo user-avatar">AU</div><div><h3>Profile Picture</h3><p>Upload a square JPG or PNG. It will appear in the top bar and sidebar.</p><label class="btn btn-light account-photo-btn">Upload Picture<input id="accountPhotoInput" type="file" accept="image/png,image/jpeg,image/webp" hidden></label><button id="removeAccountPhoto" class="btn btn-light" type="button">Remove</button></div></div></article>
-          <article class="card account-profile-card"><h3>Account Details</h3><div class="account-form-grid"><label>Name<input id="accountNameInput" placeholder="Your name"></label><label>Company Name<input id="accountCompanyInput" placeholder="Company name"></label><label>Email<input id="accountEmailInput" type="email" readonly></label><label>Role<input id="accountRoleInput" readonly></label></div><div class="account-form-actions"><button id="saveAccountProfile" class="btn btn-primary" type="button">Save Profile</button></div></article>
-          <article class="card account-profile-card account-security-card"><h3>Password & Security</h3><p>Your password is securely managed by Firebase Authentication. Use the button below to receive a password reset/change link at your signed-in email address.</p><button id="changePasswordBtn" class="btn btn-light" type="button">Change Password</button></article>
+      <section class="view" id="afford-view">
+        <div class="section-intro"><div><span class="eyebrow">Decision assistant</span><h2>Can I Afford This?</h2><p>Check full payment, Tabby/Tamara-style 4-pay, or custom installments against your real plan.</p></div></div>
+        <div class="grid-2">
+          <article class="card"><form id="affordForm" class="form-grid"><label class="span-2">What do you want to buy?<input id="affordName" required placeholder="Laptop"></label><label>Total cost<input id="affordCost" type="number" min="1" step="0.01" required placeholder="1600"></label><label>Payment method<select id="affordMethod"><option value="full">Pay in full</option><option value="pay4">Tabby / Tamara - 4 interest-free payments</option><option value="custom">Custom installments</option></select></label><label id="customMonthsWrap" class="hidden">Number of installments<input id="affordMonths" type="number" min="2" max="36" value="4"></label><label id="customInterestWrap" class="hidden">Total fee / interest<input id="affordFee" type="number" min="0" step="0.01" value="0"></label><button class="primary span-2" type="submit">Check Affordability</button></form></article>
+          <article class="card"><h3>Decision</h3><div id="affordResult" class="assistant-box">Enter a purchase to see whether it is safe, tight, or better postponed.</div></article>
         </div>
       </section>
 
-      <section id="settingsPage" class="page">
-        <div class="section-head"><div><h2>Settings</h2><p>Authentication, cloud sync and system configuration.</p></div></div>
-        <div class="settings-grid">
-          <article class="card settings-card"><h3>Cloud Account</h3><div class="settings-status-row"><span>Firebase</span><strong id="settingsFirebaseStatus">Not configured</strong></div><div class="settings-status-row"><span>Signed in as</span><strong id="settingsUserEmail">—</strong></div><div class="settings-status-row"><span>Last sync</span><strong id="settingsLastSync">—</strong></div><p class="muted">This account is connected to a shared company workspace. Staff members can use separate logins while authorised users see the same live data.</p><div class="settings-actions"><button id="syncNowBtn" class="btn btn-primary" type="button">Sync Now</button><button id="downloadCloudBtn" class="btn btn-light" type="button">Reload from Cloud</button></div></article>
-          <article class="card settings-card"><h3>Security & Access</h3><p>Email/password authentication is handled by Firebase Authentication. Firestore rules restrict access to active workspace members and allow synced changes only for authorised roles.</p><div class="settings-status-row"><span>Your role</span><strong id="settingsUserRole">—</strong></div><div class="settings-status-row"><span>Workspace</span><strong id="settingsWorkspaceId">—</strong></div></article>
+      <section class="view" id="credit-view">
+        <div class="section-intro"><div><span class="eyebrow">Break the cycle</span><h2>Revolving Credit Planner</h2><p>For credit cards or Tabby Card balances where you repay and reuse available credit.</p></div><button class="primary" data-modal="credit">+ Add revolving account</button></div>
+        <div id="creditCards" class="cards-grid"></div>
+      </section>
+
+      <section class="view" id="account-view">
+        <div class="section-intro"><div><span class="eyebrow">Your secure money space</span><h2>Account & Login</h2><p>Your Supabase project is connected. Sign in to keep the same debts, goals, transactions and plans synced across your devices.</p></div></div>
+        <div class="account-hero">
+          <img src="icon-192.png" alt="App icon">
+          <div><h3>Fari Money Assistant</h3><p>One plan, every device. Sign in to keep your debts, goals and monthly roadmap synced on phone, tablet and desktop.</p><span class="sync-pill" id="syncStatus">LOCAL MODE</span></div>
+        </div>
+        <div class="grid-2">
+          <article class="card"><h3>Sign in</h3><form id="loginForm" class="form-grid"><label class="span-2">Email<input id="loginEmail" type="email" required placeholder="you@example.com"></label><label class="span-2">Password<input id="loginPassword" type="password" required minlength="6" placeholder="••••••••"></label><button class="primary span-2">Login</button></form><p class="small-note">If Supabase is not configured yet, this page stays safely in local mode.</p></article>
+          <article class="card"><h3>Create account</h3><form id="signupForm" class="form-grid"><label class="span-2">Name<input id="signupName" placeholder="Fari"></label><label class="span-2">Email<input id="signupEmail" type="email" required></label><label class="span-2">Password<input id="signupPassword" type="password" required minlength="6"></label><button class="secondary span-2">Create Account</button></form></article>
+        </div>
+        <article class="card cloud-ready"><h3>☁️ Cloud Sync Ready</h3><p class="small-note">This version is already connected to your Supabase project. Run the included <strong>supabase-setup.sql</strong> once, then create an account or log in.</p><div class="assistant-box"><strong>Automatic sync</strong><br>Your money data is saved locally immediately and synced to your private Supabase record whenever you are logged in.</div><button class="secondary" id="logoutBtn" type="button">Log out</button></article>
+      </section>
+
+      <section class="view" id="settings-view">
+        <div class="section-intro"><div><span class="eyebrow">Your data</span><h2>Settings & Backup</h2><p>Local backup remains available. When Supabase is configured and you are logged in, the app can also save and load your financial data from the cloud.</p></div></div>
+        <div class="grid-2">
+          <article class="card"><h3>Backup</h3><p>Download a JSON backup and restore it on another device/browser.</p><div class="button-stack"><button class="primary" id="exportBtn">Download Backup</button><label class="secondary file-label">Restore Backup<input type="file" id="importFile" accept="application/json"></label></div></article>
+          <article class="card"><h3>Reset</h3><p>Erase all locally stored financial data from this browser.</p><button class="danger" id="resetBtn">Reset All Data</button></article>
         </div>
       </section>
+      <footer class="creator-footer"><strong>Created by Fari-RV ♥</strong><span>“A well-managed today creates a freer tomorrow.”</span></footer>
     </main>
   </div>
 
-  <div id="smsModal" class="modal hidden sms-modal"><div class="modal-dialog sms-dialog">
-    <div class="modal-head"><div><h3>Send SMS</h3><p>Send the journey details directly to the selected recipient.</p></div><button id="smsModalClose" class="close-btn" type="button">×</button></div>
-    <div class="sms-modal-grid">
-      <div class="sms-recipient-panel">
-        <h4>Send To</h4>
-        <label class="sms-recipient-option"><input id="smsDriverRecipient" type="radio" name="smsRecipient" value="driver" checked><span><strong id="smsDriverName">Assigned Driver</strong><small id="smsDriverPhone">No driver selected</small></span></label>
-        <label class="sms-recipient-option"><input id="smsPassengerRecipient" type="radio" name="smsRecipient" value="passenger"><span><strong id="smsPassengerName">Passenger</strong><small id="smsPassengerPhone">No passenger number</small></span></label>
-        <label class="sms-recipient-option custom-number"><input id="smsCustomRecipient" type="radio" name="smsRecipient" value="custom"><span><strong>Another number</strong><input id="smsCustomNumber" type="tel" placeholder="+44 ..."></span></label>
-        <label class="sms-template-label">SMS Template<select id="smsTemplate"><option value="journey">Standard Journey Details</option><option value="confirmation">Booking Confirmation</option><option value="driver">Driver Job Details</option></select></label>
-        <div class="sms-help">The message can be edited before sending. On phones, Send SMS opens the device SMS composer with the recipient and message filled in.</div>
-      </div>
-      <div class="sms-preview-panel"><h4>Message Preview</h4><div id="smsPreview" class="sms-preview-content" contenteditable="true"></div><div class="sms-counter"><span id="smsCharCount">0 characters</span><span id="smsSegmentCount">1 SMS</span></div></div>
-    </div>
-    <div class="modal-actions sms-modal-actions"><button id="copySmsBtn" class="btn btn-light" type="button">Copy Message</button><div class="spacer"></div><button id="cancelSmsBtn" class="btn btn-light" type="button">Cancel</button><button id="sendSmsNowBtn" class="btn btn-primary" type="button">➤ Send SMS</button></div>
-  </div></div>
+  <div class="modal" id="transactionModal"><div class="modal-card"><div class="modal-head"><h3>Add Transaction</h3><button class="close">×</button></div><form id="transactionForm" class="form-grid"><label>Type<select id="txnType"><option>Expense</option><option>Income</option><option>Debt Payment</option><option>Debt Received</option></select></label><label>Amount<input id="txnAmount" type="number" min="0.01" step="0.01" required></label><label>Category<input id="txnCategory" placeholder="Food, Rent, Trading..."></label><label>Date<input id="txnDate" type="date" required></label><label class="span-2">Note<input id="txnNote" placeholder="Optional note"></label><button class="primary span-2">Save Transaction</button></form></div></div>
 
-  <div id="simpleModal" class="modal hidden"><div class="modal-dialog"><div class="modal-head"><h3 id="simpleModalTitle">Add</h3><button id="simpleModalClose" class="close-btn">×</button></div><form id="simpleModalForm" class="modal-form"></form></div></div>
+  <div class="modal" id="debtModal"><div class="modal-card"><div class="modal-head"><h3>Add Debt</h3><button class="close">×</button></div><form id="debtForm" class="form-grid"><label>Debt name<input id="debtName" required placeholder="CashNow / Friend name"></label><label>Type<select id="debtType"><option>Loan</option><option>BNPL</option><option>Credit Card</option><option>Friend</option><option>Family</option><option>Other</option></select></label><label>Outstanding balance<input id="debtBalance" type="number" min="0.01" step="0.01" required></label><label>Fixed monthly installment?<select id="debtFixed"><option value="yes">Yes</option><option value="no">No - flexible</option></select></label><label>Monthly installment / preferred payment<input id="debtMonthly" type="number" min="0" step="0.01" required></label><label>Due day (1-31)<input id="debtDueDay" type="number" min="1" max="31" value="1"></label><label>Interest?<select id="debtInterest"><option value="no">No</option><option value="yes">Yes</option></select></label><label>Annual interest %<input id="debtRate" type="number" min="0" step="0.01" value="0"></label><label>Priority<select id="debtPriority"><option value="critical">Critical</option><option value="high">High</option><option value="normal" selected>Normal</option><option value="low">Low</option></select></label><label>Minimum flexible payment<input id="debtMinimum" type="number" min="0" step="0.01" value="0"></label><label>Can this debt be paid in pieces?<select id="debtPieces"><option value="yes">Yes - partial payments are okay</option><option value="no">No - pay full amount together</option></select></label><label>Final payment date<input id="debtTargetDate" type="date"><small class="field-help">For friend/family debts, the assistant treats this as the final date the full balance must be paid.</small></label><button class="primary span-2" id="debtSubmitBtn">Save Debt</button></form></div></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
-  <script src="config.js"></script>
-  <script type="module" src="firebase-cloud.js"></script>
-  <script src="app.js"></script>
+  <div class="modal" id="goalModal"><div class="modal-card"><div class="modal-head"><h3>Add Urgent Goal</h3><button class="close">×</button></div><form id="goalForm" class="form-grid"><label>Goal / requirement<input id="goalName" required placeholder="French course"></label><label>Amount needed<input id="goalAmount" type="number" min="1" step="0.01" required placeholder="2000"></label><label>Last date<input id="goalDeadline" type="date" required></label><label>Priority<select id="goalPriority"><option value="critical">Critical / cannot miss</option><option value="high">Very important</option><option value="normal">Important</option></select></label><label>Already saved<input id="goalSaved" type="number" min="0" step="0.01" value="0"></label><label>Must pay in full?<select id="goalFull"><option value="yes">Yes</option><option value="no">No / partial allowed</option></select></label><button class="primary span-2">Save Goal</button></form></div></div>
+
+  <div class="modal" id="creditModal"><div class="modal-card"><div class="modal-head"><h3>Add Revolving Credit</h3><button class="close">×</button></div><form id="creditForm" class="form-grid"><label>Account name<input id="creditName" required placeholder="Tabby Card"></label><label>Outstanding balance<input id="creditBalance" type="number" min="1" step="0.01" required placeholder="5000"></label><label>Typical monthly payment<input id="creditPayment" type="number" min="0" step="0.01" required placeholder="1200"></label><label>Monthly fee / cost<input id="creditFee" type="number" min="0" step="0.01" value="60"></label><label>Typical amount reused<input id="creditReuse" type="number" min="0" step="0.01" value="1200"></label><label>Desired payoff month<input id="creditTarget" type="month"></label><button class="primary span-2" id="creditSubmitBtn">Save Revolving Account</button></form></div></div>
+
+  <nav class="mobile-bottom-nav" id="mobileBottomNav" aria-label="Mobile navigation">
+    <button class="mb-nav active" data-view="dashboard"><span>⌂</span><small>Home</small></button>
+    <button class="mb-nav" data-view="plan"><span>▣</span><small>Plan</small></button>
+    <button class="mb-nav mb-add" id="mobileAdd"><span>＋</span><small>Add</small></button>
+    <button class="mb-nav" data-view="debts"><span>▢</span><small>Debts</small></button>
+    <button class="mb-nav" id="mobileMore"><span>☰</span><small>More</small></button>
+  </nav>
+  <div class="mobile-more-sheet" id="mobileMoreSheet">
+    <button data-view="transactions">💳 Transactions</button>
+    <button data-view="goals">🎯 Urgent Goals</button>
+    <button data-view="afford">🛍️ Can I Afford This?</button>
+    <button data-view="credit">🔁 Revolving Credit</button>
+    <button data-view="account">👤 Account</button>
+    <button data-view="settings">⚙️ Settings & Backup</button>
+  </div>
+  <div class="toast" id="toast"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js?v=12.0.0"></script>
 </body>
 </html>
